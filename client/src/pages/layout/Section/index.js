@@ -3,8 +3,10 @@ import Ilanlarim from "../Ilanlarim/index"
 import { useNavigate, Link } from 'react-router-dom';
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { PortfolioContext } from '../../../Context/workContext'
-
+import Message from "../../layout/Message/index";
 const Index = () => {
+  const [selectedAliciId, setSelectedAliciId] = useState(null);
+
   const { ilanlar, Post, getPost, fetchPost, formatToTurkishDate } = useContext(PortfolioContext);
   const userid = JSON.parse(localStorage.getItem("login"));
   const Navigate = useNavigate();
@@ -31,12 +33,13 @@ const Index = () => {
 
   const users = JSON.parse(localStorage.getItem("login"))
   const lastItem = [...filteredData][0]
+  const [istek, setIstek] = useState(false)
+
+
   const [open, setOpen] = useState(false)
-  const handleClick = () => {
-    setOpen(true)
-  }
+
   return (
-    <div className="w-[80%]  px-20">
+    <div className="w-[80%]  px-20 relative">
       <div className='flex justify-left pl-2 items-center '>
         {users?.result?.file ? <img className='rounded-full p-3 h-40 w-40' src={users?.result?.file} alt="" /> : null}
 
@@ -50,28 +53,28 @@ const Index = () => {
       <div className='flex justify-between pt-5'>
         <span className='text-left text-gray-400'> Sana Özel <strong>Alıcı İstekleri <span
           className='text-purple-600 cursor-pointer'
-          onClick={handleClick}
+          onClick={() => setIstek(true)}
         >
           &nbsp;[20 alıcı isteği]
         </span>
         </strong></span>
 
         <span className='text-right'> <Link to="/istekler" className="rounded-full text-gray-300 text-right p-2 cursor-pointer" > Tümü</Link> </span></div>     <br />
-      {open === false ? (<>
+      {istek === false ? (<>
         {lastItem ? (
           <div className="bg-gray-50 rounded-lg shadow mt-3">
             <div className="flex items-center justify-between mb-2 bg-gray-800 p-4 rounded-md">
               <div className="flex">
-              {userid?.result?.file ? <img
-                         className="rounded-full w-20 h-20 mr-3 text-white"
-            src={userid?.result?.file}
-            alt="Kullanıcı Fotoğrafı"
-          />
- : ""}
-           
+                {lastItem?.file ? <img
+                  className="rounded-full w-20 h-20 mr-3 text-white"
+                  src={userid?.result?.file}
+                  alt=" Fotoğraf"
+                />
+                  : ""}
+
                 <p>
                   <span className="text-sm font-semibold text-white">
-                    {userid?.result?.firstName}
+                  {lastItem?.kullaniciAd}
                   </span>
                   <br />
                   <span className="text-xs text-white">{lastItem.selectedSubcategory}</span>
@@ -79,12 +82,18 @@ const Index = () => {
               </div>
 
               <div className="flex justify-end space-x-2 mt-4 p-4">
-                <button className="border border-gray-300 px-3 py-1 rounded text-sm text-white hover:bg-gray-100">
+                <button
+                  className="border border-gray-300 px-3 py-1 rounded text-sm text-white hover:bg-gray-100"
+                  onClick={() => {
+                    setOpen(true);
+                    setSelectedAliciId(lastItem?.userId);
+
+                  }}
+                >
                   Mesaj At
                 </button>
-                <button className="bg-purple-600 text-white px-4 py-1 rounded text-sm hover:bg-pink-700">
-                  Teklif Ver
-                </button>
+
+
               </div>
             </div>
 
@@ -139,17 +148,18 @@ const Index = () => {
         <>
           {filteredData.map((item) => {
             return (
-              <div className="bg-gray-50 rounded-lg shadow mt-3">
+              <div className="bg-gray-50 rounded-lg  shadow mt-3">
+
                 <div className="flex items-center justify-between mb-2 bg-gray-800 p-4 rounded-md">
                   <div className="flex">
                     <img
-                      src="https://i.pinimg.com/originals/9d/c3/7c/9dc37cc861820bfa9c673822feebab8c.jpg"
-                      alt="profile"
+                      src={item?.file}
+                          alt=" Fotoğraf"
                       className="rounded-full w-20 h-20 mr-3 text-white"
                     />
                     <p>
                       <span className="text-sm font-semibold text-white">
-                        {userid?.result?.firstName}
+                        {item?.kullaniciAd}
                       </span>
                       <br />
                       <span className="text-xs text-white">{item.selectedSubcategory}</span>
@@ -157,12 +167,19 @@ const Index = () => {
                   </div>
 
                   <div className="flex justify-end space-x-2 mt-4 p-4">
-                    <button className="border border-gray-300 px-3 py-1 rounded text-sm text-white hover:bg-gray-100">
+                    <button
+                      className="border border-gray-300 px-3 py-1 rounded text-sm text-white hover:bg-gray-100"
+
+                      onClick={() => {
+                        setOpen(true);
+                        setSelectedAliciId(item?.userId);
+
+                      }}
+                    >
                       Mesaj At
                     </button>
-                    <button className="bg-purple-600 text-white px-4 py-1 rounded text-sm hover:bg-pink-700">
-                      Teklif Ver
-                    </button>
+
+
                   </div>
                 </div>
 
@@ -207,14 +224,21 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
+                <Message
+                  onClose={setOpen}
+                  adi={item?.kullaniciAd}
+                  open={open}
+                  gonderenId={userid?.result?._id}
+                  aliciId={selectedAliciId}
+                />
               </div>
+
             )
           })}
+
         </>
 
       )}
-
-
 
 
 
@@ -226,6 +250,10 @@ const Index = () => {
       </div>
 
       <Ilanlarim />
+
+
+
+
 
     </div>
 

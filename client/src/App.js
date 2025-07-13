@@ -9,6 +9,7 @@ import PortfolyoDetay from "./pages/layout/Portfolyo/Detay"
 import SiparislerimDetay from "./pages/layout/Siparislerim/Detay"
 import IlanlarimDetay from "./pages/layout/Ilanlarim/Detay"
 import Istekler from "./pages/layout/Istekler"
+import Sohbet from "./pages/layout/Sohbet"
 import Todo from "./pages/layout/Yapılıcaklar"
 import Login from "./pages/layout/Login"
 import Register from "./pages/layout/Register"
@@ -18,31 +19,40 @@ import Section from "./pages/layout/Section"
 import Genel from "./pages/layout/Genel"
 import Hesap from "./pages/layout/Hesap"
 import WorkContextProvider from '../src/Context/workContext'
+import PrivateRoute from '../src/pages/layout/PrivateRoute';
 const App = () => {
+
   return (
     <WorkContextProvider>
- <Routes>
- <Route path="/" element={<Login/>} />
- <Route path="/kayit-ol" element={<Register/>} />
-  <Route path="/workist" element={<Layouts><Section /></Layouts>} />
-  <Route path="/ilanlarim" element={<Layouts><Ilanlarım /></Layouts>} />
-  <Route path="/ilanlar/:kategori" element={<Layouts><Genel/></Layouts>} />
-  <Route path="/ilanlar" element={<Layouts><Genel/></Layouts>} />
-  <Route path="/portfolyom" element={<Layouts><Portfolyo /></Layouts>} />
-  <Route path="/portfolyom/:id" element={<Layouts><PortfolyoDetay /></Layouts>} />
-  <Route path="/ilanlarim/:id" element={<Layouts><IlanlarimDetay /></Layouts>} />
-  <Route path="/satislarim" element={<Layouts><Satislarim /></Layouts>} />
-  <Route path="/istekler" element={<Layouts><Istekler /></Layouts>} />
-  <Route path="/siparislerim" element={<Layouts><Siparislerim /></Layouts>} />
-  <Route path="/satislarim/:id" element={<Layouts><SiparislerimDetay /></Layouts>} />
-  <Route path="/yapilacaklar" element={<Layouts><Todo /></Layouts>} />
-  <Route path="/hesap-donduruldu" element={<Hesap />} />
 
-  <Route path="/profilim" element={<Layouts><ProfileHome /></Layouts>} />
-  <Route path="/hesabim" element={<Layouts><Hesabim /></Layouts>} />
-  <Route path="*" element={<img src="https://serdivan.bel.tr/fa831c5256308e91e776e9e483effa49/24/vecteezy_404-landing-page_6549647.png" width="100%" height="100%"/>} />
+      <Routes>
 
-</Routes>
+ 
+          <Route path="/workist" element={ <PrivateRoute><Layouts><Section /> </Layouts> </PrivateRoute>}/>
+          <Route path="/ilanlarim" element={ <PrivateRoute><Layouts><Ilanlarım /> </Layouts> </PrivateRoute>} />
+          <Route path="/ilanlar/:kategori" element={ <PrivateRoute><Layouts><Genel /> </Layouts> </PrivateRoute>} />
+          <Route path="/ilanlar" element={ <PrivateRoute><Layouts><Genel /> </Layouts> </PrivateRoute>} />
+          <Route path="/portfolyom" element={ <PrivateRoute><Layouts><Portfolyo /> </Layouts> </PrivateRoute>} />
+          <Route path="/portfolyom/:id" element={ <PrivateRoute><Layouts><PortfolyoDetay /> </Layouts> </PrivateRoute>} />
+          <Route path="/ilanlarim/:id" element={ <PrivateRoute><Layouts><IlanlarimDetay /> </Layouts> </PrivateRoute>} />
+          <Route path="/satislarim" element={ <PrivateRoute><Layouts><Satislarim /> </Layouts> </PrivateRoute>} />
+          <Route path="/istekler" element={ <PrivateRoute><Layouts><Istekler /> </Layouts> </PrivateRoute>} />
+          <Route path="/siparislerim" element={ <PrivateRoute><Layouts><Siparislerim /> </Layouts> </PrivateRoute>} />
+          <Route path="/satislarim/:id" element={ <PrivateRoute><Layouts><SiparislerimDetay /> </Layouts> </PrivateRoute>} />
+          <Route path="/yapilacaklar" element={ <PrivateRoute><Layouts><Todo /> </Layouts> </PrivateRoute>} />
+          <Route path="/sohbet" element={ <PrivateRoute><Layouts><Sohbet /> </Layouts> </PrivateRoute>} />
+          <Route path="/hesap-donduruldu" element={<Hesap />} />
+
+          <Route path="/profilim" element={ <PrivateRoute><Layouts><ProfileHome /> </Layouts> </PrivateRoute>} />
+          <Route path="/hesabim" element={ <PrivateRoute><Layouts><Hesabim /> </Layouts> </PrivateRoute>} />
+          <Route path="*" element={<img src="https://serdivan.bel.tr/fa831c5256308e91e776e9e483effa49/24/vecteezy_404-landing-page_6549647.png" width="100%" height="100%" />} />
+     
+        <Route path="/" element={<Login />} />
+        <Route path="/kayit-ol" element={<Register />} />
+
+
+      </Routes>
+
 
     </WorkContextProvider>
 

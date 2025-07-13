@@ -4,7 +4,7 @@ const index = () => {
     const d = new Date();
     let year = d.getFullYear();
     return (
-        <div className='bg-gray-100 relative p-3'>
+        <div className='bg-gray-100 relative p-3 ındex-20'>
 
 
 

@@ -30,7 +30,7 @@ const Index = () => {
             return; 
           }
       
-        console.log(formData)
+
         await registerPost(formData)
 
     }

@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { PortfolioContext } from '../../Context/workContext';
 
 const PortfolioModal = () => {
-  const { createWorkPost,userId} = useContext(PortfolioContext);
+  const { createWorkPost,userId,userid} = useContext(PortfolioContext);
 
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState(1);
@@ -107,7 +107,8 @@ const PortfolioModal = () => {
       selectedCategory,
       selectedSubcategory,
       fiyat: toplamFiyat,
-      userId: userId
+      userId: userId,
+      kullaniciAd:userid?.result?.firstName
     };
 
     if (

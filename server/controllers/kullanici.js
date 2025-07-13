@@ -2,14 +2,23 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 import User from '../models/kullanici.js'
+
+const usersMessage = async (req, res) => {
+    try {
+        const users = await User.find();
+        res.json(users);
+      } catch (err) {
+        res.status(500).json({ error: "Kullanıcılar getirilemedi" });
+      }
+};
 const Detay = async (req, res) => {
     const { email } = req.params;
 
     try {
-        // Find the user by email
+       
         const user = await User.findOne({ email });
 
-        // Check if the user exists
+
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -50,47 +59,43 @@ const signin=async (req,res)=>{
     }
 }
 const duzenle = async (req, res) => {
-    const { email } = req.params; // Assuming email is in the params
+    const { email } = req.params; 
     const updatedFields = req.body;
   
     try {
-        // Find the user by email
+
         const user = await User.findOne({ email });
-  
-        // Check if the user exists
+
         if (!user) {
             return res.status(404).send("User not found");
         }
   
-        // Update only the specified fields
         Object.assign(user, updatedFields);
   
-        // Hash the password if it's provided in the request
         if (req.body.password) {
             const hashedPassword = await bcrypt.hash(req.body.password, 12);
             user.password = hashedPassword;
         }
-  
-        // Save the updated user
+
         const updatedUser = await user.save();
   
         res.status(200).json(updatedUser);
     } catch (error) {
-        // Handle the error appropriately
         console.error(error);
         res.status(500).send("Internal Server Error");
     }
   };
-const users=async (req,res)=>{
-
+  const users = async (req, res) => {
+    const { id } = req.params; 
     try {
-        const postMessage=await User.find();
-        res.status(200).json(postMessage)
-     
-    } catch (error) {
-        res.status(404).json({message:error.message})
+
+      const users = await User.find({ _id: { $ne: id } }).select("firstName lastName file");
+      res.json(users);
+    } catch (err) {
+      res.status(500).json({ error: "Kullanıcılar bulunamadı" });
     }
-}
+  };
+  
 const Delete = async (req, res) => {
     const { email } = req.params;
   
@@ -143,4 +148,4 @@ const signup = async (req, res) => {
 
 
 
-export { signin, signup,users,Delete,duzenle,Detay };
+export { signin, signup,users,Delete,duzenle,Detay,usersMessage };

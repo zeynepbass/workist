@@ -36,10 +36,7 @@ const Index = () => {
                         <path fill="currentColor" fill-rule="evenodd" d="M11.818.4l-3.57 7.85-7.825.713a.2.2 0 0 0-.124.34l5.927 5.977-1.638 8.273a.2.2 0 0 0 .3.21l7.086-4.32 7.082 4.322a.2.2 0 0 0 .3-.209l-1.59-8.281L23.7 9.303a.2.2 0 0 0-.123-.34l-7.829-.713L12.182.4a.2.2 0 0 0-.364 0z"></path>
                     </svg> &nbsp;5.0 (1)</p><br />
                     <hr /><br />
-                    <p className="text-sm mt-1 text-gray-400">
-
-                        Bionluk Freelancer Hattı sayesinde kişisel numaranı paylaşmaksızın cep telefonun üzerinden tüm Bionluk kullanıcılarıyla güvenle görüşmeye başlayabilirsin. Üstelik ilk ay ücretsiz! 😉
-                    </p>
+                
                 </div>
 
                 <div className="bg-white p-4 rounded-[10px] shadow">

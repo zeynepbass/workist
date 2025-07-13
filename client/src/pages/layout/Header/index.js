@@ -3,16 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBook,
   faComment,
-  faBell,
   faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import Profile from '../../Profile';
-const notifications = [
-  { id: 1, title: 'Yeni mesajınız var.', time: '2 dakika önce' },
-  { id: 2, title: 'Profiliniz güncellendi.', time: '1 saat önce' },
-  { id: 3, title: 'Yeni bir görev eklendi.', time: 'Dün' },
-];
+
 const   Index = () => {
 
   const [search, setSearch] = useState("");
@@ -82,39 +77,12 @@ const   Index = () => {
             />
 
           </div>
-          <div className="flex justify-center gap-6 mt-2 text-xl text-gray-500 pl-5">
+          <div className="flex justify-center gap-6 mt-2 text-xl text-gray-500 p-5">
             <Link to="/yapilacaklar">
               <FontAwesomeIcon icon={faBook} className="hover:text-purple-600" />
             </Link>
 
-            <div className="relative" ref={panelRef}>
-              <FontAwesomeIcon
-                icon={faBell}
-                onClick={() => setOpen(!open)}
-                className="hover:text-purple-600 cursor-pointer text-xl"
-              />
-
-              {open && (
-                <div className="absolute right-0 mt-2 h-[25vh] overflow-y-auto w-80 bg-white shadow-lg rounded-lg border border-gray-200 z-50">
-                  <div className="p-4 border-b text-sm font-semibold text-gray-400">
-                    Bildirimler
-                  </div>
-                  <ul className="max-h-60 overflow-y-auto">
-                    {notifications.length === 0 ? (
-                      <li className="px-4 py-2 text-sm text-gray-500">Henüz bildiriminiz yok.</li>
-                    ) : (
-                      notifications.map((n) => (
-                        <li key={n.id} className="px-4 py-2 hover:bg-gray-50 border-b">
-                          <p className="text-sm text-purple-700">{n.title}</p>
-                          <span className="text-xs text-gray-400">{n.time}</span>
-                        </li>
-                      ))
-                    )}
-                  </ul>
-                </div>
-              )}
-            </div>
-            <FontAwesomeIcon icon={faComment} className="hover:text-purple-600 cursor-pointer" />
+            <FontAwesomeIcon icon={faComment} className="hover:text-purple-600 cursor-pointer" onClick={()=>Navigate("/sohbet")} />
           </div>
 
 

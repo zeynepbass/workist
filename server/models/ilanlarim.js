@@ -50,7 +50,12 @@ const ilanlarimSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
+  },
+  kullaniciAd: {
+    type: String,
+    required: true
   }
+  
 }, { timestamps: true });
 
 export default mongoose.model('Ilanlarim', ilanlarimSchema);

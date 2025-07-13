@@ -2,10 +2,12 @@ import React from 'react'
 import Header from "./Header"
 import Footer from "./Footer"
 import Sidebar from "./Sidebar"
-const index = ({ children }) => {
+const Index = ({ children }) => {
+
   return (
+
     <>
-      <div >
+      <div  className=''>
 
         <div className='grid grid-cols-5 '>
 
@@ -25,4 +27,4 @@ const index = ({ children }) => {
   )
 }
 
-export default index
+export default Index
