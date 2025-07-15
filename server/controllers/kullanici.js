@@ -48,7 +48,7 @@ const signin=async (req,res)=>{
 
         if(!parolaKontrolSonuc) return res.status(400).json({message:'Parolayı doğru giriniz'})
 
-        const token=jwt.sign({email:kullanici.email,id:kullanici._id},'aos-secret-code',{expiresIn:'30d'})
+        const token=jwt.sign({email:kullanici.email,id:kullanici._id},'aos-secret-code',    { expiresIn: '1h' } )
 
         res.status(200).json({result:kullanici,token})
 

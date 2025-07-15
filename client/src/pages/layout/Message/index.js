@@ -66,6 +66,10 @@ const {messages,setMessages,Message}=useContext(PortfolioContext)
 
 
           <div className="flex-1 p-4 bg-gray-50 space-y-3 overflow-y-auto">
+          {messages.length === 0 ? (
+            <p className="text-gray-500 italic">Henüz mesaj yok</p>
+          ) : 
+          <>
             {messages.map((msg, index) => (
               <div
                 key={index}
@@ -84,6 +88,10 @@ const {messages,setMessages,Message}=useContext(PortfolioContext)
                 </div>
               </div>
             ))}
+          </>
+          
+          }
+           
     
           </div>
 

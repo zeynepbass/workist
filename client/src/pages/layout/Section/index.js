@@ -18,9 +18,11 @@ const Index = () => {
   const filteredData = useMemo(() => {
     const selectedCategories = Post.map((item) => item.selectedCategory);
     return ilanlar.filter((item) =>
-      selectedCategories.includes(item.selectedCategory)
+      selectedCategories.includes(item.selectedCategory) &&
+      item.userId !== userid?.result?._id 
     );
-  }, [ilanlar, Post]);
+  }, [ilanlar, Post, userid]);
+  
 
   const [expandedItems, setExpandedItems] = useState({});
 
@@ -67,7 +69,7 @@ const Index = () => {
               <div className="flex">
                 {lastItem?.file ? <img
                   className="rounded-full w-20 h-20 mr-3 text-white"
-                  src={userid?.result?.file}
+                  src={lastItem.file}
                   alt=" Fotoğraf"
                 />
                   : ""}
@@ -82,17 +84,23 @@ const Index = () => {
               </div>
 
               <div className="flex justify-end space-x-2 mt-4 p-4">
-                <button
-                  className="border border-gray-300 px-3 py-1 rounded text-sm text-white hover:bg-gray-100"
-                  onClick={() => {
-                    setOpen(true);
-                    setSelectedAliciId(lastItem?.userId);
+            
 
-                  }}
-                >
-                  Mesaj At
-                </button>
+              <button
+                      className="border border-gray-300 px-3 py-1 rounded text-sm text-white hover:bg-gray-100"
 
+                      onClick={() => {
+                        setOpen(false); 
+                        setSelectedAliciId(lastItem?.userId);
+                      
+                        setTimeout(() => {
+                          setOpen(true);
+                        }, 0);
+                      }}
+                      
+                    >
+                      Mesaj At
+                    </button>
 
               </div>
             </div>
@@ -171,10 +179,14 @@ const Index = () => {
                       className="border border-gray-300 px-3 py-1 rounded text-sm text-white hover:bg-gray-100"
 
                       onClick={() => {
-                        setOpen(true);
+                        setOpen(false); 
                         setSelectedAliciId(item?.userId);
-
+                      
+                        setTimeout(() => {
+                          setOpen(true);
+                        }, 0);
                       }}
+                      
                     >
                       Mesaj At
                     </button>
@@ -224,13 +236,18 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
-                <Message
-                  onClose={setOpen}
-                  adi={item?.kullaniciAd}
-                  open={open}
-                  gonderenId={userid?.result?._id}
-                  aliciId={selectedAliciId}
-                />
+                {open && selectedAliciId === item.userId && (
+  <Message
+    onClose={setOpen}
+    adi={item?.kullaniciAd}
+    open={open}
+    gonderenId={userid?.result?._id}
+    aliciId={selectedAliciId}
+  />
+)}
+
+
+
               </div>
 
             )

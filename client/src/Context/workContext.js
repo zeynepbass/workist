@@ -211,9 +211,9 @@ const WorkContextProvider = ({ children }) => {
     const LoginPost = async (formData) => {
         try {
             const response = await axios.post("http://localhost:1998/signin", formData);
-            navigate("/ilanlar")
-
+            
             localStorage.setItem("login", JSON.stringify(response.data))
+            navigate('/ilanlar');
         } catch (error) {
             console.error("Post oluşturma hatası:", error);
         }

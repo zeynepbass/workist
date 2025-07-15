@@ -65,7 +65,8 @@ const Index = () => {
             <tr>
               <th className="p-4 border">Tarih</th>
               <th className="p-4 border">Son Mesaj</th>
-              <th className="p-4 border">Alıcı Adı</th>
+              <th className="p-4 border">Gönderici Adı</th>
+        
               <th className="p-4 border">İşlem</th>
             </tr>
           </thead>
@@ -85,7 +86,7 @@ const Index = () => {
               const otherUserId = item.gonderenId === userId ? item.aliciId : item.gonderenId;
 
               return (
-                <tr key={index} className={isSameUser ? 'line-through text-green-500' : ''}>
+                <tr key={index} className={isSameUser ? '' : 'line-through text-green-500'}>
                   <td >
                     {showCheckboxes && (
                       <input
@@ -105,12 +106,13 @@ const Index = () => {
                   </td>
                   <td>{item.text}</td>
                   <td>{user ? user.firstName : "Bilinmeyen Kullanıcı"}</td>
+
                   <td>
                     <button
                       onClick={() => handleClick(otherUserId)}
                       className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition"
                     >
-                      {isSameUser ? "Cevap Verildi" : "Cevap Ver"}
+                      {isSameUser ? "Mesajın Var" : "Cevap Ver"}
                     </button>
                   </td>
                 </tr>

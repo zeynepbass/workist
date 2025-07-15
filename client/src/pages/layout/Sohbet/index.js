@@ -61,17 +61,23 @@ const MessagingUI = () => {
     setNewMessage('');
   };
 
+  const filtred = userList.filter((user) =>
+    messages.some(
+      (msg) =>
+        (msg.gonderenId === currentUser?.result?._id && msg.aliciId === user._id) ||
+        (msg.aliciId === currentUser?.result?._id && msg.gonderenId === user._id)
+    )
+  );
+  
+
   return (
     <div className="flex h-screen bg-gray-100 font-sans">
  
       <div className="w-1/3 border-r bg-white p-4">
         <h2 className="text-xl font-semibold mb-4">Gelen Kutusu</h2>
         <ul className="space-y-2 overflow-y-auto h-[calc(100vh-150px)]">
-        {messages.length === 0 ? 
-            null
-           : 
-            <>
-           {userList.map((user) => (
+     
+           {filtred && filtred.map((user) => (
             <li
               key={user._id}
               onClick={() => setAliciId(user._id)}
@@ -82,7 +88,7 @@ const MessagingUI = () => {
                 <p className="text-sm font-medium">{user.firstName} {user.lastName}</p>
               </div>
             </li>
-          ))} </> }
+          ))} 
          
         </ul>
       </div>

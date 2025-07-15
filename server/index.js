@@ -17,24 +17,22 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:3000', // React uygulamasının adresi
+    origin: 'http://localhost:3000', 
     methods: ['GET', 'POST'],
     credentials: true
   },
 });
 
-// Middleware
 app.use(cors());
 app.use(bodyParser.json({ limit: '200mb' }));
 app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
 
-// Routes
+
 app.use('/', portfolyo);
 app.use('/', ilanlarim);
 app.use('/', kullanici);
 app.use('/', message);
 
-// DB bağlantısı
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -42,7 +40,7 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log('✅ MongoDB bağlantısı kuruldu'))
 .catch((err) => console.log('❌ Bağlantı hatası:', err));
 
-// Socket.io
+
 io.on('connection', (socket) => {
   console.log('🔌 Yeni bağlantı:', socket.id);
 
@@ -64,7 +62,6 @@ io.on('connection', (socket) => {
   });
 });
 
-// Sunucu dinleniyor
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`🚀 Sunucu ${PORT} portunda çalışıyor`);
