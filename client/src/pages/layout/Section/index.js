@@ -150,6 +150,15 @@ const Index = () => {
         ) : (
           <p className="text-gray-400">Son veri bulunamadı.</p>
         )}
+{open && selectedAliciId === lastItem.userId && (
+  <Message
+    onClose={setOpen}
+    adi={lastItem?.kullaniciAd}
+    open={open}
+    gonderenId={userid?.result?._id}
+    aliciId={selectedAliciId}
+  />
+)}
 
       </>) : (
 

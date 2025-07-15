@@ -65,8 +65,7 @@ const Index = () => {
             <tr>
               <th className="p-4 border">Tarih</th>
               <th className="p-4 border">Son Mesaj</th>
-              <th className="p-4 border">Gönderici Adı</th>
-        
+              <th className="p-4 border">Alıcı / Gönderici</th> 
               <th className="p-4 border">İşlem</th>
             </tr>
           </thead>
@@ -87,7 +86,7 @@ const Index = () => {
 
               return (
                 <tr key={index} className={isSameUser ? '' : 'line-through text-green-500'}>
-                  <td >
+                  <td>
                     {showCheckboxes && (
                       <input
                         type="checkbox"
@@ -105,7 +104,9 @@ const Index = () => {
                     {formatToTurkishDate(item.time)}
                   </td>
                   <td>{item.text}</td>
-                  <td>{user ? user.firstName : "Bilinmeyen Kullanıcı"}</td>
+
+                  <td>{isSameUser ? currentFirstName : user?.firstName || "Bilinmeyen Kullanıcı"}</td>
+
 
                   <td>
                     <button
@@ -119,6 +120,7 @@ const Index = () => {
               );
             })}
           </tbody>
+
         </table>
       </div>
 
