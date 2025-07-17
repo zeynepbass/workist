@@ -1,3 +1,5 @@
+Projede client tabanlı inceleme sağlarsanız sevinirim.
+
 ✅ Proje Geliştirme Aşamaları
 1. Responsive Tasarımın Tamamlanması
 Uygulamanın tüm cihazlarda (mobil, tablet, masaüstü) sorunsuz çalışması için eksik kalan responsive düzenlemeler yapılacaktır. Bu kapsamda:
