@@ -39,3 +39,5 @@ Her siparişin durum bilgisi, ödeme kontrolü ve süresi gösterilecek,
 
 Gerekirse sipariş iptali veya teslim bildirimi gibi eylemler eklenebilecektir.
 
+5. Proje genel yapısı tekrardan test edilip canlıya çıkışıcak hale gelicektir.
+
