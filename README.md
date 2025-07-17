@@ -1,3 +1,5 @@
+Projede client tabanlı inceleme sağlarsanız sevinirim.
+
 ✅ Proje Geliştirme Aşamaları
 1. Responsive Tasarımın Tamamlanması
 Uygulamanın tüm cihazlarda (mobil, tablet, masaüstü) sorunsuz çalışması için eksik kalan responsive düzenlemeler yapılacaktır. Bu kapsamda:
@@ -36,4 +38,6 @@ Siparişler için ayrı bir listeleme sayfası hazırlanacak,
 Her siparişin durum bilgisi, ödeme kontrolü ve süresi gösterilecek,
 
 Gerekirse sipariş iptali veya teslim bildirimi gibi eylemler eklenebilecektir.
+
+5. Proje genel yapısı tekrardan test edilip canlıya çıkışıcak hale gelicektir.
 
