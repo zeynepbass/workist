@@ -5,6 +5,7 @@ import axios from "axios";
 export const PortfolioContext = createContext();
 
 const WorkContextProvider = ({ children }) => {
+    const baseUrl = process.env.REACT_APP_BASE_URL;
     const [Post, setPost] = useState([] || "");
     const [konusmalar, setKonusmalar] = useState([] || "");
     const [userList, setUsersList] = useState([] || "");
@@ -33,7 +34,7 @@ const WorkContextProvider = ({ children }) => {
 
     const getPost = async () => {
         try {
-            const response = await axios.get("http://localhost:1998/ilanlar");
+            const response = await axios.get(`${baseUrl}/ilanlar`);
             setIlanlar(response.data);
         } catch (error) {
             console.error("Veri çekme hatası:", error);
@@ -42,7 +43,7 @@ const WorkContextProvider = ({ children }) => {
     const searchPosts = async (searchQuery) => {
         try {
             const url = searchQuery
-                ? `http://localhost:1998/ilanlar?search=${encodeURIComponent(searchQuery)}`
+                ? `${baseUrl}/ilanlar?search=${encodeURIComponent(searchQuery)}`
                 : getPost();
 
             const response = await axios.get(url);
@@ -53,7 +54,7 @@ const WorkContextProvider = ({ children }) => {
     };
     const fetchResponse = async (userId) => {
         try {
-            const response = await axios.get(`http://localhost:1998/portfolyo/${userId}`);
+            const response = await axios.get(`${baseUrl}/portfolyo/${userId}`);
             setData(response.data);
         } catch (error) {
             console.error("Veri çekme hatası:", error);
@@ -62,7 +63,7 @@ const WorkContextProvider = ({ children }) => {
 
     const fetchPost = async (userId) => {
         try {
-            const response = await axios.get(`http://localhost:1998/ilanlarim/${userId}`);
+            const response = await axios.get(`${baseUrl}/ilanlarim/${userId}`);
             setPost(response.data);
 
         } catch (error) {
@@ -74,7 +75,7 @@ const WorkContextProvider = ({ children }) => {
 
     const createWork = async (post) => {
         try {
-            const response = await axios.post("http://localhost:1998/portfolyo", post);
+            const response = await axios.post(`${baseUrl}/portfolyo`, post);
             setData((prev) => Array.isArray(prev) ? [...prev, response.data] : [response.data]);
 
             navigate("/portfolyom");
@@ -85,7 +86,7 @@ const WorkContextProvider = ({ children }) => {
 
     const createWorkPost = async (post) => {
         try {
-            const response = await axios.post("http://localhost:1998/ilanlarim", post);
+            const response = await axios.post(`${baseUrl}/ilanlarim`, post);
             setPost((prev) => Array.isArray(prev) ? [...prev, response.data] : [response.data]);
 
             navigate("/ilanlarim");
@@ -100,7 +101,7 @@ const WorkContextProvider = ({ children }) => {
 
     const deleteClickPost = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:1998/ilanlarim/${id}`);
+            const response = await axios.delete(`${baseUrl}/ilanlarim/${id}`);
             setPost(response.data.filter((item) => item._id !== id))
             fetchPost()
         } catch (error) {
@@ -109,7 +110,7 @@ const WorkContextProvider = ({ children }) => {
     };
     const deleteClick = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:1998/portfolyo/${id}`);
+            const response = await axios.delete(`${baseUrl}/portfolyo/${id}`);
             setData(response.data.filter((item) => item._id !== id))
             fetchResponse()
         } catch (error) {
@@ -123,7 +124,7 @@ const WorkContextProvider = ({ children }) => {
 
     const detailstPost = async (id) => {
         try {
-            const response = await axios.get(`http://localhost:1998/ilanlarim/${id}`);
+            const response = await axios.get(`${baseUrl}/ilanlarim/${id}`);
             setDetails(response.data);
             fetchPost()
         } catch (error) {
@@ -134,7 +135,7 @@ const WorkContextProvider = ({ children }) => {
 
     const detailsPortfolyo = async (id) => {
         try {
-            const response = await axios.get(`http://localhost:1998/portfolyo/${id}`);
+            const response = await axios.get(`${baseUrl}/portfolyo/${id}`);
             setDetail(response.data);
         } catch (error) {
             console.error("Post oluşturma hatası:", error);
@@ -142,8 +143,8 @@ const WorkContextProvider = ({ children }) => {
     };
     const detailsPost = async () => {
         try {
-            const data = JSON.parse(localStorage.getItem("login"));
-            const response = await axios.get(`http://localhost:1998/duzenle/${data.result.email}`);
+
+            const response = await axios.get(`${baseUrl}/duzenle/${userid.result.email}`);
             setEmail(response.data)
 
         } catch (error) {
@@ -157,7 +158,7 @@ const WorkContextProvider = ({ children }) => {
 
     const fetchUpdated = async (id, formData) => {
         try {
-            const response = await axios.put(`http://localhost:1998/portfolyo/${id}`, formData);
+            const response = await axios.put(`${baseUrl}/portfolyo/${id}`, formData);
             setData((prev) =>
                 prev.map((item) => (item._id === id ? response.data : item))
             );
@@ -169,7 +170,7 @@ const WorkContextProvider = ({ children }) => {
     }
     const updatePost = async (id, post) => {
         try {
-            const response = await axios.put(`http://localhost:1998/ilanlarim/${id}`, post);
+            const response = await axios.put(`${baseUrl}/ilanlarim/${id}`, post);
             setPost((prev) =>
                 prev.map((item) => (item._id === id ? response.data : item))
             );
@@ -181,8 +182,8 @@ const WorkContextProvider = ({ children }) => {
     }
     const updatedPost = async (formData) => {
         try {
-            const data = JSON.parse(localStorage.getItem("login"));
-            const response = await axios.put(`http://localhost:1998/duzenle/${data.result.email}`, formData);
+
+            const response = await axios.put(`${baseUrl}/duzenle/${userid.result.email}`, formData);
 
             setEmail(response.data);
             localStorage.setItem("login", JSON.stringify({ result: response.data }));
@@ -200,7 +201,7 @@ const WorkContextProvider = ({ children }) => {
 
     const registerPost = async (formData) => {
         try {
-            const response = await axios.post("http://localhost:1998/uye-ol", formData);
+            const response = await axios.post(`${baseUrl}/uye-ol`, formData);
             setUser(response.data);
             navigate("/")
 
@@ -210,7 +211,7 @@ const WorkContextProvider = ({ children }) => {
     }
     const LoginPost = async (formData) => {
         try {
-            const response = await axios.post("http://localhost:1998/signin", formData);
+            const response = await axios.post(`${baseUrl}/signin`, formData);
             
             localStorage.setItem("login", JSON.stringify(response.data))
             navigate('/ilanlar');
@@ -221,8 +222,8 @@ const WorkContextProvider = ({ children }) => {
 
     const hesabiDondur = async () => {
         try {
-            const data = JSON.parse(localStorage.getItem("login"));
-            await axios.get(`http://localhost:1998/users/${data.result.email}`);
+         
+            await axios.get(`${baseUrl}/users/${userid.result.email}`);
 
 
         } catch (error) {
@@ -232,7 +233,7 @@ const WorkContextProvider = ({ children }) => {
     const Message = async (gonderenId, aliciId) => {
         try {
 
-            const response = await axios.get(`http://localhost:1998/mesajlar/${gonderenId}/${aliciId}`)
+            const response = await axios.get(`${baseUrl}/mesajlar/${gonderenId}/${aliciId}`)
   
             setMessages(response.data)
 
@@ -243,7 +244,7 @@ const WorkContextProvider = ({ children }) => {
     const getMessage = async (userId) => {
         try {
 
-            const response = await axios.get(`http://localhost:1998/konusmalar/${userId}`);
+            const response = await axios.get(`${baseUrl}/konusmalar/${userId}`);
             setKonusmalar(response.data)
 
         } catch (error) {
@@ -253,26 +254,35 @@ const WorkContextProvider = ({ children }) => {
     const usersListPerson = async (id) => {
         try {
 
-            const response = await axios.get(`http://localhost:1998/users/${id}`);
+            const response = await axios.get(`${baseUrl}/users/${id}`);
             setUsersList(response.data)
 
         } catch (error) {
             console.error("Post oluşturma hatası:", error);
         }
     }
-    const usersLis = async (id) => {
+    const usersLis = async () => {
         try {
 
-            const response = await axios.get(`http://localhost:1998/users`);
+            const response = await axios.get(`${baseUrl}/users`);
             setFirstName(response.data)
 
         } catch (error) {
             console.error("Post oluşturma hatası:", error);
         }
     }
-    
+    const handleDeleteMessagesData=async(currentId,targetId)=>{
+        try {
+
+            const response = await axios.get(`${baseUrl}/${currentId}/${targetId}`);
+            setFirstName(response.data)
+
+        } catch (error) {
+            console.error("Post oluşturma hatası:", error);
+        }
+    }
     return (
-        <PortfolioContext.Provider value={{firstNameLabel,usersListPerson,usersLis,userList, messages,getMessage, konusmalar, setMessages, Message, getMessage, searchPosts, getPost, ilanlar, userId, hesabiDondur, email, setEmail, detailsPost, updatedPost, LoginPost, users, registerPost, updatePost, details, detailsPortfolyo, detailstPost, createWorkPost, formatToTurkishDate, Post, setPost, deleteClickPost, fetchPost, data, detail, setData, fetchResponse, createWork, deleteClick, detailsPortfolyo, fetchUpdated, userid }}>
+        <PortfolioContext.Provider value={{handleDeleteMessagesData,firstNameLabel,usersListPerson,usersLis,userList, messages,getMessage, konusmalar, setMessages, Message, getMessage, searchPosts, getPost, ilanlar, userId, hesabiDondur, email, setEmail, detailsPost, updatedPost, LoginPost, users, registerPost, updatePost, details, detailsPortfolyo, detailstPost, createWorkPost, formatToTurkishDate, Post, setPost, deleteClickPost, fetchPost, data, detail, setData, fetchResponse, createWork, deleteClick, detailsPortfolyo, fetchUpdated, userid }}>
             {children}
         </PortfolioContext.Provider>
     );

@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import { PortfolioContext } from '../../../Context/workContext';
 
 
-const socket = io('http://localhost:1998');
+const socket = io(process.env.REACT_APP_BASE_URL);
 
 const MessagingUI = ({ adi, open, gonderenId, aliciId, onClose }) => {
 const {messages,setMessages,Message}=useContext(PortfolioContext)

@@ -16,6 +16,7 @@ const Index = () => {
     firstNameLabel,
     getMessage,
     userid,
+    handleDeleteMessagesData
   } = useContext(PortfolioContext);
 
   useEffect(() => {
@@ -32,9 +33,8 @@ const Index = () => {
     const currentId = userid?.result?._id;
     for (const targetId of selectedForDelete) {
       try {
-        await fetch(`http://localhost:1998/${currentId}/${targetId}`, {
-          method: "DELETE",
-        });
+        handleDeleteMessagesData(currentId,targetId)
+      
       } catch (error) {
         console.error("Silme hatası:", error);
       }

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { PortfolioContext } from "../../../Context/workContext";
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:1998');
+const socket = io(process.env.REACT_APP_BASE_URL);
 
 const MessagingUI = () => {
   const {
