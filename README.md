@@ -41,3 +41,12 @@ Gerekirse sipariş iptali veya teslim bildirimi gibi eylemler eklenebilecektir.
 
 5. Proje genel yapısı tekrardan test edilip canlıya çıkışıcak hale gelicektir.
 
+⚙️ Kullanılan Teknolojiler:
+Frontend: React.js, Context API, Tailwind CSS, FontAwesome
+Backend: Node.js, Express.js
+Gerçek Zamanlı İletişim: Socket.io
+HTTP İletişimi: Axios
+Depolama & Oturum: LocalStorage
+Yardımcı Araçlar: useMemo, useRef gibi ileri seviye React Hook'ları
+Güvenlik: Authentication & Authorization sistemleri
+
