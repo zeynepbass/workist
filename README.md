@@ -5,7 +5,7 @@
 🎯 Yeni Projem: İlan ve Portfolyo Platformu | React + Node.js + Socket.io
 Merhaba LinkedIn Ailem!
 
- Uzun süredir üzerinde çalıştığım ilan paylaşım ve portfolyo platformu projemi başarıyla tamamlamış olmanın heyecanını yaşıyorum! 🚀
+ Uzun süredir üzerinde çalıştığım ilan paylaşım ve portfolyo platformu projemi başarıyla tamamlamış olmanın heyecanını yaşıyorum! 
  Bu projeyle hem teknik becerilerimi ileriye taşıdım hem de gerçek dünya kullanımına uygun bir çözüm üretmeyi hedefledim.
  
 🔍 Proje Özellikleri:
