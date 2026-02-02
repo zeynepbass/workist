@@ -35,6 +35,7 @@ Kullanıcıya özel anlık bildirim sistemi
 Boş alan kontrolleri, input validasyonları ve kullanıcı odaklı geri bildirimler ile form deneyimi geliştirildi.
 
 ⚙️ Kullanılan Teknolojiler:
+
 Frontend: React.js, Context API, Tailwind CSS, FontAwesome
 Backend: Node.js, Express.js
 Gerçek Zamanlı İletişim: Socket.io
