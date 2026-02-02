@@ -1,6 +1,7 @@
 
 
-<p align="center"> <img src="https://capsule-render.vercel.app/api?type=waving&color=#4E244D&height=120&animation=fadeIn&fontAlignY=35" /> </p>
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=#4E244D&height=120&animation=fadeIn&fontAlignY=35" />
 🎯 Yeni Projem: İlan ve Portfolyo Platformu | React + Node.js + Socket.io
 Merhaba LinkedIn Ailem!
 
