@@ -1,46 +1,25 @@
-Projede client tabanlı inceleme sağlarsanız sevinirim.
 
-✅ Proje Geliştirme Aşamaları
-1. Responsive Tasarımın Tamamlanması
-Uygulamanın tüm cihazlarda (mobil, tablet, masaüstü) sorunsuz çalışması için eksik kalan responsive düzenlemeler yapılacaktır. Bu kapsamda:
 
-Grid ve flex yapıların mobil uyumu gözden geçirilecek,
-
-Yazı boyutları, butonlar ve padding/margin değerleri optimize edilecektir,
-
-Medya sorguları (media queries) ile ekran boyutuna özel düzenlemeler tamamlanacaktır.
-
-2. Socket.io Entegrasyonunun Geliştirilmesi
-Gerçek zamanlı mesajlaşma altyapısı için mevcut Socket.io yapısı genişletilecektir:
-
-Mevcut sistemde yalnızca kullanıcı bazlı mesajlaşma yapılmakta; bu yapı, hem kullanıcı hem de ilgili ilana özgü mesajlaşmayı destekleyecek şekilde detaylandırılacaktır.
-
-Frontend tarafında odalar (rooms) dinamik olarak kullanıcı ve ilan bilgilerine göre oluşturulacak,
-
-Backend tarafında kullanıcı-id + ilan-id kombinasyonuna özel socket kanal mantığı geliştirilecek,
-
-Böylece kullanıcılar yalnızca ilgili ilan için yapılan mesajlaşmaları görebilecek.
-
-3. Sipariş Alma Sürecinin Uygulanması
-Alıcı, bir ilana teklif verdikten sonra satıcı bu teklifi siparişe dönüştürebilecektir:
-
-Kullanıcı arayüzüne "Siparişi Onayla" butonu eklenecek,
-
-Sipariş oluşturulduğunda, ilgili bilgiler (ilan başlığı, alıcı-satıcı id, ücret, süre vb.) bir sipariş modeline kaydedilecektir,
-
-Sipariş durumu "bekliyor", "onaylandı", "tamamlandı" gibi statülerle yönetilecektir.
-
-4. Sipariş Belirleme ve Takip Sistemi
-Sipariş oluşturulduktan sonra, hem alıcı hem satıcı tarafı sipariş detaylarını görebilecek:
-
-Siparişler için ayrı bir listeleme sayfası hazırlanacak,
-
-Her siparişin durum bilgisi, ödeme kontrolü ve süresi gösterilecek,
-
-Gerekirse sipariş iptali veya teslim bildirimi gibi eylemler eklenebilecektir.
-
-5. Proje genel yapısı tekrardan test edilip canlıya çıkışıcak hale gelicektir.
-
+<p align="center"> <img src="https://capsule-render.vercel.app/api?type=waving&color=#4E244D&height=120&animation=fadeIn&fontAlignY=35" /> </p>
+🎯 Yeni Projem: İlan ve Portfolyo Platformu | React + Node.js + Socket.io
+Merhaba LinkedIn Ailem!
+ Uzun süredir üzerinde çalıştığım ilan paylaşım ve portfolyo platformu projemi başarıyla tamamlamış olmanın heyecanını yaşıyorum! 🚀
+ Bu projeyle hem teknik becerilerimi ileriye taşıdım hem de gerçek dünya kullanımına uygun bir çözüm üretmeyi hedefledim.
+🔍 Proje Özellikleri:
+✅ Kullanıcı Girişi
+Kullanıcılar kayıt olabilir, giriş yapabilir ve güvenli bir şekilde oturum yönetimi gerçekleştirebilir.
+✅ İlan Paylaşımı & Yönetimi
+Kendi ilanlarını paylaşabilir, düzenleyebilir, silebilir.
+Kategorilere ve alt kategorilere göre filtreleme yapılabilir.
+✅ Portfolyo Yönetimi
+Kullanıcılar unvan, iletişim bilgileri, uzmanlık alanları, eğitim geçmişi ve sertifikalarını ekleyebilir/güncelleyebilir.
+✅ Arama & Filtreleme
+İlanlar üzerinde anahtar kelime ile arama yapılabilir, kategoriye göre filtreleme uygulanabilir.
+✅ Gerçek Zamanlı Mesajlaşma (Socket.io)
+İlanlara özel kişisel mesajlaşma imkânı
+Kullanıcıya özel anlık bildirim sistemi
+✅ Kullanıcı Deneyimi & Doğrulama
+Boş alan kontrolleri, input validasyonları ve kullanıcı odaklı geri bildirimler ile form deneyimi geliştirildi.
 ⚙️ Kullanılan Teknolojiler:
 Frontend: React.js, Context API, Tailwind CSS, FontAwesome
 Backend: Node.js, Express.js
@@ -49,4 +28,8 @@ HTTP İletişimi: Axios
 Depolama & Oturum: LocalStorage
 Yardımcı Araçlar: useMemo, useRef gibi ileri seviye React Hook'ları
 Güvenlik: Authentication & Authorization sistemleri
-
+💡 Bu Projede Amaçladıklarım:
+Temiz ve sürdürülebilir kod yapısı kurmak
+Kullanıcı merkezli arayüzler geliştirmek
+Gerçek zamanlı etkileşimleri başarıyla entegre etmek
+Full-stack yetkinliğimi geliştirmek ve sektöre katkı sağlamak
