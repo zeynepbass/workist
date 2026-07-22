@@ -52,7 +52,6 @@ Bu projeyle hem teknik becerilerimi geliştirdim hem de gerçek dünya kullanım
 
 ---
 
-
 ## Arayüzler
 
 <p align="center">
