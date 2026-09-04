@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
-import Modal from "../../../components/IlanlanlarimModal";
-import Ilanlarim from "../../../components/ilanlarim";
+import Modal from "../../components/Modal";
+import Ads from "../../components/Ads";
 import { PortfolioContext } from '../../../Context/workContext';
 
 const Index = () => {
@@ -65,7 +65,7 @@ const Index = () => {
       </div>
 
 
-      <Ilanlarim posts={sortedPosts.length ? sortedPosts : Post} />
+      <Ads posts={sortedPosts.length ? sortedPosts : Post} />
     </div>
   );
 };

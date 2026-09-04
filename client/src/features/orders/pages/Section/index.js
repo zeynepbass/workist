@@ -1,9 +1,9 @@
 
-import Ilanlarim from "../Ilanlarim/index"
+import Ads from "@/features/ads/pages/Ads"
 import { useNavigate, Link } from 'react-router-dom';
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { PortfolioContext } from '../../../../Context/workContext'
-import Message from "../../layout/Message/index";
+import Message from "@/features/messages/pages/Message";
 const Index = () => {
   const [selectedAliciId, setSelectedAliciId] = useState(null);
 
@@ -272,10 +272,10 @@ const Index = () => {
       <div className="flex justify-between items-center pt-5">
         <h6 className="text-center text-gray-600">Yayındaki <strong>İlanlarım</strong></h6><br />
 
-        <span> <h3 className='text-purple-300 text-right cursor-pointer' onClick={() => Navigate("/ilanlarim")}>Tüm ilanlarım</h3></span>
+        <span> <h3 className='text-purple-300 text-right cursor-pointer' onClick={() => Navigate("/Ads")}>Tüm ilanlarım</h3></span>
       </div>
 
-      <Ilanlarim />
+      <Ads />
 
 
 

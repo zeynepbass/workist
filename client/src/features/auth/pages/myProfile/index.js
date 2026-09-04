@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom"
-import Modal from "../../../components/Modal"
+import Modal from "@/shared/components/organism/Modal"
 
 import { PortfolioContext } from "../../../Context/workContext"
 const Index = () => {
@@ -8,7 +8,7 @@ const Index = () => {
     const Navigate = useNavigate()
     const Delete = () => {
         hesabiDondur()
-        Navigate("/hesap-donduruldu")
+        Navigate("/Account-donduruldu")
     }
     useEffect(() => { detailsPost() }, [])
     return (
@@ -24,7 +24,7 @@ const Index = () => {
                         <div className="text-center
             ">
 
-                            <Link to="/hesabim">
+                            <Link to="/Account">
                                 <span className="text-purple-600 text-right">Düzenle</span>
                             </Link>
                         </div>
@@ -42,7 +42,7 @@ const Index = () => {
                 <div className="bg-white p-4 rounded-[10px] shadow">
                     <div className="flex justify-between items-center">
                         <h6 className="text-left text-gray-600">Hakkında</h6>
-                        <Link to="/hesabim">
+                        <Link to="/Account">
                             <span className="text-purple-600">Düzenle</span></Link>
                     </div>
                     <p className="text-sm mt-2 text-gray-400">
@@ -53,7 +53,7 @@ const Index = () => {
                 <div className="bg-white p-4 rounded-[10px] shadow">
                     <div className="flex justify-between items-center">
                         <h6 className="text-center text-gray-600">Uzmanı Olduğu Alanlar & Araçlar</h6><br />
-                        <Link to="/hesabim">
+                        <Link to="/Account">
                             <span className="text-purple-600">Düzenle</span></Link>
                     </div>
 
@@ -78,7 +78,7 @@ const Index = () => {
                 </div>
 
                 <div className="bg-white p-4 rounded-[10px] shadow h-20 px-3">
-                    <span className="text-left text-gray-600 mb-2 ">Hesap <strong>Yönetimi</strong></span>   <span className=" float-right mt-2">          <button className="bg-purple-800 text-white px-3 py-2 rounded float-right " onClick={Delete}>Hesabını Dondur</button></span><br />
+                    <span className="text-left text-gray-600 mb-2 ">Account <strong>Yönetimi</strong></span>   <span className=" float-right mt-2">          <button className="bg-purple-800 text-white px-3 py-2 rounded float-right " onClick={Delete}>Hesabını Dondur</button></span><br />
 
                 </div>
             </div>
@@ -112,12 +112,12 @@ const Index = () => {
                     <div className="flex justify-between items-center">
                         <p className="text-gray-600">Verdiğin Hizmetler</p>
                         <div className="flex gap-2 items-center">
-                            <Link to="/ilanlarim"><p className="text-purple-600">İlanlarını yönet</p></Link>
+                            <Link to="/Ads"><p className="text-purple-600">İlanlarını yönet</p></Link>
 
                         </div>
                     </div>
                     <div className="mt-4 justify-center flex">
-                        <button className="bg-purple-800 text-white px-4 py-2 rounded " onClick={() => Navigate("/ilanlarim")}>
+                        <button className="bg-purple-800 text-white px-4 py-2 rounded " onClick={() => Navigate("/Ads")}>
                             İlanlarıma Git
                         </button>
                     </div>
@@ -167,7 +167,7 @@ const Index = () => {
 
                             <div className='pl-4'>
 
-                                <Link to="/hesabim">
+                                <Link to="/Account">
                                     <span className="text-black text-left">
                                         <strong>memochiz</strong> </span><br />
                                     <br />

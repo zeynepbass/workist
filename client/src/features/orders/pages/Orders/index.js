@@ -141,11 +141,11 @@ const Index = () => {
                   <FaEnvelope size={20} />
                 </button>
 
-                {/* Detay butonu - popup açar */}
+                {/* Detail butonu - popup açar */}
                 <button
                   onClick={() => setSeciliSiparis(siparis)}
                   className="hover:text-purple-600"
-                  title="Detaylar"
+                  title="Detaillar"
                 >
                   <FaInfoCircle size={20} />
                 </button>
@@ -166,7 +166,7 @@ const Index = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-xl text-center italic mb-4 text-purple-500">
-              Sipariş Detayları
+              Sipariş Detailları
             </h2>
             <p>
               <strong className="text-gray-400">Alıcı:</strong> {seciliSiparis.alici}

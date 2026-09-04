@@ -123,7 +123,7 @@ const Index = () => {
 
               <div className="text-purple-400 font-semibold w-1/5 text-center">
                 ${siparis.fiyat}<br /><br />
-                <span className="inline-block w-[150px] text-center border-2 border-purple-300 border-dashed p-2 rounded cursor-pointer" onClick={() => navigate(`/satislarim/${siparis.id}`)}>
+                <span className="inline-block w-[150px] text-center border-2 border-purple-300 border-dashed p-2 rounded cursor-pointer" onClick={() => navigate(`/Sales/${siparis.id}`)}>
                   {siparis.durum}
                 </span>
 

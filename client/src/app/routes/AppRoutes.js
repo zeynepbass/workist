@@ -6,26 +6,26 @@ import Layouts from "../../shared/layout";
 
 
 import Section from "../../features/orders/pages/Section";
-import Genel from "../../features/portfolio/pages/Genel";
-import Ilanlarim from "../../shared/layout/Ilanlarim";
-import IlanlarimDetay from "../../shared/layout/Ilanlarim/Detay";
-import Portfolyo from "../../shared/layout/Portfolyo";
-import PortfolyoDetay from "../../shared/layout/Portfolyo/Detay";
+import General from "../../features/portfolio/pages/General";
+import Ads from "../../features/ads/pages/Ads";
+import AdsDetail from "../../features/ads/pages/Ads/Detail";
+import Portfolyo from "../../features/portfolio/pages/Portfolio";
+import PortfolyoDetail from "../../features/portfolio/pages/Portfolio/Detail";
 
-import Satislarim from "../../features/orders/pages/Satislarim";
-import Siparislerim from "../../features/orders/pages/Siparislerim";
-import SiparislerimDetay from "../../features/orders/pages/Siparislerim/Detay";
-import Istekler from "../../features/orders/pages/Istekler";
+import Sales from "../../features/orders/pages/Sales";
+import Orders from "../../features/orders/pages/Orders";
+import SalesDetail from "../../features/orders/pages/Orders/Detail";
+import Istekler from "../../features/orders/pages/Request";
 
-import Sohbet from "../../shared/layout/Sohbet";
-import Todo from "../../features/auth/pages/Yapılıcaklar";
+import Sohbet from "../../features/messages/pages/Chat";
+import Todo from "../../features/auth/pages/Todos";
 
-import ProfileHome from "../../shared/layout/Profilim";
-import Hesabim from "../../shared/layout/Hesabim";
-import Hesap from "../../shared/layout/Hesap";
+import ProfileHome from "../../features/auth/pages/myProfile";
+import MyAccount from "../../features/auth/pages/myAccount";
+import Account from "../../features/auth/pages/Account";
 
-import Login from "../../shared/layout/Login";
-import Register from "../../shared/layout/Register";
+import Login from "../../features/auth/pages/Login";
+import Register from "../../features/auth/pages/Register";
 
 const AppRoutes = () => {
   return (
@@ -37,7 +37,7 @@ const AppRoutes = () => {
 
       <Route path="/kayit-ol" element={<Register />} />
 
-      <Route path="/hesap-donduruldu" element={<Hesap />} />
+      <Route path="/hesap-donduruldu" element={<Account />} />
 
 
 
@@ -52,21 +52,21 @@ const AppRoutes = () => {
 
         <Route path="/workist" element={<Section />} />
 
-        <Route path="/ilanlar" element={<Genel />} />
+        <Route path="/ilanlar" element={<General />} />
 
         <Route
           path="/ilanlar/:kategori"
-          element={<Genel />}
+          element={<General />}
         />
 
         <Route
           path="/ilanlarim"
-          element={<Ilanlarim />}
+          element={<Ads />}
         />
 
         <Route
           path="/ilanlarim/:id"
-          element={<IlanlarimDetay />}
+          element={<AdsDetail />}
         />
 
         <Route
@@ -76,22 +76,22 @@ const AppRoutes = () => {
 
         <Route
           path="/portfolyom/:id"
-          element={<PortfolyoDetay />}
+          element={<PortfolyoDetail />}
         />
 
         <Route
-          path="/satislarim"
-          element={<Satislarim />}
+          path="/satislar"
+          element={<Sales />}
         />
 
         <Route
-          path="/satislarim/:id"
-          element={<SiparislerimDetay />}
+          path="/siparisler/:id"
+          element={<SalesDetail />}
         />
 
         <Route
-          path="/siparislerim"
-          element={<Siparislerim />}
+          path="/siparisler"
+          element={<Orders />}
         />
 
         <Route
@@ -116,7 +116,7 @@ const AppRoutes = () => {
 
         <Route
           path="/hesabim"
-          element={<Hesabim />}
+          element={<MyAccount />}
         />
 
       </Route>

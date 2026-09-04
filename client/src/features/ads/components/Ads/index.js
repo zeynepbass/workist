@@ -8,7 +8,7 @@ const Index = ({ posts }) => {
 
     const navigate = useNavigate();
     const handleEditClick = (id) => {
-        navigate(`/ilanlarim/${id}`);
+        navigate(`/Ads/${id}`);
     };
 
     const userid = JSON.parse(localStorage.getItem("login"));

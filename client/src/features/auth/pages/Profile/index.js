@@ -62,16 +62,16 @@ const handleClick=()=>{
             <ul className="py-1">
               <li>
                 <Link
-                  to="/profilim"
+                  to="/myProfile"
                   className="flex items-center px-4 py-2 hover:bg-purple-100 text-gray-400"
                 >
                   <FontAwesomeIcon icon={faUser} className="mr-3 text-purple-600" />
-                  Profilim
+                  myProfile
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/hesabim"
+                  to="/Account"
                   className="flex items-center px-4 py-2 hover:bg-purple-100 text-gray-400"
                 >
                   <FontAwesomeIcon icon={faCog} className="mr-3 text-purple-600" />
