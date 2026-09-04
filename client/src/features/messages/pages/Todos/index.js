@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { PortfolioContext } from '../../../../Context/workContext';
-import MessagingUI from "../../../pages/layout/Message/index";
+import MessagingUI from "@/features/messages/pages/Message";
 
 const Index = () => {
   const [open, setOpen] = useState(false);
@@ -50,7 +50,7 @@ const Index = () => {
   return (
     <div className="h-[100vh] p-4">
       <div className="flex justify-between mb-4">
-        <h4 className="text-left font-semibold text-lg text-gray-400">Yapılacaklar</h4>
+        <h4 className="text-left font-semibold text-lg text-gray-400">Todos</h4>
         <h4
           className="text-right text-purple-600 cursor-pointer"
           onClick={() => setShowCheckboxes(prev => !prev)}

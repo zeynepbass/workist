@@ -2,7 +2,7 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaArrowLeft, FaThumbsUp, FaClock } from "react-icons/fa";
 
-const SiparisDetay = () => {
+const SiparisDetail = () => {
     const { id } = useParams();
 
     const siparis = {
@@ -83,7 +83,7 @@ const SiparisDetay = () => {
 
                     <div className="mt-4 ">
                         <div className="grid grid-cols-5 p-4 text-sm font-medium border-t-1 text-gray-400 bg-gray-100 uppercase">
-                            <div className="col-span-2">Detaylar</div>
+                            <div className="col-span-2">Detaillar</div>
                             <div>Paket</div>
                             <div>Süre</div>
                             <div>Tutar</div>
@@ -204,4 +204,4 @@ const SiparisDetay = () => {
     );
 };
 
-export default SiparisDetay;
+export default SiparisDetail;

@@ -247,7 +247,7 @@ const HizmetFormu = () => {
         </label>
         <textarea
           rows={5}
-          placeholder="Yapacağın işin detaylarını açıkla..."
+          placeholder="Yapacağın işin Detaillarını açıkla..."
           value={form.description}
           onChange={e => setForm({ ...form, description: e.target.value })}
           className="w-full p-4 border-2 border-purple-300 rounded bg-white text-black"

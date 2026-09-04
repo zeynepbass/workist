@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MessagingUI from "../../shared/layout/Message/index";
+import MessagingUI from "@/features/messages/pages/Message";
 
 const Index = ({ toggleText, userid, filteredData, formatToTurkishDate, expandedItems }) => {
   const [open, setOpen] = useState(false);

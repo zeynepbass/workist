@@ -13,13 +13,13 @@ import {
 import { Link } from "react-router-dom"
 const index = () => {
     const icons = [
-        { icon: faGlobe, label: "Genel", link: "/ilanlar" },
+        { icon: faGlobe, label: "General", link: "/ilanlar" },
         { icon: faCode, label: "Workist", link: "/workist" },
-        { icon: faShoppingCart, label: "Siparişlerim", link: "/siparislerim" },
+        { icon: faShoppingCart, label: "Siparişlerim", link: "/Sales" },
         { icon: faUsers, label: "Sana uygun istekler", link: "/istekler" },
-        { icon: faThumbtack, label: "Satışlarım", link: "/satislarim" },
+        { icon: faThumbtack, label: "Satışlarım", link: "/Sales" },
         { icon: faHome, label: "Portfolyom", link: "/portfolyom" },
-        { icon: faBook, label: "İlanlarım", link: "/ilanlarim" },
+        { icon: faBook, label: "İlanlarım", link: "/Ads" },
         { icon: faHandshake, label: "Sana Uygun Alıcı İstekleri", link: "/istekler" },
     ];
     return (

@@ -111,7 +111,7 @@ const PortfolioModal = () => {
                 <h2 className="text-xl font-semibold text-gray-400">
                   Peki, ekleyeceğin portfolyo <span className="text-purple-400">{selectedCategory}</span> kategorisinin hangi alanına giriyor?
                 </h2>
-                <p className='text-gray-500 italic'>Biraz daha detay alalım!</p>
+                <p className='text-gray-500 italic'>Biraz daha Detail alalım!</p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {subcategories[selectedCategory]?.map((sub) => (
                     <div
@@ -160,7 +160,7 @@ const PortfolioModal = () => {
 
                 <textarea
                   rows={4}
-                  placeholder="Portfolyon hakkında detaylı bilgi ver..."
+                  placeholder="Portfolyon hakkında Detaillı bilgi ver..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   className="w-full p-3 border-2 border-purple-500 rounded bg-white text-black"

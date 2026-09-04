@@ -155,14 +155,14 @@ const PortfolioForm = () => {
 
                     <div>
                         <label className="block mb-1 font-semibold text-gray-700">
-                            Portfolyonuzu Detaylıca Açıklayın*
+                            Portfolyonuzu Detaillıca Açıklayın*
                         </label>
                         <textarea
                             name="description"
                             rows={5}
                             value={formData.description}
                             onChange={handleChange}
-                            placeholder="Detaylı açıklama girin"
+                            placeholder="Detaillı açıklama girin"
                             className="w-full p-5 border-2 border-purple-300 rounded bg-white text-black"
                         />
                     </div>
