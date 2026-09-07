@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { PortfolioContext } from '../../../../Context/workContext'
-import Istekler from "../../components/Istekler"
+import Istekler from "../components/Orders"
 const Index = () => {
     const { ilanlar, Post, getPost, fetchPost, formatToTurkishDate } = useContext(PortfolioContext);
     const userid = JSON.parse(localStorage.getItem("login"));

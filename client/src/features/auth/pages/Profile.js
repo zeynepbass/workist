@@ -42,7 +42,7 @@ const handleClick=()=>{
          
 
           <div className="text-left">
-            <p className="text-base font-semibold text-black">{users?.result?.firstName} {users?.result?.lastName}</p>
+            <p className="text-base font-semibold text-gray-800">{users?.result?.firstName} {users?.result?.lastName}</p>
             <p className="text-sm text-gray-500">{users?.result?.unvan ? users?.result?.unvan : "ünvan ekli değil."}</p>
 
 

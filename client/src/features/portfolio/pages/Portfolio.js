@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { PortfolioContext } from '../../../Context/workContext';
-import Modal from "../../../components/Modal"
+import Modal from "@/shared/components/organism/Modal"
 
 const Index = () => {
     const navigate = useNavigate();

@@ -152,7 +152,7 @@ const Index = () => {
                                 <span className="text-sm">İletişim Becerisi</span>
                             </li>
                             <li className="flex flex-col items-center p-2 text-gray-500 w-1/3 border-l-2 border-gray-300">
-                                <h6 className='text-black'>1 değerlendime</h6>
+                                <h6 className='text-gray-800'>1 değerlendime</h6>
                                 <span className="text-orange-300 text-4xl font-bold">
                                     <h1>5.00</h1>
                                 </span>
@@ -168,7 +168,7 @@ const Index = () => {
                             <div className='pl-4'>
 
                                 <Link to="/Account">
-                                    <span className="text-black text-left">
+                                    <span className="text-gray-800 text-left">
                                         <strong>memochiz</strong> </span><br />
                                     <br />
                                     <span className='text-gray-400'>

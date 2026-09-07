@@ -155,7 +155,7 @@ const PortfolioModal = () => {
                   placeholder="Etkileyici bir başlık"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full p-3 border-2 border-purple-500 rounded bg-white text-black"
+                  className="w-full p-3 border-2 border-purple-500 rounded bg-white text-gray-800"
                 />
 
                 <textarea
@@ -163,7 +163,7 @@ const PortfolioModal = () => {
                   placeholder="Portfolyon hakkında Detaillı bilgi ver..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full p-3 border-2 border-purple-500 rounded bg-white text-black"
+                  className="w-full p-3 border-2 border-purple-500 rounded bg-white text-gray-800"
                 ></textarea>
                 <div className="flex space-x-2 items-center">
                   <input
@@ -171,13 +171,13 @@ const PortfolioModal = () => {
                     placeholder="Fiyat girin"
                     value={formData.fiyat}
                     onChange={(e) => setFormData({ ...formData, fiyat: e.target.value })}
-                    className="flex-grow p-3 border-2 border-purple-500 rounded bg-white text-black"
+                    className="flex-grow p-3 border-2 border-purple-500 rounded bg-white text-gray-800"
                   />
 
                   <select
                     value={formData.currency}
                     onChange={(e) => setFormData({ ...formData, currency: e.target.value })}
-                    className="p-3 border-2 border-purple-500 rounded bg-white text-black cursor-pointer"
+                    className="p-3 border-2 border-purple-500 rounded bg-white text-gray-800 cursor-pointer"
                   >
                     <option value="TL">TL</option>
                     <option value="USD">USD</option>

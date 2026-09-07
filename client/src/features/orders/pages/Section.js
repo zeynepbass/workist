@@ -1,5 +1,5 @@
 
-import Ads from "@/features/ads/pages/Ads"
+import Ads from "@/features/ads/pages/AdsPage"
 import { useNavigate, Link } from 'react-router-dom';
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { PortfolioContext } from '../../../../Context/workContext'
