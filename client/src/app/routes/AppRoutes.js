@@ -7,20 +7,20 @@ import Layouts from "../../shared/layout";
 
 import Section from "../../features/orders/pages/Section";
 import General from "../../features/portfolio/pages/General";
-import Ads from "../../features/ads/pages/Ads";
-import AdsDetail from "../../features/ads/pages/Ads/Detail";
+import Ads from "../../features/ads/pages/AdsPage";
+import AdsDetail from "../../features/ads/pages/AdsDetail";
 import Portfolyo from "../../features/portfolio/pages/Portfolio";
-import PortfolyoDetail from "../../features/portfolio/pages/Portfolio/Detail";
+import PortfolyoDetail from "../../features/portfolio/pages/PortfolioDetail";
 
 import Sales from "../../features/orders/pages/Sales";
 import Orders from "../../features/orders/pages/Orders";
-import SalesDetail from "../../features/orders/pages/Orders/Detail";
-import Istekler from "../../features/orders/pages/Request";
+import SalesDetail from "../../features/orders/pages/OrdersDetail";
+import Request from "../../features/orders/pages/Request";
 
 import Sohbet from "../../features/messages/pages/Chat";
 import Todo from "../../features/auth/pages/Todos";
 
-import ProfileHome from "../../features/auth/pages/myProfile";
+import ProfileHome from "../../features/auth/pages/MyProfile";
 import MyAccount from "../../features/auth/pages/myAccount";
 import Account from "../../features/auth/pages/Account";
 
@@ -96,7 +96,7 @@ const AppRoutes = () => {
 
         <Route
           path="/istekler"
-          element={<Istekler />}
+          element={<Request />}
         />
 
         <Route

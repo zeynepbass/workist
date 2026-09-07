@@ -1,10 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
-import Modal from "../../components/Modal";
-import Ads from "../../components/Ads";
-import { PortfolioContext } from '../../../Context/workContext';
+import React, { useState, useEffect } from "react";
+import Modal from "../components/Modal";
+import Ads from "../components/Ads";
+import { useAds } from "../hooks/useAds";
 
 const Index = () => {
-  const { Post } = useContext(PortfolioContext);
+  const { data:Post } = useAds();
   const [sortType, setSortType] = useState("all");
   const [sortedPosts, setSortedPosts] = useState([]);
 

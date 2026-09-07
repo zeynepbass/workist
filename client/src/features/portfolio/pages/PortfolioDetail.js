@@ -92,7 +92,7 @@ const PortfolioForm = () => {
                                 name="selectedCategory"
                                 value={formData.selectedCategory}
                                 onChange={handleChange}
-                                className="w-full p-5 border-2 border-purple-300 rounded bg-white text-black"
+                                className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
                             >
                                 <option value="">Seçiniz</option>
                                 <option>Grafik & Tasarım</option>
@@ -111,7 +111,7 @@ const PortfolioForm = () => {
                                 value={formData.title}
                                 onChange={handleChange}
                                 placeholder="Portfolyonuz için başlık girin"
-                                className="w-full p-5 border-2 border-purple-300 rounded bg-white text-black"
+                                className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
                             />
                         </div>
 
@@ -123,7 +123,7 @@ const PortfolioForm = () => {
                                 value={formData.durum}
                                 onChange={handleChange}
                                 placeholder="Portfolyonuz için durum girin"
-                                className="w-full p-5 border-2 border-purple-300 rounded bg-white text-black"
+                                className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
                             />
                         </div>
 
@@ -136,7 +136,7 @@ const PortfolioForm = () => {
                                     value={formData.fiyat}
                                     onChange={handleChange}
                                     placeholder="Portfolyonuz için fiyat girin"
-                                    className="w-full p-5 border-2 border-purple-300 rounded bg-white text-black"
+                                    className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
                                 />
                             </div>
                             <div className="pt-7">
@@ -144,7 +144,7 @@ const PortfolioForm = () => {
                                     name="currency"
                                     value={formData.currency}
                                     onChange={handleChange}
-                                    className="p-5 border-2 border-purple-300 rounded bg-white text-black"
+                                    className="p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
                                 >
                                     <option value="TL">TL</option>
                                     <option value="USD">USD</option>
@@ -163,7 +163,7 @@ const PortfolioForm = () => {
                             value={formData.description}
                             onChange={handleChange}
                             placeholder="Detaillı açıklama girin"
-                            className="w-full p-5 border-2 border-purple-300 rounded bg-white text-black"
+                            className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
                         />
                     </div>
 
@@ -180,7 +180,7 @@ const PortfolioForm = () => {
                                 <input
                                     type="file"
                                     onChange={handleFileChange}
-                                    className="text-black file:bg-purple-600 file:text-white file:rounded file:px-4 file:py-2 file:border-0 file:cursor-pointer"
+                                    className="text-gray-800 file:bg-purple-600 file:text-white file:rounded file:px-4 file:py-2 file:border-0 file:cursor-pointer"
                                     accept="image/png, image/jpeg"
                                 />
                             </div>

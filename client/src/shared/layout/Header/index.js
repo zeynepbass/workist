@@ -106,7 +106,7 @@ const   Index = () => {
 
 
             {categories === item.category && (
-              <ul className="absolute top-full left-0 bg-white shadow-md rounded mt-2  text-black min-w-[200px]  text-gray-400">
+              <ul className="absolute top-full left-0 bg-white shadow-md rounded mt-2   min-w-[200px]  text-gray-400">
                 {item.items.map((subItem, idx) => ( 
 
   
