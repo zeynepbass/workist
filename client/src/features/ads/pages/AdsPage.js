@@ -1,73 +1,98 @@
-import React, { useState, useEffect } from "react";
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Modal from "../components/Modal";
-import Ads from "../components/Ads";
+import { AdList } from "../components/AdList";
+import { AdsHeader } from "../components/AdsHeader/AdsHeader";
+import { PostSort } from "@/shared/components/Molecules/PostSort";
+import {StatusMessage} from "@/shared/components/Molecules/StatusMessage";
+
 import { useAds } from "../hooks/useAds";
 
 const Index = () => {
-  const { data:Post } = useAds();
-  const [sortType, setSortType] = useState("all");
-  const [sortedPosts, setSortedPosts] = useState([]);
+    const [sortType, setSortType] = useState("all");
 
-  useEffect(() => {
-    if (!Post || !Array.isArray(Post)) return;
+    const {
+        data:posts = [],
+        userId,
+        firstName,
+        isLoading,
+        isError,
+        deleteAds,
+        isDeleting,
+    } = useAds();
 
-    let sorted = [...Post];
+    const navigate = useNavigate();
 
-    if (sortType === "oldToNew") {
-      sorted.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-    } else if (sortType === "newToOld") {
-      sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    const sortedPosts = useMemo(() => {
+        const sorted = [...posts];
+
+        if (sortType === "oldToNew") {
+            sorted.sort(
+                (a, b) =>
+                    new Date(a.createdAt) -
+                    new Date(b.createdAt)
+            );
+        }
+
+        if (sortType === "newToOld") {
+            sorted.sort(
+                (a, b) =>
+                    new Date(b.createdAt) -
+                    new Date(a.createdAt)
+            );
+        }
+
+        return sorted;
+    }, [posts, sortType]);
+
+    const handleChange = (e) => {
+        setSortType(e.target.value);
+    };
+
+    const handleEditClick = (id) => {
+        navigate(`/Ads/${id}`);
+    };
+
+    if (isLoading) {
+        return (
+            <StatusMessage
+                type="loading"
+                message="İlanlar yükleniyor..."
+            />
+        );
     }
 
-    setSortedPosts(sorted);
-  }, [Post, sortType]);
+    if (isError) {
+        return (
+            <StatusMessage
+                type="error"
+                message="İlanlar yüklenirken bir hata oluştu."
+            />
+        );
+    }
 
-  const handleChange = (e) => {
-    setSortType(e.target.value);
-  };
+    return (
+        <div className="p-4 h-[100vh]">
+            <AdsHeader />
 
-  return (
-    <div className="p-4 h-[100vh]">
-      <h1 className="text-left text-gray-500 text-xl pl-4">
-        İş <strong>İlanlarım</strong>
-      </h1>
+            <PostSort
+                sortType={sortType}
+                onChange={handleChange}
+            />
 
-      <Modal />
-      <p className="text-gray-400 p-4">
-        Tüm iş ilanlarını buradan takip edebilir, yönetebilir ve yeni iş ilanları oluşturabilirsin.
-      </p>
+            <Modal />
 
-      <div className="max-w-md p-4">
-        <label htmlFor="sort" className="block mb-2 font-semibold text-gray-400">
-          İlanları Sırala:
-        </label>
-        <select
-          id="sort"
-          value={sortType}
-          onChange={handleChange}
-          className="w-full border p-4 border-gray-300 rounded-md text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
-        >
-          <option value="all">Tüm İlanlar Göster</option>
-          <option value="oldToNew">Eskiden Yeniye Göster</option>
-          <option value="newToOld">Yeniden Eskiye Göster</option>
-        </select>
-
-        <p className="mt-4 text-gray-600">
-          Seçilen sıralama:{" "}
-          <span className="font-semibold">
-            {sortType === "all"
-              ? "Tüm İlanlar Göster"
-              : sortType === "oldToNew"
-              ? "Eskiden Yeniye Göster"
-              : "Yeniden Eskiye Göster"}
-          </span>
-        </p>
-      </div>
-
-
-      <Ads posts={sortedPosts.length ? sortedPosts : Post} />
-    </div>
-  );
+            <AdList
+                posts={sortedPosts}
+                userId={userId}
+                firstName={firstName}
+                onEdit={handleEditClick}
+                onDelete={deleteAds}
+                isDeleting={isDeleting}
+            />
+        </div>
+    );
 };
 
 export default Index;

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import Modal from "@/shared/components/organism/Modal"
 

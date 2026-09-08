@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PortfolioContext } from "../../../../Context/workContext"
 const ProfileInfoCard = () => {
   const { email, detailsPost } = useContext(PortfolioContext)

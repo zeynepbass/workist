@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import { useContext, useState, useRef } from 'react';
 import { PortfolioContext } from '../../../../Context/workContext';
 const PortfolioModal = () => {
   const { createWork,userId } = useContext(PortfolioContext);
