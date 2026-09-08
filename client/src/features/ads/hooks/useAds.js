@@ -3,8 +3,7 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import axios from "axios";
-
+import { getAds } from "../respositories/ads.repository";
 export function useAds(baseUrl, id) {
   const queryClient = useQueryClient();
 
@@ -17,118 +16,91 @@ export function useAds(baseUrl, id) {
 
 
   const {
-      data: posts = [],
-      isLoading,
-      isError,
-      error,
-  } = useQuery({
-      queryKey: ["ads", userId],
+    data: posts = [],
+    isLoading,
+    isError,
+    error,
+} = useQuery({
+    queryKey: ["ads", userId],
 
-      queryFn: async () => {
-          const response = await axios.get(
-              `${baseUrl}/ilanlarim/${userId}`
-          );
+    queryFn: () => getAds.getAds(userId),
 
-          return response.data;
-      },
-
-      enabled: !!userId,
-  });
-
-  const {
-      data: details = null,
-      isLoading: isDetailsLoading,
-      isError: isDetailsError,
-      error: detailsError,
-  } = useQuery({
-      queryKey: ["ad", id],
-
-      queryFn: async () => {
-          const response = await axios.get(
-              `${baseUrl}/ilanlarim/${id}`
-          );
-
-          return response.data;
-      },
-
-      enabled: !!id,
-  });
-
-  const deleteMutation = useMutation({
-      mutationFn: async (id) => {
-          await axios.delete(
-              `${baseUrl}/ilanlarim/${id}`
-          );
-      },
-
-      onSuccess: (_, deletedId) => {
-          queryClient.setQueryData(
-              ["ads", userId],
-              (oldPosts = []) =>
-                  oldPosts.filter(
-                      (item) => item._id !== deletedId
-                  )
-          );
-
-          queryClient.removeQueries({
-              queryKey: ["ad", deletedId],
-          });
-
-          queryClient.invalidateQueries({
-              queryKey: ["ads", userId],
-          });
-      },
-
-      onError: (error) => {
-          console.error(
-              "İlan silme hatası:",
-              error
-          );
-      },
-  });
+    enabled: !!userId,
+});
 
 
-  const updateMutation = useMutation({
-      mutationFn: async ({ id, post }) => {
-          const response = await axios.put(
-              `${baseUrl}/ilanlarim/${id}`,
-              post
-          );
+const {
+    data: details = null,
+    isLoading: isDetailsLoading,
+    isError: isDetailsError,
+    error: detailsError,
+} = useQuery({
+    queryKey: ["ad", id],
 
-          return response.data;
-      },
+    queryFn: () => getAds.getDetailAds(id),
 
-      onSuccess: (updatedPost, variables) => {
+    enabled: !!id,
+});
+const deleteMutation = useMutation({
+    mutationFn: (id) => adsRepository.deleteAds(id),
 
-          queryClient.setQueryData(
-              ["ad", variables.id],
-              updatedPost
-          );
+    onSuccess: (_, deletedId) => {
+        queryClient.setQueryData(
+            ["ads", userId],
+            (oldPosts = []) =>
+                oldPosts.filter(
+                    (item) => item.id !== deletedId
+                )
+        );
 
+        queryClient.removeQueries({
+            queryKey: ["ad", deletedId],
+        });
 
-          queryClient.setQueryData(
-              ["ads", userId],
-              (oldPosts = []) =>
-                  oldPosts.map((item) =>
-                      item._id === variables.id
-                          ? updatedPost
-                          : item
-                  )
-          );
+        queryClient.invalidateQueries({
+            queryKey: ["ads", userId],
+        });
+    },
 
+    onError: (error) => {
+        console.error(
+            "İlan silme hatası:",
+            error
+        );
+    },
+});
+const updateMutation = useMutation({
+    mutationFn: ({ id, post }) =>
+        adsRepository.updateAds(id, post),
 
-          queryClient.invalidateQueries({
-              queryKey: ["ads", userId],
-          });
-      },
+    onSuccess: (updatedPost, variables) => {
+        queryClient.setQueryData(
+            ["ad", variables.id],
+            updatedPost
+        );
 
-      onError: (error) => {
-          console.error(
-              "İlan güncelleme hatası:",
-              error
-          );
-      },
-  });
+        queryClient.setQueryData(
+            ["ads", userId],
+            (oldPosts = []) =>
+                oldPosts.map((item) =>
+                    item.id === variables.id
+                        ? updatedPost
+                        : item
+                )
+        );
+
+        queryClient.invalidateQueries({
+            queryKey: ["ads", userId],
+        });
+    },
+
+    onError: (error) => {
+        console.error(
+            "İlan güncelleme hatası:",
+            error
+        );
+    },
+});
 
   return {
 
