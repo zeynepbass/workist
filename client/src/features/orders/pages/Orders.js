@@ -1,5 +1,5 @@
 
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { FaTrash, FaEnvelope, FaInfoCircle } from "react-icons/fa";
 
 

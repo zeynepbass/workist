@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { PortfolioContext } from '../../../../Context/workContext';
 import { useLocation } from 'react-router-dom';
 const Index = () => {

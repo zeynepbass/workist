@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import MessagingUI from "@/features/messages/pages/Message";
 
 const Index = ({ toggleText, userid, filteredData, formatToTurkishDate, expandedItems }) => {

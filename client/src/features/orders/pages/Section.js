@@ -1,7 +1,7 @@
 
 import Ads from "@/features/ads/pages/AdsPage"
 import { useNavigate, Link } from 'react-router-dom';
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { PortfolioContext } from '../../../../Context/workContext'
 import Message from "@/features/messages/pages/Message";
 const Index = () => {
