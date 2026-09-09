@@ -1,3 +1,4 @@
+import {Input} from "@/shared/components/atoms";
 export function AdsFileUpload ({ value, onChange }){
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -15,15 +16,10 @@ export function AdsFileUpload ({ value, onChange }){
 
     return (
         <div>
-            <label className="block font-semibold text-gray-700 mb-1">
-                Dosya Yükle
-            </label>
-
-            <input
-                type="file"
+            <Input label="Dosya Yükle"   type="file"
                 accept="image/*"
-                onChange={handleFileChange}
-            />
+                onChange={handleFileChange}/>
+
 
             {value && (
                 <img

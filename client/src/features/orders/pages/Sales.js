@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/shared/components/atoms";
 const Index = () => {
   const siparislerOrnek = [
     {
@@ -85,16 +86,17 @@ const Index = () => {
             { label: "Tamamlanan", value: "tamamlandı" },
             { label: "İptal Olanlar", value: "iptal" },
           ].map(({ label, value }) => (
-            <button
-              key={value}
-              onClick={() => setDurumFilter(value)}
-              className={`border-r-2 px-4 py-2 rounded-lg ${durumFilter === value
-                  ? "bg-purple-700 text-white"
-                  : "bg-gray-50 text-gray-400"
-                }`}
-            >
-              {label}
-            </button>
+                                    <Button
+                                    key={value}
+                                    onClick={() => setDurumFilter(value)}
+                                    className={`border-r-2 px-4 py-2 rounded-lg ${durumFilter === value
+                                        ? "bg-purple-700 text-white"
+                                        : "bg-gray-50 text-gray-400"
+                                      }`}
+                                  >
+                                    {label}
+                        </Button>
+
           ))}
         </div>
 

@@ -3,17 +3,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 
 import { useAds } from "../hooks/useAds";
-
+import { Button,Input } from "@/shared/components/atoms";
 import { AdsInfo } from "../components/AdsInfo";
 import { AdsWarning } from "../components/AdsWarning";
-import {Select} from "@/shared/components/Atoms/Select";
+import {Select} from "@/shared/components/atoms/Select";
 import {AdsPricingOptions} from "../components/AdsPricingOptions";
 import {AdsPriceField} from "../components/AdsPriceField";
 import {AdsPriceField} from "../components/AdsPriceField";
-import {AdsDescriptionField} from "../components/AdsDescriptionField";
+import {AdsDescriptionField} from "../../../shared/components/atoms/Textarea";
 import {AdsFileUpload} from "../components/AdsFileUpload";
 
-import StatusMessage from "@/shared/components/Molecules/StatusMessage";
+import StatusMessage from "@/shared/components/molecules/StatusMessage";
 
 const HizmetFormu = () => {
     const navigate = useNavigate();
@@ -198,14 +198,15 @@ const HizmetFormu = () => {
             onSubmit={handleSubmit}
             className="max-w-6xl mx-auto space-y-6 text-gray-800"
         >
-            <button
-                type="button"
-                onClick={() => navigate(-1)}
-                className="flex items-center text-purple-600 hover:text-purple-800 py-5"
-            >
-                <FaArrowLeft className="mr-2" />
-                Geri Dön
-            </button>
+                                        <Button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="flex items-center text-purple-600 hover:text-purple-800 py-5"
+        >
+            <FaArrowLeft className="mr-2" />
+            Geri Dön</Button>
+     
+
 
             <AdsInfo />
 
@@ -228,11 +229,10 @@ const HizmetFormu = () => {
             />
 
             <div>
-                <label className="block mb-1 font-semibold text-gray-700">
-                    Revizyon*
-                </label>
+            <Input
+            label="        Revizyon*"
+      
 
-                <input
                     type="number"
                     value={form.revizyon}
                     onChange={(e) =>
@@ -246,21 +246,21 @@ const HizmetFormu = () => {
             </div>
 
             <div>
-                <label className="block mb-1 font-semibold text-gray-700">
-                    Süre*
-                </label>
-
-                <input
-                    type="text"
-                    value={form.sure}
-                    onChange={(e) =>
-                        setForm((prev) => ({
-                            ...prev,
-                            sure: e.target.value,
-                        }))
-                    }
-                    className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
+            <Input
+            label="                Süre*"
+            type="text"
+            value={form.sure}
+            onChange={(e) =>
+                setForm((prev) => ({
+                    ...prev,
+                    sure: e.target.value,
+                }))
+            }
+            className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
                 />
+
+
+
             </div>
 
             <AdsPriceField
@@ -301,15 +301,15 @@ const HizmetFormu = () => {
             />
 
             <div className="flex justify-center">
-                <button
-                    type="submit"
-                    disabled={isUpdating}
-                    className="bg-purple-600 text-white px-8 py-3 rounded hover:bg-purple-700 disabled:opacity-50"
-                >
-                    {isUpdating
+             <Button
+                   type="submit"
+                   disabled={isUpdating}
+                   className="bg-purple-600 text-white px-8 py-3 rounded hover:bg-purple-700 disabled:opacity-50"
+               >
+              {isUpdating
                         ? "Kaydediliyor..."
-                        : "Kaydet"}
-                </button>
+                        : "Kaydet"}</Button>
+  
             </div>
         </form>
     );

@@ -1,5 +1,5 @@
 import { FaLightbulb } from "react-icons/fa";
-
+import { Input } from "@/shared/components/atoms";
 export function AdsServiceTitleField  ({ value, onChange }) {
     return (
         <div>
@@ -16,13 +16,13 @@ export function AdsServiceTitleField  ({ value, onChange }) {
             </p>
 
             <br />
+<Input
+   type="text"
+   value={value}
+   onChange={(e) => onChange(e.target.value)}
+   className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
+/>
 
-            <input
-                type="text"
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
-            />
         </div>
     );
 };

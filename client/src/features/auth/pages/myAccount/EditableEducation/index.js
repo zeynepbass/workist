@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { PortfolioContext } from "../../../../Context/workContext";
-
+import { Button } from "@/shared/components/atoms";
 const EditableEducation = () => {
   const { email, detailsPost, updatedPost } = useContext(PortfolioContext);
   const [editMode, setEditMode] = useState(false);
@@ -39,16 +39,27 @@ const EditableEducation = () => {
     <div className="bg-white p-4 rounded-[10px] shadow">
       <div className="flex justify-between items-center mb-4">
         <h6 className="text-gray-600 mb-2">Eğitim ve Sertifika Bilgileri</h6>
-        <button
+        <Button
           onClick={() => setEditMode(!editMode)}
           className="flex items-center bg-transparent text-gray-400 px-3 py-1 rounded hover:bg-purple-700 hover:text-white"
           title="Ekle"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-5 h-5 mr-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 4v16m8-8H4"
+            />
+          </svg>{" "}
           {editMode ? "İptal" : "Düzenle"}
-        </button>
+        </Button>
       </div>
 
       {editMode && (
@@ -60,13 +71,13 @@ const EditableEducation = () => {
             onChange={(e) => setNewValue(e.target.value)}
             className="w-full border px-3 py-1 rounded text-sm"
           />
-          <button
+          <Button
             onClick={handleAdd}
             disabled={sertifikalar.length >= 5}
             className="bg-purple-600 text-white px-3 py-1 rounded text-sm"
           >
             Ekle
-          </button>
+          </Button>
         </div>
       )}
 
@@ -78,27 +89,38 @@ const EditableEducation = () => {
           >
             <span>{item}</span>
             {editMode && (
-              <button
+              <Button
                 onClick={() => handleDelete(index)}
                 title="Sil"
                 className="text-gray-600 hover:text-gray-800"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
-              </button>
+              </Button>
             )}
           </li>
         ))}
       </ul>
 
       {editMode && (
-        <button
+        <Button
           onClick={handleSave}
           className="mt-4 bg-purple-600 text-white px-4 py-2 rounded text-sm"
         >
           Kaydet
-        </button>
+        </Button>
       )}
     </div>
   );

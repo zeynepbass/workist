@@ -1,3 +1,4 @@
+import { Input } from "@/shared/components/atoms";
 export function AdsPriceField ({
     value,
     onChange,
@@ -24,14 +25,12 @@ export function AdsPriceField ({
                 Toplam fiyat (seçimler dahil):{" "}
                 {totalPrice} TL
             </p>
-
-            <input
-                type="number"
+            <Input                 type="number"
                 min={100}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
-            />
+                className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"/>
+  
         </div>
     );
 };

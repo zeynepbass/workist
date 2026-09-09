@@ -1,15 +1,16 @@
 import { useState, useContext, useEffect } from "react";
 import { PortfolioContext } from "../../../../Context/workContext";
+import { Button } from "@/shared/components/atoms";
 
 const EditableSkills = () => {
   const { email, detailsPost, updatedPost } = useContext(PortfolioContext);
 
   const [editMode, setEditMode] = useState(false);
-  const [skills, setSkills] = useState([]); 
-  const [newSkill, setNewSkill] = useState(""); 
+  const [skills, setSkills] = useState([]);
+  const [newSkill, setNewSkill] = useState("");
 
   useEffect(() => {
-    detailsPost(); 
+    detailsPost();
   }, []);
 
   useEffect(() => {
@@ -25,11 +26,9 @@ const EditableSkills = () => {
     }
   };
 
-
   const handleRemoveSkill = (indexToRemove) => {
     setSkills((prev) => prev.filter((_, index) => index !== indexToRemove));
   };
-
 
   const handleSkillChange = (index, value) => {
     const updatedSkills = [...skills];
@@ -48,9 +47,12 @@ const EditableSkills = () => {
         <h6 className="text-left text-gray-600">
           Uzmanı Olduğu Alanlar & <strong>Araçlar</strong>
         </h6>
-        <button onClick={() => setEditMode(!editMode)} className="text-purple-600">
+        <Button
+          onClick={() => setEditMode(!editMode)}
+          className="text-purple-600"
+        >
           {editMode ? "İptal" : "Düzenle"}
-        </button>
+        </Button>
       </div>
 
       <hr className="mb-4" />
@@ -59,16 +61,22 @@ const EditableSkills = () => {
         <>
           <div className="flex flex-wrap gap-2">
             {skills.map((skill, index) => (
-              <div key={index} className="flex items-center border border-purple-300 rounded px-2 py-1 text-purple-700">
+              <div
+                key={index}
+                className="flex items-center border border-purple-300 rounded px-2 py-1 text-purple-700"
+              >
                 <input
                   type="text"
                   className="bg-transparent outline-none text-sm"
                   value={skill}
                   onChange={(e) => handleSkillChange(index, e.target.value)}
                 />
-                <button onClick={() => handleRemoveSkill(index)} className="ml-1 text-red-500">
+                <Button
+                  onClick={() => handleRemoveSkill(index)}
+                  className="ml-1 text-red-500"
+                >
                   ×
-                </button>
+                </Button>
               </div>
             ))}
           </div>
@@ -81,24 +89,24 @@ const EditableSkills = () => {
               onChange={(e) => setNewSkill(e.target.value)}
               className="border border-gray-300 rounded px-2 py-1 text-sm"
             />
-            <button
+            <Button
               onClick={handleAddSkill}
               disabled={skills.length >= 6}
               className="bg-purple-600 text-white px-3 py-1 rounded text-sm"
             >
               Ekle
-            </button>
+            </Button>
+
             <span className="text-xs text-gray-400 italic">
               {skills.length}/6 yetenek eklendi
             </span>
           </div>
-
-          <button
+          <Button
             onClick={handleSave}
             className="mt-4 bg-purple-600 text-white px-4 py-2 rounded text-sm"
           >
             Kaydet
-          </button>
+          </Button>
         </>
       ) : (
         <ul className="pl-2 list-none flex flex-wrap pt-2">

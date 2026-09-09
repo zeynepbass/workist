@@ -1,7 +1,7 @@
 import { useEffect, useState,useContext } from 'react';
 import io from 'socket.io-client';
 import { PortfolioContext } from '../../../Context/workContext';
-
+import { Button } from "@/shared/components/atoms";
 
 const socket = io(process.env.REACT_APP_BASE_URL);
 
@@ -56,12 +56,12 @@ const {messages,setMessages,Message}=useContext(PortfolioContext)
               <p className="font-bold">{adi}</p>
              
             </div>
-            <button
-              onClick={()=>onClose(false)}
+            <Button               onClick={()=>onClose(false)}
               className="text-gray-400 hover:text-red-500 text-xl font-bold"
             >
               ×
-            </button>
+        </Button>
+
           </div>
 
 
@@ -107,12 +107,12 @@ const {messages,setMessages,Message}=useContext(PortfolioContext)
               className="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
               placeholder="Mesajınızı yazın..."
             />
-            <button
-              type="submit"
+                                  <Button                  type="submit"
               className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition"
             >
               Gönder
-            </button>
+        </Button>
+
           </form>
         </div>
       ) }

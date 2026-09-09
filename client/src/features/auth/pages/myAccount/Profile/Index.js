@@ -1,5 +1,7 @@
 import { useContext, useEffect, useState } from "react";
+import { Textarea } from "@/shared/components/atoms";
 import { PortfolioContext } from "../../../../Context/workContext"
+import { Button } from "@/shared/components/atoms";
 const ProfileInfoCard = () => {
   const { email, detailsPost } = useContext(PortfolioContext)
   const [editMode, setEditMode] = useState(false);
@@ -40,10 +42,10 @@ const ProfileInfoCard = () => {
   return (
     <div className="bg-white p-4 rounded-[10px] shadow ">
       <div className="flex justify-end items-center">
-     
-<button onClick={() => setEditMode(!editMode)} className="text-purple-600" >
-          {editMode ? "İptal" : "Düzenle"}
-        </button>
+      <Button         onClick={() => setEditMode(!editMode)} className="text-purple-600" >
+      {editMode ? "İptal" : "Düzenle"}
+        </Button>
+
       </div>
       <br />
       {editMode ? (
@@ -89,17 +91,18 @@ const ProfileInfoCard = () => {
               value={formData.unvan}
               onChange={handleChange}
             />
-            <textarea
+                            <Textarea
               className="border p-2 w-full mb-2"
               rows={4}
               name="hakkimda"
                       placeholder="kendinizden bahsedin"
-              value={formData.hakkimda}
-              onChange={handleChange}
-            />
-            <button onClick={handleSave} className="bg-purple-600 text-white px-4 py-1 rounded">
-              Kaydet
-            </button>
+  value={formData.hakkimda}
+  onChange={handleChange}
+/>
+<Button onClick={handleSave} className="bg-purple-600 text-white px-4 py-1 rounded">
+Kaydet
+        </Button>
+
           </>
           ) : (
           <>

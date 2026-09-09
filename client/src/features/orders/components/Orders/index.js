@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import MessagingUI from "@/features/messages/pages/Message";
-
+import { Button } from "@/shared/components/atoms";
 const Index = ({ toggleText, userid, filteredData, formatToTurkishDate, expandedItems }) => {
   const [open, setOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null); 
@@ -30,9 +30,7 @@ const Index = ({ toggleText, userid, filteredData, formatToTurkishDate, expanded
                   <p className="text-xs text-white">{item.selectedSubcategory}</p>
                 </div>
               </div>
-
-              <button
-                className="border border-gray-300 px-3 py-1 rounded text-sm text-white hover:bg-gray-100"
+              <Button                 className="border border-gray-300 px-3 py-1 rounded text-sm text-white hover:bg-gray-100"
                 onClick={() => {
                     setSelectedUser({
                     id: item.userId,
@@ -42,7 +40,8 @@ const Index = ({ toggleText, userid, filteredData, formatToTurkishDate, expanded
                 }}
               >
                 Mesaj At
-              </button>
+        </Button>
+
             </div>
 
   

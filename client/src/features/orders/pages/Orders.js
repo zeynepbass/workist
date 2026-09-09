@@ -1,8 +1,6 @@
-
 import { useState, useMemo } from "react";
 import { FaTrash, FaEnvelope, FaInfoCircle } from "react-icons/fa";
-
-
+import { Button } from "@/shared/components/atoms";
 const Index = () => {
   const siparislerOrnek = [
     {
@@ -111,51 +109,44 @@ const Index = () => {
                 {siparis.alici}
               </div>
               <div className="text-gray-400 w-1/5">
-                {new Date(siparis.siparisTarihi).toLocaleDateString("tr-TR")} <br />
-
+                {new Date(siparis.siparisTarihi).toLocaleDateString("tr-TR")}{" "}
+                <br />
               </div>
 
               <div className="text-purple-400 font-semibold w-1/5 text-center">
                 ${siparis.fiyat}
                 <br />
-
-
               </div>
 
               <div className="flex space-x-4 text-gray-500 w-1/5 justify-end">
-                {/* Silme butonu */}
-                <button
+                <Button
                   onClick={() => handleDelete(siparis.id)}
                   className="hover:text-purple-600"
                   title="Sil"
                 >
                   <FaTrash size={20} />
-                </button>
-
-                {/* Mesaj butonu */}
-                <button
+                </Button>
+                <Button
                   onClick={() => handleMessage(siparis.alici)}
                   className="hover:text-purple-600"
                   title="Mesaj Gönder"
                 >
                   <FaEnvelope size={20} />
-                </button>
+                </Button>
 
-                {/* Detail butonu - popup açar */}
-                <button
+                <Button
                   onClick={() => setSeciliSiparis(siparis)}
                   className="hover:text-purple-600"
                   title="Detaillar"
                 >
                   <FaInfoCircle size={20} />
-                </button>
+                </Button>
               </div>
             </div>
           ))
         )}
       </div>
 
-      {/* Modal */}
       {seciliSiparis && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -169,26 +160,32 @@ const Index = () => {
               Sipariş Detailları
             </h2>
             <p>
-              <strong className="text-gray-400">Alıcı:</strong> {seciliSiparis.alici}
+              <strong className="text-gray-400">Alıcı:</strong>{" "}
+              {seciliSiparis.alici}
             </p>
             <p>
               <strong className="text-gray-400">Sipariş Tarihi:</strong>{" "}
-              {new Date(seciliSiparis.siparisTarihi).toLocaleDateString("tr-TR")}
+              {new Date(seciliSiparis.siparisTarihi).toLocaleDateString(
+                "tr-TR"
+              )}
             </p>
 
             <p>
-              <strong className="text-gray-400">Fiyat:</strong> ${seciliSiparis.fiyat}
+              <strong className="text-gray-400">Fiyat:</strong> $
+              {seciliSiparis.fiyat}
             </p>
 
-            <p className="mt-3 text-gray-500 text-center">{seciliSiparis.aciklama}</p>
+            <p className="mt-3 text-gray-500 text-center">
+              {seciliSiparis.aciklama}
+            </p>
 
-            <button
-              onClick={() => setSeciliSiparis(null)}
-              className="mt-6 px-4 py-2 bg-purple-200 text-white rounded hover:bg-purple-700 mx-auto block"
+            <Button
+              onClick={() => setSeciliSiparis(siparis)}
+              className="hover:text-purple-600"
+              title="Detaillar"
             >
               Kapat
-            </button>
-
+            </Button>
           </div>
         </div>
       )}
