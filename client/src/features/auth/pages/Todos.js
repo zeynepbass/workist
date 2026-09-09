@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
-import { PortfolioContext } from '../../../../Context/workContext';
+import { useContext, useEffect, useState } from "react";
+import { PortfolioContext } from "../../../../Context/workContext";
 import MessagingUI from "@/features/messages/pages/Message";
-
+import { Button } from "@/shared/components/atoms";
 const Index = () => {
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -16,7 +16,7 @@ const Index = () => {
     firstNameLabel,
     getMessage,
     userid,
-    handleDeleteMessagesData
+    handleDeleteMessagesData,
   } = useContext(PortfolioContext);
 
   useEffect(() => {
@@ -33,8 +33,7 @@ const Index = () => {
     const currentId = userid?.result?._id;
     for (const targetId of selectedForDelete) {
       try {
-        handleDeleteMessagesData(currentId,targetId)
-      
+        handleDeleteMessagesData(currentId, targetId);
       } catch (error) {
         console.error("Silme hatası:", error);
       }
@@ -53,7 +52,7 @@ const Index = () => {
         <h4 className="text-left font-semibold text-lg text-gray-400">Todos</h4>
         <h4
           className="text-right text-purple-600 cursor-pointer"
-          onClick={() => setShowCheckboxes(prev => !prev)}
+          onClick={() => setShowCheckboxes((prev) => !prev)}
         >
           {showCheckboxes ? "İptal Et" : "Yapılanları Temizle"}
         </h4>
@@ -65,7 +64,7 @@ const Index = () => {
             <tr>
               <th className="p-4 border">Tarih</th>
               <th className="p-4 border">Son Mesaj</th>
-              <th className="p-4 border">Alıcı / Gönderici</th> 
+              <th className="p-4 border">Alıcı / Gönderici</th>
               <th className="p-4 border">İşlem</th>
             </tr>
           </thead>
@@ -73,7 +72,9 @@ const Index = () => {
           <tbody className="text-center text-gray-600">
             {konusmalar.length === 0 && (
               <tr>
-                <td colSpan={4} className="p-4 text-gray-500 italic">Henüz mesaj yok</td>
+                <td colSpan={4} className="p-4 text-gray-500 italic">
+                  Henüz mesaj yok
+                </td>
               </tr>
             )}
 
@@ -82,19 +83,23 @@ const Index = () => {
                 (u) => u._id === item.aliciId || u._id === item.gonderenId
               );
               const isSameUser = user?.firstName === currentFirstName;
-              const otherUserId = item.gonderenId === userId ? item.aliciId : item.gonderenId;
+              const otherUserId =
+                item.gonderenId === userId ? item.aliciId : item.gonderenId;
 
               return (
-                <tr key={index} className={isSameUser ? '' : 'line-through text-green-500'}>
+                <tr
+                  key={index}
+                  className={isSameUser ? "" : "line-through text-green-500"}
+                >
                   <td>
                     {showCheckboxes && (
                       <input
                         type="checkbox"
                         checked={selectedForDelete.includes(otherUserId)}
                         onChange={() => {
-                          setSelectedForDelete(prev =>
+                          setSelectedForDelete((prev) =>
                             prev.includes(otherUserId)
-                              ? prev.filter(id => id !== otherUserId)
+                              ? prev.filter((id) => id !== otherUserId)
                               : [...prev, otherUserId]
                           );
                         }}
@@ -105,33 +110,35 @@ const Index = () => {
                   </td>
                   <td>{item.text}</td>
 
-                  <td>{isSameUser ? currentFirstName : user?.firstName || "Bilinmeyen Kullanıcı"}</td>
-
+                  <td>
+                    {isSameUser
+                      ? currentFirstName
+                      : user?.firstName || "Bilinmeyen Kullanıcı"}
+                  </td>
 
                   <td>
-                    <button
+                    <Button
                       onClick={() => handleClick(otherUserId)}
                       className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition"
                     >
                       {isSameUser ? "Mesajın Var" : "Cevap Ver"}
-                    </button>
+                    </Button>
                   </td>
                 </tr>
               );
             })}
           </tbody>
-
         </table>
       </div>
 
       {showCheckboxes && selectedForDelete.length > 0 && (
         <div className="mt-4 text-right">
-          <button
+          <Button
             onClick={handleDeleteMessages}
             className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
           >
             Seçilenleri Sil
-          </button>
+          </Button>
         </div>
       )}
 
@@ -140,7 +147,8 @@ const Index = () => {
           open={open}
           onClose={() => setOpen(false)}
           adi={
-            firstNameLabel.find((u) => u._id === selectedId)?.firstName || "Kullanıcı"
+            firstNameLabel.find((u) => u._id === selectedId)?.firstName ||
+            "Kullanıcı"
           }
           gonderenId={userid?.result?._id}
           aliciId={selectedId}

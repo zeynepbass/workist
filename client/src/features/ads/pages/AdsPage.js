@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../components/Modal";
 import { AdList } from "../components/AdList";
 import { AdsHeader } from "../components/AdsHeader/AdsHeader";
-import { PostSort } from "@/shared/components/Molecules/PostSort";
-import {StatusMessage} from "@/shared/components/Molecules/StatusMessage";
+import { PostSort } from "@/shared/components/molecules/PostSort";
+import {StatusMessage} from "@/shared/components/molecules/StatusMessage";
 
 import { useAds } from "../hooks/useAds";
 

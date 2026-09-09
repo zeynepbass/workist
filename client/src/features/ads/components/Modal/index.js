@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { PortfolioContext } from '../../../../Context/workContext';
-
+import {Textarea,Button,Input} from "@/shared/components/molecules"
 const PortfolioModal = () => {
   const { createWorkPost,userId,userid} = useContext(PortfolioContext);
 
@@ -133,12 +133,12 @@ const PortfolioModal = () => {
   return (
     <>
 
-      <button
-        className="bg-purple-500 float-right text-white p-4 rounded-md mb-4 cursor-pointer"
-        onClick={() => setIsOpen(true)}
-      >
-        Yeni İş İlanı Ekle
-      </button>
+<Button
+                     
+                                       className="bg-purple-500 float-right text-white p-4 rounded-md mb-4 cursor-pointer"
+                                       onClick={() => setIsOpen(true)}
+                                      >      Yeni İş İlanı Ekle</Button>
+
 
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -164,13 +164,13 @@ const PortfolioModal = () => {
                   ))}
                 </div>
                 <div className="flex justify-end mt-4">
-                  <button
-                    disabled={!selectedCategory}
-                    className="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700 disabled:opacity-50"
-                    onClick={() => setStep(2)}
-                  >
-                    Devam Et
-                  </button>
+
+                                      <Button
+                                       disabled={!selectedCategory}
+                                       className="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700 disabled:opacity-50"
+                                       onClick={() => setStep(2)}
+                                      >Devam Et</Button>
+   
                 </div>
               </>
            
@@ -195,20 +195,19 @@ const PortfolioModal = () => {
                   ))}
                 </div>
                 <div className="flex justify-between mt-4">
-                  <button
-                    className="px-6 py-2 text-gray-700 hover:underline"
-                    onClick={() => setStep(1)}
-                    type="button"
-                  >
-                    <img src="images/left-arrow.png" width="40" height="40" />
-                  </button>
-                  <button
-                    disabled={!selectedSubcategory}
-                    className="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700 disabled:opacity-50"
-                    onClick={() => setStep(3)}
-                  >
-                    Devam Et
-                  </button>
+                <Button
+                     
+                     className="px-6 py-2 text-gray-700 hover:underline"
+                     onClick={() => setStep(1)}
+                     type="button"
+                    >                <img src="images/left-arrow.png" width="40" height="40" /></Button>
+             <Button
+                     
+                     disabled={!selectedSubcategory}
+                     className="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700 disabled:opacity-50"
+                     onClick={() => setStep(3)}
+                    >                Devam Et</Button>
+   
                 </div>
               </>
             )}
@@ -218,76 +217,89 @@ const PortfolioModal = () => {
               <form onSubmit={handleFormSubmit} className="space-y-6">
                 <h2 className="text-xl font-semibold text-gray-400">Biraz Bahseder misin?</h2>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Başlık</label>
-                  <input
-                    type="text"
-                    value={formData.title}
-                    onChange={(e) => {
-                      const inputValue = e.target.value;
+                <Input
+                label="Başlık"
+             type="text"
+             value={formData.title}
+             onChange={(e) => {
+               const inputValue = e.target.value;
 
-                      if (!inputValue.startsWith("Ben,")) {
-                        setFormData({ ...formData, title: "Ben, " + inputValue.replace(/^Ben,? ?/, '') });
-                      } else {
-                        setFormData({ ...formData, title: inputValue });
-                      }
-                    }}
-                    className="w-full p-3 border-2 border-purple-300 rounded"
-                  />
+               if (!inputValue.startsWith("Ben,")) {
+                 setFormData({ ...formData, title: "Ben, " + inputValue.replace(/^Ben,? ?/, '') });
+               } else {
+                 setFormData({ ...formData, title: inputValue });
+               }
+             }}
+             className="w-full p-3 border-2 border-purple-300 rounded"/>
+                      </div>
+        
+
+               
+   
+
+                <div>
+
+                  <Input
+           type="number"
+           label="Revizyon"
+           value={formData.revizyon}
+           onChange={(e) => setFormData({ ...formData, revizyon: e.target.value })}
+           className="w-full p-3 border-2 border-purple-300 rounded"
+/>
+
+   
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Revizyon</label>
-                  <input
-                    type="number"
-                    value={formData.revizyon}
-                    onChange={(e) => setFormData({ ...formData, revizyon: e.target.value })}
-                    className="w-full p-3 border-2 border-purple-300 rounded"
-                  />
+
+                <Input
+
+           label="Süre"
+           type="text"
+           value={formData.sure}
+           onChange={(e) => setFormData({ ...formData, sure: e.target.value })}
+           className="w-full p-3 border-2 border-purple-300 rounded"
+/>
+          
                 </div>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Süre</label>
-                  <input
-                    type="text"
-                    value={formData.sure}
-                    onChange={(e) => setFormData({ ...formData, sure: e.target.value })}
-                    className="w-full p-3 border-2 border-purple-300 rounded"
-                  />
-                </div>
-                <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Fiyat</label>
-                  <input
-                    type="number"
-                    value={formData.fiyat}
-                    onChange={(e) => setFormData({ ...formData, fiyat: e.target.value })}
-                    className="w-full p-3 border-2 border-purple-300 rounded"
-                  />
+                <Input
+
+label="Fiyat"
+
+type="number"
+value={formData.fiyat}
+onChange={(e) => setFormData({ ...formData, fiyat: e.target.value })}
+className="w-full p-3 border-2 border-purple-300 rounded"
+/>
+
                 </div>
 
                 <div>
                   <h3 className="text-md font-semibold text-gray-500">Kod Fiyatlandırma</h3>
                   {['logo', 'kaynakKod', 'fonMuzigi'].map(item => (
-                    <label key={item} className="flex items-center space-x-2 mt-2">
-                      <input
-                        type="checkbox"
-                        checked={formData.kodFiyatlandirma[item]}
-                        onChange={(e) => handleCheckboxChange('kodFiyatlandirma', item, e)}
-                      />
-                      <span>{item === 'kaynakKod' ? 'Kaynak Kod' : item === 'fonMuzigi' ? 'Fon Müziği' : 'Logo'}</span>
-                    </label>
+                    <div>
+                                      <Input
+            type="checkbox"
+            checked={formData.kodFiyatlandirma[item]}
+            onChange={(e) => handleCheckboxChange('kodFiyatlandirma', item, e)}
+>     <span>{item === 'kaynakKod' ? 'Kaynak Kod' : item === 'fonMuzigi' ? 'Fon Müziği' : 'Logo'}</span></Input>
+                      </div>
+        
                   ))}
                 </div>
 
                 <div>
                   <h3 className="text-md font-semibold text-gray-500">Ekstra Özellikler</h3>
                   {['hizliTeslimat', 'fullHd'].map(item => (
-                    <label key={item} className="flex items-center space-x-2 mt-2">
-                      <input
-                        type="checkbox"
+                    <div  key={item}  className="flex items-center space-x-2 mt-2">
+                      <Input   type="checkbox"
                         checked={formData.ekstraOzellikler[item]}
-                        onChange={(e) => handleCheckboxChange('ekstraOzellikler', item, e)}
-                      />
-                      <span>{item === 'hizliTeslimat' ? 'Süper Hızlı Teslimat' : 'Full HD (1080px)'}</span>
-                    </label>
+                        onChange={(e) => handleCheckboxChange('ekstraOzellikler', item, e)}>
+                      <span>{item === 'hizliTeslimat' ? 'Süper Hızlı Teslimat' : 'Full HD (1080px)'}</span>  </Input>
+                    </div>
+
+        
                   ))}
                 </div>
 
@@ -305,39 +317,46 @@ const PortfolioModal = () => {
                   </select>
                 </div>
 
+    
+                <Textarea
+  label="İlan Açıklaması"
+              className="w-full p-3 border-2 border-purple-300 rounded"
+  rows={4}
+  value={formData.description}
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      description: e.target.value,
+    })
+  }
+/>
                 <div>
-                  <label className="block font-semibold text-gray-700 mb-1">İlan Açıklaması</label>
-                  <textarea
-                    rows={4}
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full p-3 border-2 border-purple-300 rounded"
-                  />
-                </div>
+                <Input
+                label="Dosya Yükle"
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                    setFormData({ ...formData, file: reader.result });
+                  };
+                  if (file) reader.readAsDataURL(file);
+                }}
+/>
 
-                <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Dosya Yükle</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files[0];
-                      const reader = new FileReader();
-                      reader.onloadend = () => {
-                        setFormData({ ...formData, file: reader.result });
-                      };
-                      if (file) reader.readAsDataURL(file);
-                    }}
-                  />
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <button type="button" onClick={() => setStep(2)}>
-                    <img src="images/left-arrow.png" width="40" height="40" />
-                  </button>
-                  <button type="submit" className="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700">
-                    Kaydet
-                  </button>
+                <Button
+                     
+                     type="button" onClick={() => setStep(2)}>
+                            <img src="images/left-arrow.png" width="40" height="40" /></Button>
+                            <Button
+   type="submit" className="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700">
+                               Kaydet</Button>
+     
+
                 </div>
               </form>
             )}

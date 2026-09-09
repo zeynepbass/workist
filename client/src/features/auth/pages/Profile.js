@@ -7,12 +7,12 @@ import {
   faSignOutAlt,
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
-
+import { Button } from "@/shared/components/atoms";
 export default function ProfileCard() {
   const users = JSON.parse(localStorage.getItem("login"));
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
-const navigate=useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     function handleClickOutside(e) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -22,40 +22,43 @@ const navigate=useNavigate()
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-const handleClick=()=>{
-  localStorage.clear();
-  navigate("/")
-}
+  const handleClick = () => {
+    localStorage.clear();
+    navigate("/");
+  };
   return (
     <div className="w-full flex justify-center items-center pr-6 relative bg-transparent">
       <div className="relative" ref={dropdownRef}>
-        <button
+        <Button
           onClick={() => setOpen(!open)}
           className="flex items-center gap-4 px-4 py-2 bg-transparent focus:outline-none"
         >
-        {users?.result?.file ? <img
-            className="h-12 w-12 rounded-full object-cover"
-            src={users?.result?.file}
-            alt="Kullanıcı Fotoğrafı"
-          />
- : ""}
-         
-
+          {" "}
+          {users?.result?.file ? (
+            <img
+              className="h-12 w-12 rounded-full object-cover"
+              src={users?.result?.file}
+              alt="Kullanıcı Fotoğrafı"
+            />
+          ) : (
+            ""
+          )}
           <div className="text-left">
-            <p className="text-base font-semibold text-gray-800">{users?.result?.firstName} {users?.result?.lastName}</p>
-            <p className="text-sm text-gray-500">{users?.result?.unvan ? users?.result?.unvan : "ünvan ekli değil."}</p>
-
-
+            <p className="text-base font-semibold text-gray-800">
+              {users?.result?.firstName} {users?.result?.lastName}
+            </p>
+            <p className="text-sm text-gray-500">
+              {users?.result?.unvan
+                ? users?.result?.unvan
+                : "ünvan ekli değil."}
+            </p>
           </div>
-
-
           <FontAwesomeIcon
             icon={faChevronDown}
             className="text-gray-500"
             size="sm"
           />
-        </button>
-
+        </Button>
 
         {open && (
           <div className="absolute left-0  w-60 bg-white rounded-md shadow-lg z-20">
@@ -65,7 +68,10 @@ const handleClick=()=>{
                   to="/myProfile"
                   className="flex items-center px-4 py-2 hover:bg-purple-100 text-gray-400"
                 >
-                  <FontAwesomeIcon icon={faUser} className="mr-3 text-purple-600" />
+                  <FontAwesomeIcon
+                    icon={faUser}
+                    className="mr-3 text-purple-600"
+                  />
                   myProfile
                 </Link>
               </li>
@@ -74,7 +80,10 @@ const handleClick=()=>{
                   to="/Account"
                   className="flex items-center px-4 py-2 hover:bg-purple-100 text-gray-400"
                 >
-                  <FontAwesomeIcon icon={faCog} className="mr-3 text-purple-600" />
+                  <FontAwesomeIcon
+                    icon={faCog}
+                    className="mr-3 text-purple-600"
+                  />
                   Hesabım
                 </Link>
               </li>
@@ -82,11 +91,15 @@ const handleClick=()=>{
                 onClick={() => {
                   setOpen(false);
                   alert("Çıkış yapıldı");
-                  navigate("/")
+                  navigate("/");
                 }}
                 className="flex items-center px-4 py-2 hover:bg-purple-100 text-gray-400 cursor-pointer"
               >
-                <FontAwesomeIcon icon={faSignOutAlt} className="mr-3 text-purple-600" onClick={handleClick} />
+                <FontAwesomeIcon
+                  icon={faSignOutAlt}
+                  className="mr-3 text-purple-600"
+                  onClick={handleClick}
+                />
                 Çıkış Yap
               </li>
             </ul>

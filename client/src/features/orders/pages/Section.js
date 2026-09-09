@@ -3,6 +3,7 @@ import Ads from "@/features/ads/pages/AdsPage"
 import { useNavigate, Link } from 'react-router-dom';
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { PortfolioContext } from '../../../../Context/workContext'
+import { Button } from "@/shared/components/atoms";
 import Message from "@/features/messages/pages/Message";
 const Index = () => {
   const [selectedAliciId, setSelectedAliciId] = useState(null);
@@ -85,22 +86,22 @@ const Index = () => {
 
               <div className="flex justify-end space-x-2 mt-4 p-4">
             
+              <Button
+                                     className="border border-gray-300 px-3 py-1 rounded text-sm text-white hover:bg-gray-100"
 
-              <button
-                      className="border border-gray-300 px-3 py-1 rounded text-sm text-white hover:bg-gray-100"
+                                     onClick={() => {
+                                       setOpen(false); 
+                                       setSelectedAliciId(lastItem?.userId);
+                                     
+                                       setTimeout(() => {
+                                         setOpen(true);
+                                       }, 0);
+                                     }}
+                                     
+                                   >
+                                     Mesaj At
+                        </Button>
 
-                      onClick={() => {
-                        setOpen(false); 
-                        setSelectedAliciId(lastItem?.userId);
-                      
-                        setTimeout(() => {
-                          setOpen(true);
-                        }, 0);
-                      }}
-                      
-                    >
-                      Mesaj At
-                    </button>
 
               </div>
             </div>
@@ -184,21 +185,23 @@ const Index = () => {
                   </div>
 
                   <div className="flex justify-end space-x-2 mt-4 p-4">
-                    <button
-                      className="border border-gray-300 px-3 py-1 rounded text-sm text-white hover:bg-gray-100"
+                                
+              <Button
+                                     className="border border-gray-300 px-3 py-1 rounded text-sm text-white hover:bg-gray-100"
 
-                      onClick={() => {
-                        setOpen(false); 
-                        setSelectedAliciId(item?.userId);
-                      
-                        setTimeout(() => {
-                          setOpen(true);
-                        }, 0);
-                      }}
-                      
-                    >
-                      Mesaj At
-                    </button>
+                                     onClick={() => {
+                                       setOpen(false); 
+                                       setSelectedAliciId(lastItem?.userId);
+                                     
+                                       setTimeout(() => {
+                                         setOpen(true);
+                                       }, 0);
+                                     }}
+                                     
+                                   >
+                                     Mesaj At
+                        </Button>
+
 
 
                   </div>

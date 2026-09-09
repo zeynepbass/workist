@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import Modal from "@/shared/components/organism/Modal"
-
+import { Button } from '@/shared/components/atoms'
 import { PortfolioContext } from "../../../Context/workContext"
 const Index = () => {
     const { email, detailsPost, hesabiDondur } = useContext(PortfolioContext)
@@ -78,7 +78,12 @@ const Index = () => {
                 </div>
 
                 <div className="bg-white p-4 rounded-[10px] shadow h-20 px-3">
-                    <span className="text-left text-gray-600 mb-2 ">Account <strong>Yönetimi</strong></span>   <span className=" float-right mt-2">          <button className="bg-purple-800 text-white px-3 py-2 rounded float-right " onClick={Delete}>Hesabını Dondur</button></span><br />
+                    <span className="text-left text-gray-600 mb-2 ">Account <strong>Yönetimi</strong></span>   <span className=" float-right mt-2">  
+                    <Button
+                   className="bg-purple-800 text-white px-3 py-2 rounded float-right " onClick={Delete}>Hesabını Dondur</Button> 
+                         
+                               
+                               </span><br />
 
                 </div>
             </div>
@@ -117,9 +122,10 @@ const Index = () => {
                         </div>
                     </div>
                     <div className="mt-4 justify-center flex">
-                        <button className="bg-purple-800 text-white px-4 py-2 rounded " onClick={() => Navigate("/Ads")}>
-                            İlanlarıma Git
-                        </button>
+                    <Button     className="bg-purple-800 text-white px-4 py-2 rounded " onClick={() => Navigate("/Ads")}>
+                    İlanlarıma Git
+        </Button>
+                     
                     </div>
                 </div>
                 <div className="bg-white  shadow">

@@ -2,9 +2,10 @@
 export function Button ({
     icon,
     onClick,
-    disabled = false,
+    disabled,
     className = "",
     type = "button",
+    children,
     ariaLabel,
 }) {
     return (
@@ -15,7 +16,7 @@ export function Button ({
             aria-label={ariaLabel}
             className={`text-gray-500 hover:text-white disabled:opacity-50 ${className}`}
         >
-            {icon}
+         {children}   {icon}
         </button>
     );
 };

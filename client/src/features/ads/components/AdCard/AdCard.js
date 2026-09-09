@@ -5,7 +5,7 @@ import {
     faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 
-import {Button} from "@/shared/components/atoms/Button";
+import {Button} from "@/shared/components/atoms";
 
 export function AdCard({
     post,

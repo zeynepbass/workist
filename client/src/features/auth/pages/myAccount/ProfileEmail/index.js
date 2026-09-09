@@ -1,5 +1,6 @@
 import { useState,useContext,useEffect } from "react";
 import {PortfolioContext} from "../../../../Context/workContext"
+import { Button } from "@/shared/components/atoms";
 const ContactSettings = () => {
   const {email,detailsPost}=useContext(PortfolioContext)
   const [editMode, setEditMode] = useState(false);
@@ -35,9 +36,10 @@ const handleChange=(e)=>{
     <div className="bg-white p-4 rounded-[10px] shadow">
       <div className="flex justify-between items-center">
         <h6 className="text-left text-gray-600">İletişim <strong>Ayarları</strong></h6>
-        <button onClick={() => setEditMode(!editMode)} className="text-purple-600">
-          {editMode ? "İptal" : "Düzenle"}
-        </button>
+        <Button onClick={() => setEditMode(!editMode)} className="text-purple-600">
+        {editMode ? "İptal" : "Düzenle"}
+        </Button>
+
       </div>
 
       <div className="mt-4 space-y-2 text-gray-600">
@@ -64,12 +66,12 @@ const handleChange=(e)=>{
                 onChange={handleChange}
               />
             </div>
-            <button
-              onClick={handleSave}
+            <Button               onClick={handleSave}
               className="mt-3 bg-purple-600 text-white px-4 py-1 rounded w-fit"
             >
               Kaydet
-            </button>
+        </Button>
+
           </>
         ) : (
           <>

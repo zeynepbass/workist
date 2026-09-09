@@ -1,3 +1,5 @@
+import { Input } from "@/shared/components/atoms/Input/Input";
+
 export function AdsPricingOptions ({
     kodFiyatlandirma,
     ekstraOzellikler,
@@ -38,23 +40,24 @@ export function AdsPricingOptions ({
 
                 <div className="flex flex-col space-y-3">
                     {codeOptions.map((item) => (
-                        <label
-                            key={item.key}
-                            className="flex items-center space-x-2"
-                        >
-                            <input
-                                type="checkbox"
-                                checked={kodFiyatlandirma[item.key]}
-                                onChange={() =>
-                                    onCheckboxChange(
-                                        "kodFiyatlandirma",
-                                        item.key
-                                    )
-                                }
-                            />
-
-                            <span>{item.label}</span>
-                        </label>
+                               <div
+                               key={item.key}
+                               className="flex items-center space-x-2"
+                           >
+          
+                        <Input
+                        type="checkbox"
+                        checked={kodFiyatlandirma[item.key]}
+                        onChange={() =>
+                            onCheckboxChange(
+                                "kodFiyatlandirma",
+                                item.key
+                            )
+                        }
+                        
+                        >            <span>{item.label}</span></Input>
+                 
+                        </div>
                     ))}
                 </div>
             </div>
@@ -66,23 +69,25 @@ export function AdsPricingOptions ({
 
                 <div className="flex flex-col space-y-3">
                     {extraOptions.map((item) => (
-                        <label
-                            key={item.key}
-                            className="flex items-center space-x-2"
-                        >
-                            <input
-                                type="checkbox"
-                                checked={ekstraOzellikler[item.key]}
-                                onChange={() =>
-                                    onCheckboxChange(
-                                        "ekstraOzellikler",
-                                        item.key
-                                    )
-                                }
-                            />
-
-                            <span>{item.label}</span>
-                        </label>
+                                                <div
+                                                key={item.key}
+                                                className="flex items-center space-x-2"
+                                            >
+                           
+                                         <Input
+                                    type="checkbox"
+                                    checked={ekstraOzellikler[item.key]}
+                                    onChange={() =>
+                                        onCheckboxChange(
+                                            "ekstraOzellikler",
+                                            item.key
+                                        )
+                                    }
+                                         
+                                         >            <span>{item.label}</span></Input>
+                                  
+                                         </div>
+      
                     ))}
                 </div>
             </div>

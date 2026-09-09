@@ -1,7 +1,8 @@
-import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { FaShoppingCart, FaArrowLeft, FaThumbsUp, FaClock } from "react-icons/fa";
 
+import { useParams, useNavigate } from "react-router-dom";
+import { FaArrowLeft, FaThumbsUp
+ } from "react-icons/fa";
+import { Button } from "@/shared/components/atoms";
 const SiparisDetail = () => {
     const { id } = useParams();
 
@@ -36,14 +37,15 @@ const SiparisDetail = () => {
 
     return (
         <div className="p-6">
-            <button
+                        <Button
                 onClick={handleBack}
 
                 className="flex items-center text-purple-600 hover:text-purple-800 py-5 "
             >
                 <FaArrowLeft className="mr-2 " />
                 Geri Dön
-            </button>
+            </Button>
+
 
             <h3 className="text-xl font-semibold pb-4 text-gray-600">Sipariş<strong> Özeti</strong> </h3>
             <div className="bg-white rounded-lg mb-6">
