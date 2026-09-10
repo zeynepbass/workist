@@ -13,7 +13,7 @@ import {AdsPriceField} from "../components/AdsPriceField";
 import {AdsDescriptionField} from "../../../shared/components/atoms/Textarea";
 import {AdsFileUpload} from "../components/AdsFileUpload";
 
-import StatusMessage from "@/shared/components/molecules/StatusMessage";
+import {StatusMessage} from "@/shared/components/molecules";
 
 const HizmetFormu = () => {
     const navigate = useNavigate();

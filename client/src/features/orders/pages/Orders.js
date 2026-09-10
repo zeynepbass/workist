@@ -73,12 +73,12 @@ const Index = () => {
     return sonuc;
   }, [durumFilter, sortType, arama]);
 
-  // Siparişi silme örneği (gerçek projede backend'e de gönderilmeli)
+
   const handleDelete = (id) => {
     alert(`Sipariş ${id} silindi! (Burada gerçek silme işlemi yapılmalı.)`);
   };
 
-  // Mesaj ikonuna basınca örnek alert
+
   const handleMessage = (alici) => {
     alert(`${alici} için mesaj gönderme işlemi!`);
   };
@@ -91,7 +91,7 @@ const Index = () => {
 
       <br />
 
-      {/* Filtre ve arama alanı örnek ekleyebilirsin burada */}
+    
 
       <div className="max-w-4xl mx-auto mt-6 space-y-4 overflow-y-auto max-h-[75vh]">
         {filtrelenmisSiparisler.length === 0 ? (

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useAds } from "../hooks/useAds";
 
-export function AdsHeader () {
+export function TopHeader () {
     const { data: posts = [] } = useAds();
 
     const [sortType, setSortType] = useState("all");
