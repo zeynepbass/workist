@@ -32,3 +32,13 @@ export async function getMessageData(currentId, targetId) {
   return response.data;
 }
 
+export async function updateDetails(email, formData) {
+  const response = await apiClient.put(`/duzenle/${email}`, formData);
+  return response.data;
+}
+
+export async function getDetails(email) {
+  const response = await apiClient.get(`/duzenle/${email}`);
+  return response.data;
+}
+

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Button, Input } from "@/shared/components/atoms";
 import { useAuth } from "../hooks/useAuth";
 
-const Index = () => {
+export default function  Register  () {
   const {
     formData,
     passwordVisible,
@@ -133,4 +133,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+

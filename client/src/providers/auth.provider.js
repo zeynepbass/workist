@@ -7,7 +7,9 @@ account:authApi.account,
 details:authApi.details,
 getMessages:authApi.getMessages,
 getUsers:authApi.getUsers,
-getMessageData:authApi.getMessageData
+getMessageData:authApi.getMessageData,
+updateDetails:authApi.updateDetails,
+getDetails:authApi.getDetails
 
 
 }

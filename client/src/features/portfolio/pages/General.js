@@ -1,8 +1,9 @@
 import { useContext, useEffect } from 'react';
 import { PortfolioContext } from '../../../../Context/workContext';
 import { useLocation } from 'react-router-dom';
+import formatToTurkishDate from "@/shared/utils";
 const Index = () => {
-  const { ilanlar, formatToTurkishDate, searchPosts } = useContext(PortfolioContext);
+  const { ilanlar, searchPosts } = useContext(PortfolioContext);
   const userid = JSON.parse(localStorage.getItem("login"));
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);

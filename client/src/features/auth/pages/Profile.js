@@ -8,7 +8,7 @@ import {
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/shared/components/atoms";
-export default function ProfileCard() {
+export default function Profile() {
   const users = JSON.parse(localStorage.getItem("login"));
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
