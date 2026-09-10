@@ -1,56 +1,32 @@
-import { useContext, useState } from "react";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
-import { PortfolioContext } from "../../../Context/workContext";
-import { Button } from "@/shared/components/atoms";
+
+import { Button, Input } from "@/shared/components/atoms";
+import { useAuth } from "../hooks/useAuth";
+
 const Index = () => {
-  const [passwordVisible, setPasswordVisible] = useState(false);
-  const { registerPost } = useContext(PortfolioContext);
-  const [formData, setFormData] = useState({
-    email: "",
-    firstName: "",
-    lastName: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const {
+    formData,
+    passwordVisible,
+    handleChange,
+    handleRegisterSubmit,
+    togglePasswordVisibility,
+    isRegisterLoading,
+  } = useAuth();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (
-      !formData.email ||
-      !formData.password ||
-      !formData.firstName ||
-      !formData.lastName ||
-      !formData.confirmPassword
-    ) {
-      alert("Lütfen tüm alanları doldurun.");
-      return;
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      alert("Şifreler uyusmuyor.");
-      return;
-    }
-
-    await registerPost(formData);
-  };
   return (
     <div className="bg-gray-200 min-h-screen flex justify-center items-center">
       <div className="bg-white p-8 rounded shadow-lg w-full max-w-md">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleRegisterSubmit}>
           <h2 className="text-2xl font-bold text-center text-purple-600 mb-6">
             Kayıt Ol
           </h2>
-          <div className="flex ">
+
+          <div className="flex">
             <div className="mb-4 mr-1">
-              <label className="block text-gray-600 font-semibold mb-1">
-                Adı
-              </label>
-              <input
+              <Input
+                label="Adı"
                 type="text"
                 name="firstName"
                 value={formData.firstName}
@@ -59,11 +35,10 @@ const Index = () => {
                 className="w-full p-3 border rounded border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
             </div>
+
             <div className="mb-4">
-              <label className="block text-gray-600 font-semibold mb-1">
-                Soyadı
-              </label>
-              <input
+              <Input
+                label="Soyadı"
                 type="text"
                 name="lastName"
                 value={formData.lastName}
@@ -75,10 +50,8 @@ const Index = () => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-600 font-semibold mb-1">
-              E-posta
-            </label>
-            <input
+            <Input
+              label="            E-posta"
               type="email"
               name="email"
               value={formData.email}
@@ -89,21 +62,20 @@ const Index = () => {
           </div>
 
           <div className="mb-4">
-            <label className="block text-gray-600 font-semibold mb-1">
-              Parola
-            </label>
+            <Input
+              label="Parola"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              type={passwordVisible ? "text" : "password"}
+              placeholder="Parolanızı girin"
+              className="w-full p-3 border rounded border-gray-300 pr-16 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+
             <div className="relative">
-              <input
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                type={passwordVisible ? "text" : "password"}
-                placeholder="Parolanızı girin"
-                className="w-full p-3 border rounded border-gray-300 pr-16 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
               <Button
                 type="button"
-                onClick={() => setPasswordVisible(!passwordVisible)}
+                onClick={togglePasswordVisibility}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-purple-600 hover:underline"
               >
                 {passwordVisible ? (
@@ -114,22 +86,22 @@ const Index = () => {
               </Button>
             </div>
           </div>
+
           <div className="mb-4">
-            <label className="block text-gray-600 font-semibold mb-1">
-              Parola Tekrar
-            </label>
+            <Input
+              label="            Parola Tekrar"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              type={passwordVisible ? "text" : "password"}
+              placeholder="Parolanızı tekrar girin"
+              className="w-full p-3 border rounded border-gray-300 pr-16 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+
             <div className="relative">
-              <input
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                type={passwordVisible ? "text" : "password"}
-                placeholder="Parolanızı tekrar girin"
-                className="w-full p-3 border rounded border-gray-300 pr-16 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
               <Button
                 type="button"
-                onClick={() => setPasswordVisible(!passwordVisible)}
+                onClick={togglePasswordVisibility}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-purple-600 hover:underline"
               >
                 {passwordVisible ? (
@@ -139,18 +111,21 @@ const Index = () => {
                 )}
               </Button>
             </div>
+
             <p className="text-right pt-4 text-gray-400">
-              zaten üye misin?{" "}
+              Zaten üye misin?{" "}
               <Link to="/" className="text-purple-300">
                 Giriş yap
               </Link>
             </p>
           </div>
+
           <Button
             type="submit"
+            disabled={isRegisterLoading}
             className="w-full bg-purple-600 text-white py-3 rounded hover:bg-purple-700 transition mb-3"
           >
-            Kayıt Ol
+            {isRegisterLoading ? "Kayıt yapılıyor..." : "Kayıt Ol"}
           </Button>
         </form>
       </div>

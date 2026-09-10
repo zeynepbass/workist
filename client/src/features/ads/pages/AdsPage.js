@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import Modal from "../components/Modal";
 import { AdList } from "../components/AdList";
-import { AdsHeader } from "../components/AdsHeader/AdsHeader";
-import { PostSort } from "@/shared/components/molecules/PostSort";
-import {StatusMessage} from "@/shared/components/molecules/StatusMessage";
+import { TopHeader } from "@/shared/components/molecules";
+import { PostSort } from "@/shared/components/molecules";
+import {StatusMessage} from "@/shared/components/molecules";
 
 import { useAds } from "../hooks/useAds";
 
@@ -74,7 +74,7 @@ const Index = () => {
 
     return (
         <div className="p-4 h-[100vh]">
-            <AdsHeader />
+            <TopHeader />
 
             <PostSort
                 sortType={sortType}
