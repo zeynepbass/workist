@@ -1,7 +1,7 @@
 import { useEffect, useState,useContext } from 'react';
 import io from 'socket.io-client';
 import { PortfolioContext } from '../../../Context/workContext';
-import { Button } from "@/shared/components/atoms";
+import { Button,Input } from "@/shared/components/atoms";
 
 const socket = io(process.env.REACT_APP_BASE_URL);
 
@@ -100,7 +100,7 @@ const {messages,setMessages,Message}=useContext(PortfolioContext)
             onSubmit={handleSend}
             className="p-3 border-t bg-white flex items-center space-x-2"
           >
-            <input
+            <Input
               type="text"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}

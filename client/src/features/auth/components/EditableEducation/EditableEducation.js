@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/shared/components/atoms";
+import { Button,Input } from "@/shared/components/atoms";
 
 export default function EditableEducation({
   userDetails,
@@ -71,7 +71,7 @@ export default function EditableEducation({
 
       {editMode && (
         <div className="mb-4 flex gap-2">
-          <input
+          <Input
             type="text"
             placeholder="Yeni eğitim / sertifika giriniz"
             value={newValue}

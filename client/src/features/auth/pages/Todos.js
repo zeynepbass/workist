@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import MessagingUI from "@/features/messages/pages/Message";
-import { Button } from "@/shared/components/atoms";
+import { Button,Input } from "@/shared/components/atoms";
 import formatToTurkishDate from "@/shared/utils";
 import { useMessages } from "../hooks";
 
@@ -102,20 +102,21 @@ export default function Todos (){
                 >
                   <td>
                     {showCheckboxes && (
-                      <input
-                        type="checkbox"
-                        checked={selectedForDelete.includes(otherUserId)}
-                        onChange={() => {
-                          setSelectedForDelete((prev) =>
-                            prev.includes(otherUserId)
-                              ? prev.filter(
-                                  (id) => id !== otherUserId
-                                )
-                              : [...prev, otherUserId]
-                          );
-                        }}
-                        className="mr-2"
+                      <Input
+                      type="checkbox"
+                      checked={selectedForDelete.includes(otherUserId)}
+                      onChange={() => {
+                        setSelectedForDelete((prev) =>
+                          prev.includes(otherUserId)
+                            ? prev.filter(
+                                (id) => id !== otherUserId
+                              )
+                            : [...prev, otherUserId]
+                        );
+                      }}
+                      className="mr-2"
                       />
+     
                     )}
 
                     {formatToTurkishDate(item.time)}

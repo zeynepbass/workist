@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { PortfolioContext } from "../../../Context/workContext";
 import Modal from "@/shared/components/organism/Modal";
 import { Button } from "@/shared/components/atoms";
+import { TopHeader } from "@/shared/components/molecules";
 const Index = () => {
   const navigate = useNavigate();
   const { data, setData, deleteClick, fetchResponse, userId } =
@@ -41,15 +42,11 @@ const Index = () => {
   };
   return (
     <div className="p-4 h-[100vh]">
-      <h1 className="text-left text-gray-500 text-xl pl-4">
-        <strong>Portfolyom</strong>
-      </h1>
+      <TopHeader title="Portfolyom" desc="       Tüm portfolyonu buradan takip edebilir, yönetebilir ve yeni portfolyolar
+        ekleyebilirsin."/>
 
       <Modal />
-      <p className="text-gray-400 p-4">
-        Tüm portfolyonu buradan takip edebilir, yönetebilir ve yeni portfolyolar
-        ekleyebilirsin.
-      </p>
+
 
       <div className="max-w-md mr-auto p-4 relative">
         <label

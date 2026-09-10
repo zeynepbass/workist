@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { PortfolioContext } from "../../../../Context/workContext";
 import MessagingUI from "@/features/messages/pages/Message";
-import { Button } from "@/shared/components/atoms";
+import { Button,Input } from "@/shared/components/atoms";
 import formatToTurkishDate from "@/shared/utils";
 const Index = () => {
   const [open, setOpen] = useState(false);
@@ -93,7 +93,7 @@ const Index = () => {
                 >
                   <td>
                     {showCheckboxes && (
-                      <input
+                      <Input
                         type="checkbox"
                         checked={selectedForDelete.includes(otherUserId)}
                         onChange={() => {

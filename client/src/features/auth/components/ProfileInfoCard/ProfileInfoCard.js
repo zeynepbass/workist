@@ -1,13 +1,11 @@
-
 import { useState, useEffect } from "react";
-import { Textarea, Button } from "@/shared/components/atoms";
+import { Textarea, Button, Input } from "@/shared/components/atoms";
 
-
-export default function ProfileInfoCard({userDetails,
+export default function ProfileInfoCard({
+  userDetails,
   updateDetails,
-  isUpdating})  {
-
-
+  isUpdating,
+}) {
   const [editMode, setEditMode] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -85,14 +83,14 @@ export default function ProfileInfoCard({userDetails,
             className="rounded-full shadow-lg"
           />
 
-          <input
+          <Input
             type="file"
             className="m-5"
             accept="image/*"
             onChange={handleFileChange}
           />
 
-          <input
+          <Input
             type="text"
             className="border p-2 w-full mb-2"
             name="firstName"
@@ -100,8 +98,7 @@ export default function ProfileInfoCard({userDetails,
             onChange={handleChange}
             placeholder="adınızı girin"
           />
-
-          <input
+          <Input
             type="text"
             className="border p-2 w-full mb-2"
             name="lastName"
@@ -109,8 +106,7 @@ export default function ProfileInfoCard({userDetails,
             onChange={handleChange}
             placeholder="soyadınızı girin"
           />
-
-          <input
+          <Input
             type="text"
             className="border p-2 w-full mb-2"
             placeholder="ünvanınızı girin"
@@ -153,9 +149,7 @@ export default function ProfileInfoCard({userDetails,
             {userDetails?.firstName} {userDetails?.lastName}
           </p>
 
-          <p className="text-gray-400 italic">
-            {userDetails?.unvan}
-          </p>
+          <p className="text-gray-400 italic">{userDetails?.unvan}</p>
 
           <br />
 
@@ -163,11 +157,9 @@ export default function ProfileInfoCard({userDetails,
             <strong>{userDetails?.unvan}</strong>
           </h5>
 
-          <p className="text-sm text-gray-400 pt-2">
-            {userDetails?.hakkimda}
-          </p>
+          <p className="text-sm text-gray-400 pt-2">{userDetails?.hakkimda}</p>
         </>
       )}
     </div>
   );
-};
+}

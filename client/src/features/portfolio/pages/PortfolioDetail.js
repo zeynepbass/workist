@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft, FaFileImage } from "react-icons/fa";
 import { PortfolioContext } from "../../../../Context/workContext";
-import { Textarea,Button } from "@/shared/components/atoms";
+import { Textarea,Button,Input } from "@/shared/components/atoms";
 const PortfolioForm = () => {
   const { id } = useParams();
   const { detailsPortfolyo, detail, fetchUpdated, userId } =
@@ -110,10 +110,9 @@ const PortfolioForm = () => {
             </div>
 
             <div>
-              <label className="block mb-1 font-semibold text-gray-700">
-                Başlığınızla ziyaretçiyi etkile*
-              </label>
-              <input
+
+              <Input
+                            label="    Başlığınızla ziyaretçiyi etkile*"
                 type="text"
                 name="title"
                 value={formData.title}
@@ -124,10 +123,9 @@ const PortfolioForm = () => {
             </div>
 
             <div>
-              <label className="block mb-1 font-semibold text-gray-700">
-                Durum*
-              </label>
-              <input
+
+              <Input
+              label="             Durum*"
                 type="text"
                 name="durum"
                 value={formData.durum}
@@ -139,10 +137,9 @@ const PortfolioForm = () => {
 
             <div className="flex items-center space-x-2">
               <div className="w-full">
-                <label className="block mb-1 font-semibold text-gray-700">
-                  Fiyat*
-                </label>
-                <input
+
+                <Input
+                            label="               Fiyat*"
                   type="number"
                   name="fiyat"
                   value={formData.fiyat}
@@ -189,11 +186,10 @@ const PortfolioForm = () => {
 
           <div className="border-2 border-dashed border-purple-300 p-4 rounded bg-gray-100 flex justify-center">
             <div className="py-5">
-              <label className="block mb-2 font-semibold text-gray-700 text-center">
-                Dosya Seç
-              </label>
+   
               <div className="flex justify-center">
-                <input
+                <Input
+                label="        Dosya Seç"
                   type="file"
                   onChange={handleFileChange}
                   className="text-gray-800 file:bg-purple-600 file:text-white file:rounded file:px-4 file:py-2 file:border-0 file:cursor-pointer"
