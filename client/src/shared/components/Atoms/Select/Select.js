@@ -1,21 +1,37 @@
-export function Select({ value, onChange }) {
-    return (
-        <div>
-            <label className="block mb-1 font-semibold text-gray-400">
-                Hizmet Türü*
-            </label>
 
-            <select
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
-            >
-                <option value="">Seçiniz</option>
-                <option>Admin Panel</option>
-                <option>Özel kodlanmış web tasarımı</option>
-                <option>Hata Giderme</option>
-            </select>
-        </div>
-    );
+export function Select({
+  value,
+  onChange,
+  options = [],
+  placeholder = "Seçiniz",
+  className = "",
+  label,
+  ...props
+}) {
+  return (<div>
+
+
+    <label
+    htmlFor="filtre"
+    className="block mb-2 font-semibold text-gray-400"
+  >
+{label}
+  </label>
+    <select
+      value={value}
+      onChange={onChange}
+      className={`w-full p-3 border-2 border-purple-300 rounded ${className}`}
+      {...props}
+    >
+      <option value="">{placeholder}</option>
+
+      {options.map((option) => (
+        <option key={option} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>  </div>
+  );
 };
+
 

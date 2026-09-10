@@ -7,7 +7,7 @@ import {
 
 import {Button} from "@/shared/components/atoms";
 
-export function AdCard({
+export default function AdCard({
     post,
     userId,
     firstName,

@@ -1,5 +1,5 @@
 import {AdCard} from "../AdCard";
-export function AdList  ({
+export default function AdList  ({
     posts,
     userId,
     firstName,

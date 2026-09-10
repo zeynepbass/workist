@@ -54,57 +54,57 @@ WORKIST, kullanıcıların ihtiyaçlarına yönelik freelance hizmet ilanları o
 ## Arayüzler
 
 <p align="center">
-  <img src="./client/public/images/screenshots/1752590137470.jpeg" alt="Dashboards" width="900">
+  <img src="./client/publicassets/screenshots/1752590137470.jpeg" alt="Dashboards" width="900">
 </p>
 
 <p align="center">
-  <img src="./client/public/images/screenshots/1752590136836.jpeg" alt="Dashboards" width="900">
+  <img src="./client/publicassets/screenshots/1752590136836.jpeg" alt="Dashboards" width="900">
 </p>
 
 <p align="center">
-  <img src="./client/public/images/screenshots/1752590136826.jpeg" alt="Dashboards" width="900">
+  <img src="./client/publicassets/screenshots/1752590136826.jpeg" alt="Dashboards" width="900">
 </p>
 
 <p align="center">
-  <img src="./client/public/images/screenshots/1752590136773.jpeg" alt="Dashboards" width="900">
+  <img src="./client/publicassets/screenshots/1752590136773.jpeg" alt="Dashboards" width="900">
 </p>
 
 
 <p align="center">
-  <img src="./client/public/images/screenshots/1752590136761.jpeg" alt="Dashboards" width="900">
+  <img src="./client/publicassets/screenshots/1752590136761.jpeg" alt="Dashboards" width="900">
 </p>
 
 <p align="center">
-  <img src="./client/public/images/screenshots/1752590136727.jpeg" alt="Dashboards" width="900">
+  <img src="./client/publicassets/screenshots/1752590136727.jpeg" alt="Dashboards" width="900">
 </p>
 
 <p align="center">
-  <img src="./client/public/images/screenshots/1752590136620.jpeg" alt="Dashboards" width="900">
+  <img src="./client/publicassets/screenshots/1752590136620.jpeg" alt="Dashboards" width="900">
 </p>
 <p align="center">
-  <img src="./client/public/images/screenshots/1752590136570.jpeg" alt="Dashboards" width="900">
-</p>
-
-<p align="center">
-  <img src="./client/public/images/screenshots/1752590136562.jpeg" alt="Dashboards" width="900">
+  <img src="./client/publicassets/screenshots/1752590136570.jpeg" alt="Dashboards" width="900">
 </p>
 
 <p align="center">
-  <img src="./client/public/images/screenshots/1752590136552.jpeg" alt="Dashboards" width="900">
+  <img src="./client/publicassets/screenshots/1752590136562.jpeg" alt="Dashboards" width="900">
 </p>
 
 <p align="center">
-  <img src="./client/public/images/screenshots/1752590136455.jpeg" alt="Dashboards" width="900">
+  <img src="./client/publicassets/screenshots/1752590136552.jpeg" alt="Dashboards" width="900">
+</p>
+
+<p align="center">
+  <img src="./client/publicassets/screenshots/1752590136455.jpeg" alt="Dashboards" width="900">
 </p>
 <p align="center">
-  <img src="./client/public/images/screenshots/1752590136367.jpeg" alt="Dashboards" width="900">
+  <img src="./client/publicassets/screenshots/1752590136367.jpeg" alt="Dashboards" width="900">
 </p>
 <p align="center">
-  <img src="./client/public/images/screenshots/1752590136337.jpeg" alt="Dashboards" width="900">
+  <img src="./client/publicassets/screenshots/1752590136337.jpeg" alt="Dashboards" width="900">
 </p>
 <p align="center">
-  <img src="./client/public/images/screenshots/1752590136291.jpeg" alt="Giris yap" width="900">
+  <img src="./client/publicassets/screenshots/1752590136291.jpeg" alt="Giris yap" width="900">
 </p>
 <p align="center">
-  <img src="./client/public/images/screenshots/1752590136180.jpeg" alt="Kayıt ol" width="900">
+  <img src="./client/publicassets/screenshots/1752590136180.jpeg" alt="Kayıt ol" width="900">
 </p>

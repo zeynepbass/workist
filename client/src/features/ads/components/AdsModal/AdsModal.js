@@ -1,7 +1,8 @@
 import { useContext, useState } from 'react';
 import { PortfolioContext } from '../../../../Context/workContext';
 import {Textarea,Button,Input} from "@/shared/components/molecules"
-const PortfolioModal = () => {
+import {Select} from "@/shared/components/atoms"
+export default function AdsModal  () {
   const { createWorkPost,userId,userid} = useContext(PortfolioContext);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -303,19 +304,25 @@ className="w-full p-3 border-2 border-purple-300 rounded"
                   ))}
                 </div>
 
-                <div>
-                  <label className="block font-semibold text-gray-700 mb-1">Hizmet Türü</label>
-                  <select
-                    value={formData.hizmetTuru}
-                    onChange={(e) => setFormData({ ...formData, hizmetTuru: e.target.value })}
-                    className="w-full p-3 border-2 border-purple-300 rounded"
-                  >
-                    <option value="">Seçiniz</option>
-                    <option>Admin Panel</option>
-                    <option>Özel kodlanmış web tasarımı</option>
-                    <option>Hata Giderme</option>
-                  </select>
-                </div>
+
+
+<Select
+  value={formData.hizmetTuru}
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      hizmetTuru: e.target.value,
+    })
+  }
+  options={[
+    "Admin Panel",
+    "Özel kodlanmış web tasarımı",
+    "Hata Giderme",
+  ]}
+/>
+
+
+      
 
     
                 <Textarea
@@ -367,4 +374,4 @@ className="w-full p-3 border-2 border-purple-300 rounded"
   );
 };
 
-export default PortfolioModal;
+

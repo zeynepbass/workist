@@ -1,6 +1,6 @@
 import { FaLightbulb } from "react-icons/fa";
 import { Input } from "@/shared/components/atoms";
-export function AdsServiceTitleField  ({ value, onChange }) {
+export default function AdsServiceTitleField  ({ value, onChange }) {
     return (
         <div>
             <label className="block mb-1 font-semibold text-gray-700">

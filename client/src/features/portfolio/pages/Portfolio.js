@@ -1,4 +1,5 @@
-import { useState, useMemo, useContext, useEffect } from "react";
+import { useState, useMemo, useContext, useEffect, lazy, Suspense } from "react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPen,
@@ -8,10 +9,15 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { PortfolioContext } from "../../../Context/workContext";
-import Modal from "@/shared/components/organism/Modal";
-import { Button } from "@/shared/components/atoms";
+
+import { Button,Select } from "@/shared/components/atoms";
 import { TopHeader } from "@/shared/components/molecules";
-const Index = () => {
+const Modal = lazy(() =>
+  import("@/shared/components/organisms").then((module) => ({
+    default: module.Modal,
+  }))
+);
+export default function Index  () {
   const navigate = useNavigate();
   const { data, setData, deleteClick, fetchResponse, userId } =
     useContext(PortfolioContext);
@@ -45,25 +51,32 @@ const Index = () => {
       <TopHeader title="Portfolyom" desc="       Tüm portfolyonu buradan takip edebilir, yönetebilir ve yeni portfolyolar
         ekleyebilirsin."/>
 
-      <Modal />
+              <Suspense fallback={<div>Yükleniyor...</div>}>
+        <Modal />
+      </Suspense>
 
 
       <div className="max-w-md mr-auto p-4 relative">
-        <label
-          htmlFor="filtre"
-          className="block mb-2 font-semibold text-gray-400"
-        >
-          Durum Filtrele:
-        </label>
-        <select
-          id="filtre"
-          value={filtreDurum}
-          onChange={(e) => setFiltreDurum(e.target.value)}
-          className="w-full border p-2 border-gray-300 rounded-md text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
-        >
-          <option value="yayinda">Yayında olanlar</option>
-          <option value="yayindaDegil">Yayında olmayanlar</option>
-        </select>
+
+
+  <Select
+  label="Durum Filtrele:"
+    id="filtre"
+    value={filtreDurum}
+    onChange={(e) => setFiltreDurum(e.target.value)}
+    options={[
+      {
+        value: "yayinda",
+        label: "Yayında olanlar",
+      },
+      {
+        value: "yayindaDegil",
+        label: "Yayında olmayanlar",
+      },
+    ]}
+    placeholder={null}
+    className="border-gray-300 rounded-md text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+  />
 
         <p className="mt-4 text-gray-600">
           Seçilen durum:{" "}
@@ -158,4 +171,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+

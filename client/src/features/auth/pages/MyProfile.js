@@ -1,7 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
-import Modal from "@/shared/components/organism/Modal";
+import { lazy, Suspense } from "react";
+
 import { Button } from "@/shared/components/atoms";
 import { useDetails } from "../hooks/useDetails";
+const Modal = lazy(() =>
+  import("@/shared/components/organisms").then((module) => ({
+    default: module.Modal,
+  }))
+);
 export default function MyProfile  ()  {
   const { email, hesabiDondur, isLoading } = useDetails();
   const Navigate = useNavigate();
@@ -123,7 +129,7 @@ export default function MyProfile  ()  {
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
                 <img
-                  src="./images/network.png"
+                  src=".assets/network.png"
                   width="50"
                   height="50"
                   alt="Presentation"
@@ -137,7 +143,9 @@ export default function MyProfile  ()  {
                 </h6>
               </div>
 
-              <Modal />
+              <Suspense fallback={<div>Yükleniyor...</div>}>
+        <Modal />
+      </Suspense>
             </div>
           </div>
         </div>
