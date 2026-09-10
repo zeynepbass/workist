@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Button,Input } from "@/shared/components/atoms";
 import { useLogin } from "../hooks/useLogin";
 
-const Index = () => {
+export default function Login(){
   const navigate = useNavigate();
 
   const {
@@ -99,5 +99,4 @@ const Index = () => {
   );
 };
 
-export default Index;
 

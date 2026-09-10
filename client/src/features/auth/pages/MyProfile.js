@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Modal from "@/shared/components/organism/Modal";
 import { Button } from "@/shared/components/atoms";
 import { useDetails } from "../hooks/useDetails";
-const Index = () => {
+export default function MyProfile  ()  {
   const { email, hesabiDondur, isLoading } = useDetails();
   const Navigate = useNavigate();
   const Delete = () => {
@@ -253,4 +253,3 @@ const Index = () => {
   );
 };
 
-export default Index;

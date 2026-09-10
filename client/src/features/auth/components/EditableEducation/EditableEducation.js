@@ -1,25 +1,25 @@
-import { useState, useContext, useEffect } from "react";
-import { PortfolioContext } from "../../../../Context/workContext";
+import { useState, useEffect } from "react";
 import { Button } from "@/shared/components/atoms";
-const EditableEducation = () => {
-  const { email, detailsPost, updatedPost } = useContext(PortfolioContext);
+
+export default function EditableEducation({
+  userDetails,
+  updateDetails,
+  isUpdating,
+}) {
   const [editMode, setEditMode] = useState(false);
   const [sertifikalar, setSertifikalar] = useState([]);
   const [newValue, setNewValue] = useState("");
 
   useEffect(() => {
-    detailsPost();
-  }, []);
-
-  useEffect(() => {
-    if (email?.sertifika) {
-      setSertifikalar(email.sertifika);
+    if (userDetails?.sertifika) {
+      setSertifikalar(userDetails.sertifika);
     }
-  }, [email]);
+  }, [userDetails]);
 
   const handleAdd = () => {
     if (newValue.trim() !== "" && sertifikalar.length < 5) {
       const updatedList = [...sertifikalar, newValue.trim()];
+
       setSertifikalar(updatedList);
       setNewValue("");
     }
@@ -27,11 +27,16 @@ const EditableEducation = () => {
 
   const handleDelete = (index) => {
     const updatedList = sertifikalar.filter((_, i) => i !== index);
+
     setSertifikalar(updatedList);
   };
 
   const handleSave = () => {
-    updatedPost({ ...email, sertifika: sertifikalar });
+    updateDetails({
+      ...userDetails,
+      sertifika: sertifikalar,
+    });
+
     setEditMode(false);
   };
 
@@ -39,6 +44,7 @@ const EditableEducation = () => {
     <div className="bg-white p-4 rounded-[10px] shadow">
       <div className="flex justify-between items-center mb-4">
         <h6 className="text-gray-600 mb-2">Eğitim ve Sertifika Bilgileri</h6>
+
         <Button
           onClick={() => setEditMode(!editMode)}
           className="flex items-center bg-transparent text-gray-400 px-3 py-1 rounded hover:bg-purple-700 hover:text-white"
@@ -57,7 +63,8 @@ const EditableEducation = () => {
               strokeWidth={2}
               d="M12 4v16m8-8H4"
             />
-          </svg>{" "}
+          </svg>
+
           {editMode ? "İptal" : "Düzenle"}
         </Button>
       </div>
@@ -71,6 +78,7 @@ const EditableEducation = () => {
             onChange={(e) => setNewValue(e.target.value)}
             className="w-full border px-3 py-1 rounded text-sm"
           />
+
           <Button
             onClick={handleAdd}
             disabled={sertifikalar.length >= 5}
@@ -88,6 +96,7 @@ const EditableEducation = () => {
             className="m-1 flex justify-between items-center border border-gray-300 rounded px-3 py-1 mb-2"
           >
             <span>{item}</span>
+
             {editMode && (
               <Button
                 onClick={() => handleDelete(index)}
@@ -117,13 +126,12 @@ const EditableEducation = () => {
       {editMode && (
         <Button
           onClick={handleSave}
+          disabled={isUpdating}
           className="mt-4 bg-purple-600 text-white px-4 py-2 rounded text-sm"
         >
-          Kaydet
+          {isUpdating ? "Kaydediliyor..." : "Kaydet"}
         </Button>
       )}
     </div>
   );
-};
-
-export default EditableEducation;
+}

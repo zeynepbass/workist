@@ -1,8 +1,9 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { PortfolioContext } from '../../../../Context/workContext'
 import Istekler from "../components/Orders"
+import formatToTurkishDate from "@/shared/utils";
 const Index = () => {
-    const { ilanlar, Post, getPost, fetchPost, formatToTurkishDate } = useContext(PortfolioContext);
+    const { ilanlar, Post, getPost, fetchPost } = useContext(PortfolioContext);
     const userid = JSON.parse(localStorage.getItem("login"));
 
     useEffect(() => {

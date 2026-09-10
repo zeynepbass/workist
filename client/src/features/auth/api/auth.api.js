@@ -17,5 +17,12 @@ export const authRepository = {
 
   getMessageData: (currentId, targetId) =>
     apiClient.get(`/${currentId}/${targetId}`),
+
+  updateDetails: (email, formData) =>
+    apiClient.put(`/duzenle/${email}`, formData),
+
+  getDetails: (email) =>
+    apiClient.get(`/duzenle/${email}`),
+  
 }
 

@@ -5,7 +5,7 @@ import { Button } from "@/shared/components/atoms";
 import formatToTurkishDate from "@/shared/utils";
 import { useMessages } from "../hooks";
 
-const Index = () => {
+export default function Todos (){
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
@@ -173,4 +173,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+

@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { PortfolioContext } from "../../../Context/workContext";
 import io from 'socket.io-client';
 import { Button } from "@/shared/components/atoms";
+import formatToTurkishDate from "@/shared/utils";
 const socket = io(process.env.REACT_APP_BASE_URL);
 
 const MessagingUI = () => {
@@ -9,7 +10,6 @@ const MessagingUI = () => {
     Message,
     messages,
     setMessages, 
-    formatToTurkishDate,
     usersListPerson,
     userList,
     getMessage,

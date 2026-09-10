@@ -1,27 +1,26 @@
-import { useState, useContext, useEffect } from "react";
-import { PortfolioContext } from "../../../../Context/workContext";
+import { useState, useEffect } from "react";
 import { Button } from "@/shared/components/atoms";
 
-const EditableSkills = () => {
-  const { email, detailsPost, updatedPost } = useContext(PortfolioContext);
-
+export default function EditableSkills({
+  userDetails,
+  updateDetails,
+  isUpdating,
+}) {
   const [editMode, setEditMode] = useState(false);
   const [skills, setSkills] = useState([]);
   const [newSkill, setNewSkill] = useState("");
 
   useEffect(() => {
-    detailsPost();
-  }, []);
-
-  useEffect(() => {
-    if (email?.uzmanlik) {
-      setSkills(email.uzmanlik);
+    if (userDetails?.uzmanlik) {
+      setSkills(userDetails.uzmanlik);
     }
-  }, [email]);
+  }, [userDetails]);
 
   const handleAddSkill = () => {
-    if (newSkill && !skills.includes(newSkill)) {
-      setSkills((prev) => [...prev, newSkill]);
+    const skill = newSkill.trim();
+
+    if (skill && !skills.includes(skill) && skills.length < 6) {
+      setSkills((prev) => [...prev, skill]);
       setNewSkill("");
     }
   };
@@ -37,7 +36,11 @@ const EditableSkills = () => {
   };
 
   const handleSave = () => {
-    updatedPost({ ...email, uzmanlik: skills });
+    updateDetails({
+      ...userDetails,
+      uzmanlik: skills,
+    });
+
     setEditMode(false);
   };
 
@@ -47,6 +50,7 @@ const EditableSkills = () => {
         <h6 className="text-left text-gray-600">
           Uzmanı Olduğu Alanlar & <strong>Araçlar</strong>
         </h6>
+
         <Button
           onClick={() => setEditMode(!editMode)}
           className="text-purple-600"
@@ -71,6 +75,7 @@ const EditableSkills = () => {
                   value={skill}
                   onChange={(e) => handleSkillChange(index, e.target.value)}
                 />
+
                 <Button
                   onClick={() => handleRemoveSkill(index)}
                   className="ml-1 text-red-500"
@@ -89,6 +94,7 @@ const EditableSkills = () => {
               onChange={(e) => setNewSkill(e.target.value)}
               className="border border-gray-300 rounded px-2 py-1 text-sm"
             />
+
             <Button
               onClick={handleAddSkill}
               disabled={skills.length >= 6}
@@ -101,11 +107,13 @@ const EditableSkills = () => {
               {skills.length}/6 yetenek eklendi
             </span>
           </div>
+
           <Button
             onClick={handleSave}
+            disabled={isUpdating}
             className="mt-4 bg-purple-600 text-white px-4 py-2 rounded text-sm"
           >
-            Kaydet
+            {isUpdating ? "Kaydediliyor..." : "Kaydet"}
           </Button>
         </>
       ) : (
@@ -122,6 +130,4 @@ const EditableSkills = () => {
       )}
     </div>
   );
-};
-
-export default EditableSkills;
+}

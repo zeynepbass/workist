@@ -5,10 +5,11 @@ import { useContext, useEffect, useMemo, useState } from 'react'
 import { PortfolioContext } from '../../../../Context/workContext'
 import { Button } from "@/shared/components/atoms";
 import Message from "@/features/messages/pages/Message";
+import formatToTurkishDate from "@/shared/utils";
 const Index = () => {
   const [selectedAliciId, setSelectedAliciId] = useState(null);
 
-  const { ilanlar, Post, getPost, fetchPost, formatToTurkishDate } = useContext(PortfolioContext);
+  const { ilanlar, Post, getPost, fetchPost } = useContext(PortfolioContext);
   const userid = JSON.parse(localStorage.getItem("login"));
   const Navigate = useNavigate();
   useEffect(() => {
