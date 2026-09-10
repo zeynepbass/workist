@@ -1,5 +1,5 @@
 import { Input } from "@/shared/components/atoms";
-export function AdsPriceField ({
+export default function AdsPriceField ({
     value,
     onChange,
     kodFiyatlandirma,

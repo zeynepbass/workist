@@ -1,6 +1,6 @@
-import { Input } from "@/shared/components/atoms/Input/Input";
+import { Input } from "@/shared/components/atoms";
 
-export function AdsPricingOptions ({
+export default function AdsPricingOptions ({
     kodFiyatlandirma,
     ekstraOzellikler,
     onCheckboxChange,

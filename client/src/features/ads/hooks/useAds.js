@@ -4,7 +4,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { getAds } from "../respositories/ads.repository";
-export function useAds(baseUrl, id) {
+export function useAds(id) {
   const queryClient = useQueryClient();
 
   const login = JSON.parse(

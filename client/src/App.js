@@ -1,8 +1,6 @@
 
 import AppRoutes from "./app/routes/AppRoutes";
 
-const App = () => {
+export default function App()  {
   return <AppRoutes />;
 };
-
-export default App;

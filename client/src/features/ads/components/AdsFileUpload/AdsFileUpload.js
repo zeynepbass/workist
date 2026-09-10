@@ -1,5 +1,5 @@
 import {Input} from "@/shared/components/atoms";
-export function AdsFileUpload ({ value, onChange }){
+export default function AdsFileUpload ({ value, onChange }){
     const handleFileChange = (e) => {
         const file = e.target.files[0];
 

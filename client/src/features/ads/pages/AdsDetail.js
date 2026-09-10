@@ -3,19 +3,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 
 import { useAds } from "../hooks/useAds";
-import { Button,Input } from "@/shared/components/atoms";
+import { Button,Input,Select,Textarea } from "@/shared/components/atoms";
 import { AdsInfo } from "../components/AdsInfo";
 import { AdsWarning } from "../components/AdsWarning";
-import {Select} from "@/shared/components/atoms/Select";
 import {AdsPricingOptions} from "../components/AdsPricingOptions";
 import {AdsPriceField} from "../components/AdsPriceField";
-import {AdsPriceField} from "../components/AdsPriceField";
-import {AdsDescriptionField} from "../../../shared/components/atoms/Textarea";
 import {AdsFileUpload} from "../components/AdsFileUpload";
 
 import {StatusMessage} from "@/shared/components/molecules";
 
-const HizmetFormu = () => {
+export default function AdsDetail (){
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -280,7 +277,7 @@ const HizmetFormu = () => {
                 onChange={setTitle}
             />
 
-            <AdsDescriptionField
+            <Textarea
                 value={form.description}
                 onChange={(value) =>
                     setForm((prev) => ({
@@ -314,5 +311,3 @@ const HizmetFormu = () => {
         </form>
     );
 };
-
-export default HizmetFormu;

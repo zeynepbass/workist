@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft, FaFileImage } from "react-icons/fa";
 import { PortfolioContext } from "../../../../Context/workContext";
-import { Textarea,Button,Input } from "@/shared/components/atoms";
+import { Textarea,Button,Input,Select } from "@/shared/components/atoms";
 const PortfolioForm = () => {
   const { id } = useParams();
   const { detailsPortfolyo, detail, fetchUpdated, userId } =
@@ -92,22 +92,32 @@ const PortfolioForm = () => {
 
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block mb-1 font-semibold text-gray-700">
-                Kategori Seçimi
-              </label>
-              <select
-                name="selectedCategory"
-                value={formData.selectedCategory}
-                onChange={handleChange}
-                className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
-              >
-                <option value="">Seçiniz</option>
-                <option>Grafik & Tasarım</option>
-                <option>Yazı & Çeviri</option>
-                <option>Yazılım & Teknoloji</option>
-              </select>
-            </div>
+          <Select
+  label="            Kategori Seçimi"
+  name="selectedCategory"
+  value={formData.selectedCategory}
+  onChange={handleChange}
+  className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
+
+    options={[
+      {
+        value: "Grafik & Tasarım",
+        label: "Grafik & Tasarım",
+      },
+      {
+        value: "Yazı & Çeviri",
+        label: "Yazı & Çeviri",
+      },
+      {
+        value: "Yazılım & Teknoloji",
+        label: "Yazılım & Teknoloji",
+      }
+    ]}
+    placeholder={null}
+/>
+
+
+
 
             <div>
 
@@ -149,15 +159,25 @@ const PortfolioForm = () => {
                 />
               </div>
               <div className="pt-7">
-                <select
-                  name="currency"
-                  value={formData.currency}
-                  onChange={handleChange}
-                  className="p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
-                >
-                  <option value="TL">TL</option>
-                  <option value="USD">USD</option>
-                </select>
+              <Select
+               name="currency"
+               value={formData.currency}
+               onChange={handleChange}
+               className="p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
+           
+    options={[
+      {
+        value: "TL",
+        label: "TL",
+      },
+      {
+        value: "USD",
+        label: "USD",
+      },
+    ]}
+    placeholder={null}
+ />
+
               </div>
             </div>
           </div>

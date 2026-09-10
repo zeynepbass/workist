@@ -1,7 +1,7 @@
 import { useContext, useState, useRef } from "react";
 import { PortfolioContext } from "../../../../Context/workContext";
-import { Textarea,Button,Input } from "@/shared/components/atoms";
-const PortfolioModal = () => {
+import { Textarea,Button,Input,Select } from "@/shared/components/atoms";
+export function Modal(){
   const { createWork, userId } = useContext(PortfolioContext);
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState(1);
@@ -205,17 +205,27 @@ const PortfolioModal = () => {
                     }
                     className="flex-grow p-3 border-2 border-purple-500 rounded bg-white text-gray-800"
                   />
-
-                  <select
-                    value={formData.currency}
-                    onChange={(e) =>
-                      setFormData({ ...formData, currency: e.target.value })
-                    }
-                    className="p-3 border-2 border-purple-500 rounded bg-white text-gray-800 cursor-pointer"
-                  >
-                    <option value="TL">TL</option>
-                    <option value="USD">USD</option>
-                  </select>
+<Select
+  value={formData.currency}
+  onChange={(e) =>
+    setFormData({
+      ...formData,
+      currency: e.target.value,
+    })
+  }
+  options={[
+    {
+      value: "TL",
+      label: "TL",
+    },
+    {
+      value: "USD",
+      label: "USD",
+    },
+  ]}
+  placeholder={null}
+  className="p-3 border-2 border-purple-500 rounded bg-white text-gray-800 cursor-pointer"
+/>
                 </div>
 
                 <div className="border-2 border-dashed border-purple-300 p-2 rounded bg-gray-50 flex justify-left">
@@ -265,4 +275,4 @@ const PortfolioModal = () => {
   );
 };
 
-export default PortfolioModal;
+

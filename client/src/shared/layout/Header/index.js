@@ -6,8 +6,8 @@ import {
   faMagnifyingGlass,
 } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
-import Profile from '../../../features/auth/pages/Profile';
-import { Button,Input } from '@/shared/components/atoms/Button/Button';
+import Profile from '@/features/auth/pages/Profile';
+import { Button,Input } from '@/shared/components/atoms';
 
 const   Index = () => {
 
