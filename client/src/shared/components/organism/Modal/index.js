@@ -1,6 +1,6 @@
 import { useContext, useState, useRef } from "react";
 import { PortfolioContext } from "../../../../Context/workContext";
-import { Textarea,Button } from "@/shared/components/atoms";
+import { Textarea,Button,Input } from "@/shared/components/atoms";
 const PortfolioModal = () => {
   const { createWork, userId } = useContext(PortfolioContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -169,13 +169,14 @@ const PortfolioModal = () => {
 
             {step === 3 && (
               <form onSubmit={handleFormSubmit} className="space-y-4">
+
                 <h2 className="text-xl font-semibold text-gray-400">
                   Biraz Bahseder misin?
                 </h2>
                 <p className="text-gray-500 italic">
                   Harika! Şimdi portfolyonu oluşturmaya başlayabilirsin. 🚀
                 </p>
-                <input
+                <Input
                   type="text"
                   placeholder="Etkileyici bir başlık"
                   value={formData.title}
@@ -195,7 +196,7 @@ const PortfolioModal = () => {
                 />
 
                 <div className="flex space-x-2 items-center">
-                  <input
+                  <Input
                     type="number"
                     placeholder="Fiyat girin"
                     value={formData.fiyat}
@@ -219,11 +220,10 @@ const PortfolioModal = () => {
 
                 <div className="border-2 border-dashed border-purple-300 p-2 rounded bg-gray-50 flex justify-left">
                   <div className="py-2">
-                    <label className="block mb-2 font-semibold text-gray-700 text-left">
-                      Dosya Seç
-                    </label>
+        
                     <div className="flex justify-center">
-                      <input
+                      <Input
+                      label="Dosya Seç"
                         type="file"
                         accept="image/*"
                         onChange={(e) => {

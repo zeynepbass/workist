@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/shared/components/atoms";
+import { Button,Input } from "@/shared/components/atoms";
 
 export default function EditableSkills({
   userDetails,
@@ -69,7 +69,7 @@ export default function EditableSkills({
                 key={index}
                 className="flex items-center border border-purple-300 rounded px-2 py-1 text-purple-700"
               >
-                <input
+                <Input
                   type="text"
                   className="bg-transparent outline-none text-sm"
                   value={skill}
@@ -87,7 +87,7 @@ export default function EditableSkills({
           </div>
 
           <div className="mt-4 flex items-center gap-2">
-            <input
+            <Input
               type="text"
               placeholder="Yeni alan ekle"
               value={newSkill}

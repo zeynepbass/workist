@@ -74,7 +74,9 @@ const Index = () => {
 
     return (
         <div className="p-4 h-[100vh]">
-            <TopHeader />
+            <TopHeader title="İş İlanlarım"  desc="Tüm iş ilanlarını buradan takip edebilir,
+                yönetebilir ve yeni iş ilanları
+                oluşturabilirsin."/>
 
             <PostSort
                 sortType={sortType}

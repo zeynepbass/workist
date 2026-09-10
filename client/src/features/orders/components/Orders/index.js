@@ -30,7 +30,8 @@ const Index = ({ toggleText, userid, filteredData, formatToTurkishDate, expanded
                   <p className="text-xs text-white">{item.selectedSubcategory}</p>
                 </div>
               </div>
-              <Button                 className="border border-gray-300 px-3 py-1 rounded text-sm text-white hover:bg-gray-100"
+              <Button           
+                    className="border border-gray-300 px-3 py-1 rounded text-sm text-white hover:bg-gray-100"
                 onClick={() => {
                     setSelectedUser({
                     id: item.userId,

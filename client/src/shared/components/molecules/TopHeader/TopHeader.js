@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useAds } from "../hooks/useAds";
 
-export function TopHeader () {
+export function TopHeader ({title,desc}) {
     const { data: posts = [] } = useAds();
 
     const [sortType, setSortType] = useState("all");
@@ -35,15 +35,13 @@ export function TopHeader () {
     return (
         <>
             <h1 className="text-left text-gray-500 text-xl pl-4">
-                İş <strong>İlanlarım</strong>
+           {title} 
             </h1>
 
 
 
             <p className="text-gray-400 p-4">
-                Tüm iş ilanlarını buradan takip edebilir,
-                yönetebilir ve yeni iş ilanları
-                oluşturabilirsin.
+           {desc}     
             </p>
 
 

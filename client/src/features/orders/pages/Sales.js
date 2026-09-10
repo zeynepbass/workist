@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/shared/components/atoms";
+import { TopHeader } from "@/shared/components/molecules";
 const Index = () => {
   const siparislerOrnek = [
     {
@@ -70,12 +71,8 @@ const Index = () => {
 
   return (
     <div className="p-4 h-[100vh] ">
-      <h1 className="text-left text-gray-500 text-xl">
-        Tüm <strong>Satışlarım</strong>
-      </h1>
-
-      <p className="text-gray-400 p-4">Sattığın tüm hizmetler.</p>
-
+      <TopHeader title="Tüm Satışlarım" desc="Sattığın tüm hizmetler."/>
+   
 
       <div className="max-w-4xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow ">
 

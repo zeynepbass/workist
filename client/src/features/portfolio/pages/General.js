@@ -14,12 +14,12 @@ const Index = () => {
   }, [searchQuery]);
   return (
     <div className='h-[100vh]'>
-      <h1 className="text-gray-700 text-2xl font-semibold mb-6 text-left">
+      <p className="text-gray-700 text-2xl font-semibold mb-6 text-left">
         Workis'te Nelere <span className="text-purple-700">Yapıldı 🧙‍♂️</span>
-        <h1 className="text-xl text-gray-400 mb-5">
+        <span className="text-xl text-gray-400 mb-5">
           {searchQuery ? `${searchQuery} için sonuçlar:` : "Tüm İlanlar"}
-        </h1>
-      </h1>
+        </span>
+      </p>
       <div className="p-4 flex flex-wrap gap-1 justify-start  overflow-auto">
 
         {ilanlar.length === 0 ? (

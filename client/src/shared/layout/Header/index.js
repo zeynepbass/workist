@@ -7,6 +7,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import Profile from '../../../features/auth/pages/Profile';
+import { Button,Input } from '@/shared/components/atoms/Button/Button';
 
 const   Index = () => {
 
@@ -52,7 +53,11 @@ const   Index = () => {
       <div className="grid grid-cols-12 items-center gap-4 ">
 
         <div className="col-span-2">
-          <h1 className="text-purple-950 font-bold uppercase cursor-pointer" onClick={() => Navigate("/workist")}>workist</h1>
+          <Button
+          onClick={() => Navigate("/workist")}
+          className="text-purple-950 font-bold uppercase cursor-pointer"
+           >workist</Button>
+    
         </div>
 
 
@@ -63,7 +68,7 @@ const   Index = () => {
               icon={faMagnifyingGlass}
               className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
             />
-            <input
+            <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={(e) => {

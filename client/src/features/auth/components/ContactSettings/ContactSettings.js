@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button } from "@/shared/components/atoms";
+import { Button,Input } from "@/shared/components/atoms";
 
 export default function ContactSettings({
   userDetails,
@@ -59,7 +59,7 @@ export default function ContactSettings({
             <div className="flex flex-col">
               <label className="text-gray-400 text-sm">E-posta</label>
 
-              <input
+              <Input
                 type="email"
                 className="border p-2 rounded"
                 name="email"
@@ -73,7 +73,7 @@ export default function ContactSettings({
             <div className="flex flex-col">
               <label className="text-gray-400 text-sm">Cep Tel</label>
 
-              <input
+              <Input
                 type="text"
                 className="border p-2 rounded"
                 name="tel"
