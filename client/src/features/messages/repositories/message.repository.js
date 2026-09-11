@@ -1,17 +1,40 @@
+import messageProvider from "@/providers/message.provider";
+import { messageAdapter } from "../adapters/messageAdapter";
 
+export async function getMessages(gonderenId, aliciId) {
+    const response = await messageProvider.getMessages(
+        gonderenId,
+        aliciId
+    );
 
-import {userAdapter} from "../../auth/adapters/auth.adapter"
-import messageProvider from "@/providers/message.provider"
-const messageRepository = {
-  getMessages: (userId) =>
-    apiClient.get(`/konusmalar/${userId}`),
+    return response.data.map(messageAdapter);
+}
 
-  getUsers: () =>
-    apiClient.get("/users"),
+export async function getUser(userId) {
+    const response = await messageProvider.getUser(userId);
 
-  getMessageData: (currentId, targetId) =>
-    apiClient.get(`/${currentId}/${targetId}`),
-};
+    return response.data;
+}
 
-export default messageRepository;
+export async function getUsers() {
+    const response = await messageProvider.getUsers();
 
+    return response.data;
+}
+
+export async function getConversations(userId) {
+    const response =
+        await messageProvider.getConversations(userId);
+
+    return response.data;
+}
+
+export async function getMessageData(currentId, targetId) {
+    const response =
+        await messageProvider.getMessageData(
+            currentId,
+            targetId
+        );
+
+    return response.data;
+}

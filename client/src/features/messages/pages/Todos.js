@@ -1,161 +1,134 @@
-import { useContext, useEffect, useState } from "react";
-import { PortfolioContext } from "../../../../Context/workContext";
+import { useState } from "react";
+
 import MessagingUI from "@/features/messages/pages/Message";
-import { Button,Input } from "@/shared/components/atoms";
-import formatToTurkishDate from "@/shared/utils";
-const Index = () => {
-  const [open, setOpen] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
-  const [showCheckboxes, setShowCheckboxes] = useState(false);
-  const [selectedForDelete, setSelectedForDelete] = useState([]);
+import { Button } from "@/shared/components/atoms";
+import { useMessages } from "@/features/messages/hooks/useMessages";
 
-  const {
-    konusmalar,
-    usersLis,
-    userId,
-    firstNameLabel,
-    getMessage,
-    userid,
-    handleDeleteMessagesData,
-  } = useContext(PortfolioContext);
+import ConversationTable from "../components/ConversationTable";
 
-  useEffect(() => {
-    usersLis();
-    getMessage(userId);
-  }, []);
+export default function Todos() {
+    const [open, setOpen] = useState(false);
+    const [selectedId, setSelectedId] = useState(null);
+    const [showCheckboxes, setShowCheckboxes] =
+        useState(false);
+    const [selectedForDelete, setSelectedForDelete] =
+        useState([]);
 
-  const handleClick = (id) => {
-    setSelectedId(id);
-    setOpen(true);
-  };
+    const currentUser = JSON.parse(
+        localStorage.getItem("login")
+    );
 
-  const handleDeleteMessages = async () => {
-    const currentId = userid?.result?._id;
-    for (const targetId of selectedForDelete) {
-      try {
-        handleDeleteMessagesData(currentId, targetId);
-      } catch (error) {
-        console.error("Silme hatası:", error);
-      }
-    }
-    getMessage(userId);
-    setSelectedForDelete([]);
-    setShowCheckboxes(false);
-  };
+    const userId = currentUser?.result?._id;
+    const currentFirstName =
+        currentUser?.result?.firstName;
 
-  const currentUser = JSON.parse(localStorage.getItem("login"));
-  const currentFirstName = currentUser?.result?.firstName;
+    const {
+        konusmalar,
+        users,
+        deleteMessages,
+        isConversationsLoading,
+    } = useMessages(userId, selectedId);
 
-  return (
-    <div className="h-[100vh] p-4">
-      <div className="flex justify-between mb-4">
-        <h4 className="text-left font-semibold text-lg text-gray-400">Todos</h4>
-        <h4
-          className="text-right text-purple-600 cursor-pointer"
-          onClick={() => setShowCheckboxes((prev) => !prev)}
-        >
-          {showCheckboxes ? "İptal Et" : "Yapılanları Temizle"}
-        </h4>
-      </div>
+    const handleClick = (id) => {
+        setSelectedId(id);
+        setOpen(true);
+    };
 
-      <div className="flex justify-start">
-        <table className="table-auto w-[100vh] h-[400px] overflow-auto border bg-white">
-          <thead className="bg-white text-gray-600 font-medium text-center">
-            <tr>
-              <th className="p-4 border">Tarih</th>
-              <th className="p-4 border">Son Mesaj</th>
-              <th className="p-4 border">Alıcı / Gönderici</th>
-              <th className="p-4 border">İşlem</th>
-            </tr>
-          </thead>
+    const handleDeleteMessages = async () => {
+        for (const targetId of selectedForDelete) {
+            try {
+                await deleteMessages(
+                    userId,
+                    targetId
+                );
+            } catch (error) {
+                console.error(
+                    "Silme hatası:",
+                    error
+                );
+            }
+        }
 
-          <tbody className="text-center text-gray-600">
-            {konusmalar.length === 0 && (
-              <tr>
-                <td colSpan={4} className="p-4 text-gray-500 italic">
-                  Henüz mesaj yok
-                </td>
-              </tr>
-            )}
+        setSelectedForDelete([]);
+        setShowCheckboxes(false);
+    };
 
-            {konusmalar.map((item, index) => {
-              const user = firstNameLabel.find(
-                (u) => u._id === item.aliciId || u._id === item.gonderenId
-              );
-              const isSameUser = user?.firstName === currentFirstName;
-              const otherUserId =
-                item.gonderenId === userId ? item.aliciId : item.gonderenId;
+    return (
+        <div className="h-[100vh] p-4">
 
-              return (
-                <tr
-                  key={index}
-                  className={isSameUser ? "" : "line-through text-green-500"}
+            <div className="mb-4 flex justify-between">
+                <h4 className="text-lg font-semibold text-gray-400">
+                    Todos
+                </h4>
+
+                <h4
+                    className="cursor-pointer text-purple-600"
+                    onClick={() =>
+                        setShowCheckboxes(
+                            (prev) => !prev
+                        )
+                    }
                 >
-                  <td>
-                    {showCheckboxes && (
-                      <Input
-                        type="checkbox"
-                        checked={selectedForDelete.includes(otherUserId)}
-                        onChange={() => {
-                          setSelectedForDelete((prev) =>
-                            prev.includes(otherUserId)
-                              ? prev.filter((id) => id !== otherUserId)
-                              : [...prev, otherUserId]
-                          );
-                        }}
-                        className="mr-2"
-                      />
-                    )}
-                    {formatToTurkishDate(item.time)}
-                  </td>
-                  <td>{item.text}</td>
+                    {showCheckboxes
+                        ? "İptal Et"
+                        : "Yapılanları Temizle"}
+                </h4>
+            </div>
 
-                  <td>
-                    {isSameUser
-                      ? currentFirstName
-                      : user?.firstName || "Bilinmeyen Kullanıcı"}
-                  </td>
+            <ConversationTable
+                conversations={konusmalar}
+                users={users}
+                currentUserId={userId}
+                currentFirstName={currentFirstName}
+                isLoading={
+                    isConversationsLoading
+                }
+                showCheckboxes={
+                    showCheckboxes
+                }
+                selectedForDelete={
+                    selectedForDelete
+                }
+                onSelectForDelete={
+                    setSelectedForDelete
+                }
+                onOpenConversation={
+                    handleClick
+                }
+            />
 
-                  <td>
-                    <Button
-                      onClick={() => handleClick(otherUserId)}
-                      className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition"
-                    >
-                      {isSameUser ? "Mesajın Var" : "Cevap Ver"}
-                    </Button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+            {showCheckboxes &&
+                selectedForDelete.length > 0 && (
+                    <div className="mt-4 text-right">
+                        <Button
+                            onClick={
+                                handleDeleteMessages
+                            }
+                            className="rounded bg-red-600 px-4 py-2 text-white transition hover:bg-red-700"
+                        >
+                            Seçilenleri Sil
+                        </Button>
+                    </div>
+                )}
 
-      {showCheckboxes && selectedForDelete.length > 0 && (
-        <div className="mt-4 text-right">
-          <Button
-            onClick={handleDeleteMessages}
-            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
-          >
-            Seçilenleri Sil
-          </Button>
+            {open && selectedId && (
+                <MessagingUI
+                    open={open}
+                    onClose={() =>
+                        setOpen(false)
+                    }
+                    adi={
+                        users.find(
+                            (user) =>
+                                user._id ===
+                                selectedId
+                        )?.firstName ||
+                        "Kullanıcı"
+                    }
+                    gonderenId={userId}
+                    aliciId={selectedId}
+                />
+            )}
         </div>
-      )}
-
-      {open && selectedId && (
-        <MessagingUI
-          open={open}
-          onClose={() => setOpen(false)}
-          adi={
-            firstNameLabel.find((u) => u._id === selectedId)?.firstName ||
-            "Kullanıcı"
-          }
-          gonderenId={userid?.result?._id}
-          aliciId={selectedId}
-        />
-      )}
-    </div>
-  );
-};
-
-export default Index;
+    );
+}
