@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
-
+import {StatusMessage} from "@/shared/components/molecules"
 import { Button } from "@/shared/components/atoms";
 import { useDetails } from "../hooks/useDetails";
 const Modal = lazy(() =>
@@ -16,8 +16,13 @@ export default function MyProfile  ()  {
     Navigate("/hesap-donduruldu");
   };
   if (isLoading) {
-    return <div>Yükleniyor...</div>;
-  }
+    return (
+        <StatusMessage
+            type="loading"
+            message="Yükleniyor..."
+        />
+    );
+}
   return (
     <div className="flex flex-col md:flex-row gap-6 px-20 h-[90vh] ">
       <div className="w-full md:w-1/3 space-y-4">

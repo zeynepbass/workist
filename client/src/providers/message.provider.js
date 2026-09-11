@@ -1,8 +1,13 @@
-import * as messageApi from "../features/auth/api/message.api"
+import * as messageApi from "../features/messages/api/message.api";
 
-export const authProvider={
-login:authApi.login,
-register:authApi.register,
-account:authApi.account,
-details:authApi.details
-}
+export const messageProvider = {
+    getMessages: messageApi.getMessages,
+
+    getUser: messageApi.getUser,
+
+    getUsers: messageApi.getUsers,
+
+    getConversations: messageApi.getConversations,
+
+    getMessageData: messageApi.getMessageData,
+};

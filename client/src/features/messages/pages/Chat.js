@@ -1,172 +1,175 @@
-import { useContext, useEffect, useState } from "react";
-import { PortfolioContext } from "../../../Context/workContext";
+import { useEffect, useMemo, useState } from "react";
 import io from "socket.io-client";
-import { Button,Input } from "@/shared/components/atoms";
-import formatToTurkishDate from "@/shared/utils";
+
+import { useMessages } from "../hooks/useMessages";
+import { messageAdapter } from "../adapters/messageAdapter";
+
+import ChatUserList from "../components/ChatUserList";
+import ChatMessageList from "../components/ChatMessageList";
+import ChatInput from "../components/ChatInput";
+
 const socket = io(process.env.REACT_APP_BASE_URL);
 
-const MessagingUI = () => {
-  const {
-    Message,
-    messages,
-    setMessages,
-    usersListPerson,
-    userList,
-    getMessage,
-  } = useContext(PortfolioContext);
+export default function Chat() {
+    const currentUser = JSON.parse(
+        localStorage.getItem("login")
+    );
 
-  const [aliciId, setAliciId] = useState(null);
-  const currentUser = JSON.parse(localStorage.getItem("login"));
-  const gonderenId = currentUser?.result?._id;
-  const [newMessage, setNewMessage] = useState("");
+    const gonderenId = currentUser?.result?._id;
 
-  const findUserPhotoById = (id) => {
-    const user = userList.find((u) => u._id === id);
-    return user?.file || "https://via.placeholder.com/40";
-  };
+    const [aliciId, setAliciId] = useState(null);
+    const [newMessage, setNewMessage] = useState("");
 
-  useEffect(() => {
-    if (gonderenId && aliciId) {
-      Message(gonderenId, aliciId);
-    }
-    usersListPerson(gonderenId);
-    getMessage(gonderenId);
-  }, [aliciId]);
+    const {
+        messages,
+        userList,
+        addMessageToCache,
+        isMessagesLoading,
+        isUsersLoading,
+    } = useMessages(gonderenId, aliciId);
 
-  useEffect(() => {
-    socket.on("receiveMessage", (msg) => {
-      if (
-        (msg.gonderenId === gonderenId && msg.aliciId === aliciId) ||
-        (msg.gonderenId === aliciId && msg.aliciId === gonderenId)
-      ) {
-        setMessages((prev) => [...prev, msg]);
-      }
-    });
+    const findUserPhotoById = (id) => {
+        const user = userList.find(
+            (user) => user._id === id
+        );
 
-    return () => socket.off("receiveMessage");
-  }, [gonderenId, aliciId]);
-
-  const handleSend = (e) => {
-    e.preventDefault();
-    if (newMessage.trim() === "") return;
-
-    const msgData = {
-      gonderenId,
-      aliciId,
-      text: newMessage,
+        return (
+            user?.file ||
+            "https://via.placeholder.com/40"
+        );
     };
 
-    socket.emit("sendMessage", msgData);
-    setNewMessage("");
-  };
+    const filteredUsers = useMemo(() => {
+        if (!userList.length || !messages.length) {
+            return [];
+        }
 
-  const filtred = userList.filter((user) =>
-    messages.some(
-      (msg) =>
-        (msg.gonderenId === currentUser?.result?._id &&
-          msg.aliciId === user._id) ||
-        (msg.aliciId === currentUser?.result?._id &&
-          msg.gonderenId === user._id)
-    )
-  );
+        return userList.filter((user) =>
+            messages.some(
+                (msg) =>
+                    (
+                        msg.senderId === gonderenId &&
+                        msg.receiverId === user._id
+                    ) ||
+                    (
+                        msg.receiverId === gonderenId &&
+                        msg.senderId === user._id
+                    )
+            )
+        );
+    }, [userList, messages, gonderenId]);
 
-  return (
-    <div className="flex h-screen bg-gray-100 font-sans">
-      <div className="w-1/3 border-r bg-white p-4">
-        <h2 className="text-xl font-semibold mb-4">Gelen Kutusu</h2>
-        <ul className="space-y-2 overflow-y-auto h-[calc(100vh-150px)]">
-          {filtred &&
-            filtred.map((user) => (
-              <li
-                key={user._id}
-                onClick={() => setAliciId(user._id)}
-                className={`p-3 rounded cursor-pointer ${
-                  aliciId === user._id ? "bg-purple-100" : "hover:bg-gray-100"
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <img
-                    src={user?.file}
-                    alt="resim"
-                    width="50"
-                    height="50"
-                    className="rounded-full"
-                  />
-                  <p className="text-sm font-medium">
-                    {user.firstName} {user.lastName}
-                  </p>
-                </div>
-              </li>
-            ))}
-        </ul>
-      </div>
+    useEffect(() => {
+        const handleReceiveMessage = (msg) => {
+            if (
+                (
+                    msg.gonderenId === gonderenId &&
+                    msg.aliciId === aliciId
+                ) ||
+                (
+                    msg.gonderenId === aliciId &&
+                    msg.aliciId === gonderenId
+                )
+            ) {
+                addMessageToCache(
+                    messageAdapter(msg)
+                );
+            }
+        };
 
-      <div className="flex-1 flex flex-col p-6 bg-gray-50">
-        <h3 className="text-lg font-semibold mb-4">Mesajlar</h3>
+        socket.on(
+            "receiveMessage",
+            handleReceiveMessage
+        );
 
-        <div className="flex-1 overflow-y-auto space-y-4">
-          {messages.length === 0 ? (
-            <p className="text-gray-500 italic">Henüz mesaj yok</p>
-          ) : (
-            messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`flex ${
-                  msg.gonderenId === gonderenId
-                    ? "justify-end"
-                    : "justify-start"
-                } mb-2`}
-              >
-                <div className="max-w-md flex items-center gap-2">
-                  {msg.gonderenId !== gonderenId && (
-                    <img
-                      src={findUserPhotoById(msg.gonderenId)}
-                      width="40"
-                      height="40"
-                      className="rounded-full "
-                      alt="profil"
-                    />
-                  )}
+        return () => {
+            socket.off(
+                "receiveMessage",
+                handleReceiveMessage
+            );
+        };
+    }, [
+        gonderenId,
+        aliciId,
+        addMessageToCache,
+    ]);
 
-                  <div
-                    className={`px-4 py-2 rounded-lg ${
-                      msg.gonderenId === gonderenId
-                        ? "bg-purple-600 text-white rounded-tr-none"
-                        : "bg-gray-300 text-gray-900 rounded-tl-none"
-                    }`}
-                  >
-                    <p className="text-sm">{msg.text}</p>
-                    <p className="text-xs mt-1 opacity-60">
-                      {formatToTurkishDate(msg.time)}
+    const handleSend = (e) => {
+        e.preventDefault();
+
+        if (
+            !newMessage.trim() ||
+            !aliciId ||
+            !gonderenId
+        ) {
+            return;
+        }
+
+        const msgData = {
+            gonderenId,
+            aliciId,
+            text: newMessage.trim(),
+        };
+
+        socket.emit(
+            "sendMessage",
+            msgData
+        );
+
+        setNewMessage("");
+    };
+
+    return (
+        <div className="flex h-screen bg-gray-100 font-sans">
+
+    
+            <div className="w-1/3 border-r bg-white p-4">
+
+                <h2 className="mb-4 text-xl font-semibold">
+                    Gelen Kutusu
+                </h2>
+
+                <ChatUserList
+                    users={filteredUsers}
+                    selectedUserId={aliciId}
+                    onSelect={setAliciId}
+                    isLoading={isUsersLoading}
+                />
+
+            </div>
+
+
+            <div className="flex flex-1 flex-col bg-gray-50 p-6">
+
+                <h3 className="mb-4 text-lg font-semibold">
+                    Mesajlar
+                </h3>
+
+                {!aliciId ? (
+                    <p className="italic text-gray-500">
+                        Mesajlaşmak için bir kullanıcı seçin.
                     </p>
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
+                ) : (
+                    <ChatMessageList
+                        messages={messages}
+                        currentUserId={gonderenId}
+                        isLoading={isMessagesLoading}
+                        findUserPhotoById={
+                            findUserPhotoById
+                        }
+                    />
+                )}
+
+                <ChatInput
+                    value={newMessage}
+                    onChange={(e) =>
+                        setNewMessage(e.target.value)
+                    }
+                    onSubmit={handleSend}
+                    disabled={!aliciId}
+                />
+
+            </div>
         </div>
-
-        <form
-          onSubmit={handleSend}
-          className="p-3 border-t bg-white flex items-center space-x-2"
-        >
-          <Input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            className="flex-1 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-            placeholder="Mesajınızı yazın..."
-          />
-          <Button
-            type="submit"
-            className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition"
-          >
-            Gönder
-          </Button>
-        </form>
-      </div>
-    </div>
-  );
-};
-
-export default MessagingUI;
+    );
+}
