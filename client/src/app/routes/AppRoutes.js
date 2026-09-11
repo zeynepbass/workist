@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 
 import PrivateRoute from "./PrivateRoute";
 import Layouts from "@/shared/layout";
-import Section from "@/features/orders/pages/Section";
+import Section from "@/features/orders/pages/BuyerRequest";
 import General from "@/features/portfolio/pages/General";
 import Ads from "@/features/ads/pages/AdsPage";
 import AdsDetail from "@/eatures/ads/pages/AdsDetail";
