@@ -1,4 +1,4 @@
-import apiClient from "@/infrastructure/http/apiClient";
+import apiClient from "@/shared/api";
 
 export const messageApi = {
     getMessages: (gonderenId, aliciId) =>

@@ -1,14 +1,38 @@
-import apiClient from "@/infrastructure/http/apiClient";
-export const portfolioRepository = {
-    getByUserId: (userId) =>
-      apiClient.get(`/portfolyo/${userId}`),
-  
-    create: (data) =>
-      apiClient.post("/portfolyo", data),
-  
-    update: (id, data) =>
-      apiClient.put(`/portfolyo/${id}`, data),
-  
-    remove: (id) =>
-      apiClient.delete(`/portfolyo/${id}`),
-  };
+import apiClient from "@/shared/api";
+
+export async function searchPosts(searchQuery) {
+    const response = await apiClient.get("/ilanlar", {
+        params: searchQuery
+            ? { search: searchQuery }
+            : {},
+    });
+
+    return response.data;
+}
+
+export async function getUserPortfolios(userId) {
+    const response = await apiClient.get(`/portfolyo/${userId}`);
+
+    return response.data;
+}
+
+export async function deletePortfolio(id) {
+    const response = await apiClient.delete(`/portfolyo/${id}`);
+
+    return response.data;
+}
+
+export async function getPortfolioDetail(id) {
+    const response = await apiClient.get(`/portfolyo/${id}`);
+
+    return response.data;
+}
+
+export async function updatePortfolio(id, formData) {
+    const response = await apiClient.put(
+        `/portfolyo/${id}`,
+        formData
+    );
+
+    return response.data;
+}

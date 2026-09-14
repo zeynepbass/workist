@@ -1,4 +1,4 @@
-import {ordersAdapter} from "../adapters/orders.adapter"
+import {ordersAdapter} from "../orders.adapter"
 import ordersProvider from "@/providers/orders.provider"
 export function getUserPosts(){
     return{

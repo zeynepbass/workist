@@ -1,4 +1,4 @@
-import apiClient from "@/infrastructure/http/apiClient";
+import apiClient from "@/shared/api";
 export const authRepository = {
     login: (data) =>
       apiClient.post("/signin", data),
