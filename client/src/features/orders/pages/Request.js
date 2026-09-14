@@ -1,128 +1,107 @@
-import { useContext, useEffect, useMemo, useState } from 'react'
-import { PortfolioContext } from '../../../../Context/workContext'
+import { useMemo, useState } from "react";
+import { useOrders } from "@/features/orders/hooks/useOrders";
+import StatusMessage from "@/molecules/StatusMessage";
 
-import formatToTurkishDate from "@/shared/utils";
-const Index = () => {
-    const { ilanlar, Post, getPost, fetchPost } = useContext(PortfolioContext);
-    const userid = JSON.parse(localStorage.getItem("login"));
+import BuyerRequestHeader from "@/features/orders/components/BuyerRequestHeader";
+import BuyerRequestList from "@/features/orders/components/BuyerRequestList";
+import Message from "@/features/messages/pages/Message";
 
-    useEffect(() => {
-        getPost();
-        fetchPost(userid?.result?._id);
-    }, []);
+export default function Request() {
+    const [expandedItems, setExpandedItems] = useState({});
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [open, setOpen] = useState(false);
+
+    const login = JSON.parse(localStorage.getItem("login"));
+    const userId = login?.result?._id;
+
+    const {
+        userPosts,
+        posts,
+        isUserPostsLoading,
+        isPostsLoading,
+        isUserPostsError,
+        isPostsError,
+    } = useOrders(userId);
 
     const filteredData = useMemo(() => {
-        const selectedCategories = Post.map((item) => item.selectedCategory);
-        return ilanlar.filter((item) =>
-            selectedCategories.includes(item.selectedCategory)
+        if (!posts || !userPosts) {
+            return [];
+        }
+
+        const selectedCategories = userPosts.map(
+            (item) => item.selectedCategory
         );
-    }, [ilanlar, Post]);
 
-    const [expandedItems, setExpandedItems] = useState({});
+        return posts
+            .filter(
+                (item) =>
+                    selectedCategories.includes(item.selectedCategory) &&
+                    item.userId !== userId
+            )
+            .reverse();
+    }, [posts, userPosts, userId]);
 
-    const toggleText = (index) => {
+    const toggleText = (id) => {
         setExpandedItems((prev) => ({
             ...prev,
-            [index]: !prev[index],
+            [id]: !prev[id],
         }));
     };
-    const [open, setOpen] = useState(false);
-    const [selectedUser, setSelectedUser] = useState(null); 
-  
-  
-    const data = filteredData.filter((item) => item.userId !== userid?.result?._id);
+
+    const handleMessage = (item) => {
+        setSelectedUser({
+            id: item.userId,
+            adi: item.kullaniciAd,
+        });
+
+        setOpen(true);
+    };
+
+    const handleCloseMessage = () => {
+        setOpen(false);
+        setSelectedUser(null);
+    };
+
+    if (isUserPostsLoading || isPostsLoading) {
+        return (
+            <StatusMessage
+                type="info"
+                message="Alıcı istekleri yükleniyor..."
+            />
+        );
+    }
+
+    if (isUserPostsError || isPostsError) {
+        return (
+            <StatusMessage
+                type="error"
+                message="Alıcı istekleri yüklenirken bir hata oluştu."
+            />
+        );
+    }
+
     return (
         <div className="mx-auto p-4 rounded-lg h-[100vh] overflow-auto">
-          <h2 className="text-2xl font-semibold text-gray-500 mb-1">
-            Bana Uygun <span className="text-gray-600 font-bold">Alıcı İstekleri</span>
-          </h2>
-          <p className="text-gray-500 mb-4">
-            Hizmet verdiğin kategorilerle en iyi eşleşen alıcı isteklerini senin için toparladık. 😉
-          </p>
-             {data.reverse().map((item) => {
-                  const isExpanded = expandedItems[item._id] || false;
-          
-                  return (
-                    <div className="bg-gray-50 rounded-lg shadow mt-3 relative" key={item._id}>
-          
-                      <div className="flex items-center justify-between mb-2 bg-gray-800 p-4 rounded-md">
-                        <div className="flex items-center gap-3">
-                          {item?.file && (
-                            <img
-                              className="h-12 w-12 rounded-full object-cover"
-                              src={item?.file}
-                              alt="Kullanıcı Fotoğrafı"
-                            />
-                          )}
-                          <div>
-                            <p className="text-sm font-semibold text-white">{item.kullaniciAd}</p>
-                            <p className="text-xs text-white">{item.selectedSubcategory}</p>
-                          </div>
-                        </div>
-                        <Button           
-                              className="border border-gray-300 px-3 py-1 rounded text-sm text-white hover:bg-gray-100"
-                          onClick={() => {
-                              setSelectedUser({
-                              id: item.userId,
-                              adi: item.kullaniciAd,
-                            });
-                            setOpen(true);
-                          }}
-                        >
-                          Mesaj At
-                  </Button>
-          
-                      </div>
-          
-            
-            
-                      <h3 className="font-semibold text-gray-900 mb-2 p-4">{item.title}</h3>
-          
-          
-                      <p className="text-gray-700 text-sm mb-2 p-4">
-                        {isExpanded ? item.description : `${item.description.slice(0, 400)}...`}
-                      </p>
-          
-                      {item.description.length > 400 && (
-                        <p
-                          className="text-purple-500 font-semibold text-sm cursor-pointer p-4"
-                          onClick={() => toggleText(item._id)}
-                        >
-                          {isExpanded ? "Gizle" : "Devamını oku"}
-                        </p>
-                      )}
-          
-                      <hr />
-          
-          
-                      <div className="flex justify-between items-center mt-4 text-sm text-gray-600 p-4">
-                        <span className="bg-gray-100 px-2 py-1 rounded text-gray-500">
-                          {formatToTurkishDate(item.createdAt)}
-                        </span>
-                        <div className="flex space-x-4">
-                          <span>Bütçe: <strong>{item.fiyat}</strong></span>
-                          <span>Süre: <strong>{item.sure}</strong></span>
-                          <span>Teklifler: <strong>10</strong></span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-          
-            
-                {open && selectedUser && (
-                  <MessagingUI
+
+            <BuyerRequestHeader />
+
+            <BuyerRequestList
+                items={filteredData}
+                expandedItems={expandedItems}
+                onToggleText={toggleText}
+                onMessage={handleMessage}
+            />
+
+            {open && selectedUser && (
+                <Message
                     open={open}
-                    onClose={setOpen}
+                    onClose={handleCloseMessage}
                     adi={selectedUser.adi}
-                    gonderenId={userid?.result?._id}
+                    gonderenId={userId}
                     aliciId={selectedUser.id}
-                  />
-                )}
-</div>
-      );
-      
-};
+                />
+            )}
 
-
-export default Index
+        </div>
+    );
+}
