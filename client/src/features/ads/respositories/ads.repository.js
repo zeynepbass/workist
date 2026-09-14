@@ -1,4 +1,4 @@
-import { adsAdapter } from "../adapters/ads.adapters"
+import { adsAdapter } from "../ads.adapters"
 import adsProvider from "@/providers/ads.provider"
 export function getAds(){
     return{

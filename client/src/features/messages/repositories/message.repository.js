@@ -1,5 +1,5 @@
 import messageProvider from "@/providers/message.provider";
-import { messageAdapter } from "../adapters/messageAdapter";
+import { messageAdapter } from "../messageAdapter";
 
 export async function getMessages(gonderenId, aliciId) {
     const response = await messageProvider.getMessages(

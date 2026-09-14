@@ -1,4 +1,4 @@
-import {userAdapter} from "../adapters/auth.adapter"
+import {userAdapter} from "../auth.adapter"
 import authProvider from "@/providers/auth.provider"
 export async function login(){
     const response=await authProvider.login("/signin")

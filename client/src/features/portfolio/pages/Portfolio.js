@@ -1,174 +1,135 @@
-import { useState, useMemo, useContext, useEffect, lazy, Suspense } from "react";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPen,
-  faTrash,
-  faEye,
-  faEyeSlash,
-} from "@fortawesome/free-solid-svg-icons";
+import { useState, useMemo, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
-import { PortfolioContext } from "../../../Context/workContext";
 
-import { Button,Select } from "@/shared/components/atoms";
-import { TopHeader } from "@/shared/components/molecules";
+import { usePortfolio } from "@/features/portfolio/hooks/usePortfolio";
+
+import {
+    PortfolioFilters,
+    PortfolioList,
+} from "@/features/portfolio/components";
+
+import {
+    StatusMessage,
+    TopHeader,
+} from "@/shared/components/molecules";
+
 const Modal = lazy(() =>
-  import("@/shared/components/organisms").then((module) => ({
-    default: module.Modal,
-  }))
+    import("@/shared/components/organisms").then((module) => ({
+        default: module.Modal,
+    }))
 );
-export default function Index  () {
-  const navigate = useNavigate();
-  const { data, setData, deleteClick, fetchResponse, userId } =
-    useContext(PortfolioContext);
-  const handleEditClick = (id) => {
-    navigate(`/portfolyom/${id}`);
-  };
 
-  const [filtreDurum, setFiltreDurum] = useState("yayinda");
+export default function Portfolio() {
+    const navigate = useNavigate();
 
-  const filtrelenmisPortfolyolar = useMemo(() => {
-    if (!data) return [];
-    return data.filter((p) => p.durum === filtreDurum);
-  }, [data, filtreDurum]);
+    const [filtreDurum, setFiltreDurum] = useState("yayinda");
 
-  const userid = JSON.parse(localStorage.getItem("login"));
-  useEffect(() => {
-    const userId = userid?.result?._id;
-    fetchResponse(userId);
-  }, []);
-  const toggleDurum = (id) => {
-    setData((prev) =>
-      prev.map((p) =>
-        p._id === id
-          ? { ...p, durum: p.durum === "yayinda" ? "yayinda değil" : "yayinda" }
-          : p
-      )
+    const login = JSON.parse(localStorage.getItem("login"));
+
+    const userId = login?.result?._id;
+    const firstName = login?.result?.firstName;
+    const unvan = login?.result?.unvan;
+
+    const {
+        userPortfolios,
+        isUserPortfoliosLoading,
+        isUserPortfoliosError,
+
+        deletePortfolio,
+        isDeleting,
+
+        updatePortfolioStatus,
+        isUpdatingStatus,
+    } = usePortfolio("", userId);
+
+    const handleEditClick = (id) => {
+        navigate(`/portfolyom/${id}`);
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            await deletePortfolio(id);
+        } catch (error) {
+            console.error(
+                "Portfolyo silme hatası:",
+                error
+            );
+        }
+    };
+
+
+    const toggleDurum = (id) => {
+      setData((prev) =>
+        prev.map((p) =>
+          p._id === id
+            ? { ...p, durum: p.durum === "yayinda" ? "yayinda değil" : "yayinda" }
+            : p
+        )
+      );
+    };
+
+
+    const filtrelenmisPortfolyolar = useMemo(() => {
+        if (!userPortfolios) return [];
+
+        return userPortfolios.filter((portfolio) => {
+            if (filtreDurum === "yayinda") {
+                return portfolio.durum === "yayinda";
+            }
+
+            return portfolio.durum !== "yayinda";
+        });
+    }, [userPortfolios, filtreDurum]);
+
+    if (isUserPortfoliosLoading) {
+        return (
+            <StatusMessage
+                type="loading"
+                message="Portfolyolar yükleniyor..."
+            />
+        );
+    }
+
+    if (isUserPortfoliosError) {
+        return (
+            <StatusMessage
+                type="error"
+                message="Portfolyolar yüklenirken bir hata oluştu."
+            />
+        );
+    }
+
+    return (
+        <div className="p-4 h-[100vh]">
+
+            <TopHeader
+                title="Portfolyom"
+                desc="Tüm portfolyonu buradan takip edebilir, yönetebilir ve yeni portfolyolar ekleyebilirsin."
+            />
+
+            <Suspense fallback={<div>Yükleniyor...</div>}>
+                <Modal />
+            </Suspense>
+
+            <PortfolioFilters
+                value={filtreDurum}
+                onChange={(e) =>
+                    setFiltreDurum(e.target.value)
+                }
+            />
+
+            <PortfolioList
+                portfolios={filtrelenmisPortfolyolar}
+                firstName={firstName}
+                unvan={unvan}
+                userId={userId}
+                onToggleStatus={toggleDurum}
+                onEdit={handleEditClick}
+                onDelete={handleDelete}
+                isDeleting={isDeleting}
+                isUpdatingStatus={isUpdatingStatus}
+            />
+
+        </div>
     );
-  };
-  return (
-    <div className="p-4 h-[100vh]">
-      <TopHeader title="Portfolyom" desc="       Tüm portfolyonu buradan takip edebilir, yönetebilir ve yeni portfolyolar
-        ekleyebilirsin."/>
-
-              <Suspense fallback={<div>Yükleniyor...</div>}>
-        <Modal />
-      </Suspense>
-
-
-      <div className="max-w-md mr-auto p-4 relative">
-
-
-  <Select
-  label="Durum Filtrele:"
-    id="filtre"
-    value={filtreDurum}
-    onChange={(e) => setFiltreDurum(e.target.value)}
-    options={[
-      {
-        value: "yayinda",
-        label: "Yayında olanlar",
-      },
-      {
-        value: "yayindaDegil",
-        label: "Yayında olmayanlar",
-      },
-    ]}
-    placeholder={null}
-    className="border-gray-300 rounded-md text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
-  />
-
-        <p className="mt-4 text-gray-600">
-          Seçilen durum:{" "}
-          <span className="font-semibold">
-            {filtreDurum === "yayinda"
-              ? "Yayında olanlar"
-              : "Yayında olmayanlar"}
-          </span>
-        </p>
-      </div>
-      <div className="flex flex-wrap gap-1">
-        {filtrelenmisPortfolyolar.length === 0 ? (
-          <p className="w-full text-center p-6 text-gray-500 italic">
-            Seçilen duruma göre portfolyo bulunamadı.
-          </p>
-        ) : (
-          filtrelenmisPortfolyolar.map((p, index) => (
-            <div
-              key={index}
-              className="relative bg-white rounded-lg shadow-md border w-full sm:w-1/4 p-4 flex flex-col"
-            >
-              {userId === p.userId && (
-                <div className="absolute top-2 right-2 rounded-lg p-2 flex space-x-2 bg-gray-800 rounded-bl-md z-10 ">
-                  <Button
-                    onClick={() => toggleDurum(p._id)}
-                    className="text-gray-200 hover:text-white"
-                    title={
-                      p.durum === "yayinda" ? "Yayından kaldır" : "Yayına ekle"
-                    }
-                  >
-                    <FontAwesomeIcon
-                      icon={p.durum === "yayinda" ? faEye : faEyeSlash}
-                      size="lg"
-                    />
-                  </Button>
-
-                  <Button
-                    onClick={() => handleEditClick(p._id)}
-                    className="text-gray-200 hover:text-white"
-                    title="Düzenle"
-                  >
-                    <FontAwesomeIcon icon={faPen} size="lg" />
-                  </Button>
-
-                  <Button
-                    onClick={() => deleteClick(p._id)}
-                    className="text-gray-200 hover:text-white"
-                    title="Sil"
-                  >
-                    <FontAwesomeIcon icon={faTrash} size="lg" />
-                  </Button>
-                </div>
-              )}
-
-              <div className="mt-6 p-4 h-[15vh]">
-                <div className="w-full h-[100%] overflow-hidden">
-                  <img
-                    src={p.file}
-                    className="w-full h-full object-contain rounded-md"
-                    alt="İlan görseli"
-                  />
-                </div>
-
-                <div className="flex items-center justify-between mt-3 space-x-4">
-                  <div>
-                    <span className="font-semibold text-lg text-gray-800">
-                      {userid?.result?.firstName}
-                    </span>
-                    <br />
-                    <p className="text-sm text-gray-400">
-                      {userid?.result?.unvan || "Unvan"}
-                    </p>
-                  </div>
-
-                  <div className="text-lg font-bold text-purple-900">
-                    fiyat:{p.fiyat}
-                  </div>
-                </div>
-              </div>
-
-              <br />
-              <br />
-              <p className="mt-4 text-gray-400 text-sm pl-4 pt-2">{p.title}</p>
-              <p className="mt-4 text-gray-400 text-sm pl-4 ">
-                {p.description}
-              </p>
-            </div>
-          ))
-        )}
-      </div>
-    </div>
-  );
-};
-
-
+}
