@@ -26,7 +26,9 @@ import Register from "@/features/auth/pages/Register";
 
 export default function AppRoutes() {
   return (
+  
     <Routes>
+
       <Route path="/" element={<Login />} />
 
       <Route path="/kayit-ol" element={<Register />} />
@@ -75,7 +77,7 @@ export default function AppRoutes() {
         path="*"
         element={
           <img
-            src="https://serdivan.bel.tr/fa831c5256308e91e776e9e483effa49/24/vecteezy_404-landing-page_6549647.png"
+            src="/assets/404.jpg"
             width="100%"
             height="100%"
             alt="404"
