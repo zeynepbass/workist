@@ -13,7 +13,6 @@ export function usePortfolio(
 ) {
     const queryClient = useQueryClient();
 
-
     const searchPostsRepository =
         portfolioRepository.SearchPosts();
 
@@ -29,35 +28,88 @@ export function usePortfolio(
     const updateRepository =
         portfolioRepository.updatePortfolio();
 
+    const updateStatusRepository =
+        portfolioRepository.updatePortfolioStatus();
 
     const postsQuery = useQuery({
         queryKey: ["portfolio", searchQuery],
+
         queryFn: () =>
             searchPostsRepository.searchPosts(
                 searchQuery
             ),
     });
 
-
     const userPortfoliosQuery = useQuery({
-        queryKey: ["portfolio", "user", userId],
+        queryKey: [
+            "portfolio",
+            "user",
+            userId,
+        ],
+
         queryFn: () =>
             userPortfoliosRepository.getUserPortfolios(
                 userId
             ),
+
         enabled: !!userId,
     });
 
-
     const detailQuery = useQuery({
-        queryKey: ["portfolio", "detail", portfolioId],
+        queryKey: [
+            "portfolio",
+            "detail",
+            portfolioId,
+        ],
+
         queryFn: () =>
             detailRepository.getPortfolioDetail(
                 portfolioId
             ),
+
         enabled: !!portfolioId,
     });
 
+
+    const updateStatusMutation = useMutation({
+        mutationFn: ({ id, durum }) =>
+            updateStatusRepository.updatePortfolioStatus(
+                id,
+                durum
+            ),
+
+        onSuccess: (_, variables) => {
+            const { id, durum } = variables;
+
+            queryClient.setQueryData(
+                [
+                    "portfolio",
+                    "user",
+                    userId,
+                ],
+                (oldPosts = []) =>
+                    oldPosts.map((item) =>
+                        item.id === id
+                            ? {
+                                  ...item,
+                                  durum,
+                              }
+                            : item
+                    )
+            );
+
+            queryClient.invalidateQueries({
+                queryKey: ["portfolio"],
+            });
+        },
+
+        onError: (error) => {
+            console.error(
+                "Portfolyo durumu güncelleme hatası:",
+                error
+            );
+        },
+    });
 
     const deleteMutation = useMutation({
         mutationFn: (id) =>
@@ -65,15 +117,25 @@ export function usePortfolio(
 
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["portfolio", "user", userId],
+                queryKey: [
+                    "portfolio",
+                    "user",
+                    userId,
+                ],
             });
 
             queryClient.invalidateQueries({
                 queryKey: ["portfolio"],
             });
         },
-    });
 
+        onError: (error) => {
+            console.error(
+                "Portfolyo silme hatası:",
+                error
+            );
+        },
+    });
 
     const updateMutation = useMutation({
         mutationFn: ({ id, formData }) =>
@@ -84,7 +146,11 @@ export function usePortfolio(
 
         onSuccess: (updatedPortfolio) => {
             queryClient.invalidateQueries({
-                queryKey: ["portfolio", "user", userId],
+                queryKey: [
+                    "portfolio",
+                    "user",
+                    userId,
+                ],
             });
 
             queryClient.invalidateQueries({
@@ -93,10 +159,21 @@ export function usePortfolio(
 
             if (portfolioId) {
                 queryClient.setQueryData(
-                    ["portfolio", "detail", portfolioId],
+                    [
+                        "portfolio",
+                        "detail",
+                        portfolioId,
+                    ],
                     updatedPortfolio
                 );
             }
+        },
+
+        onError: (error) => {
+            console.error(
+                "Portfolyo güncelleme hatası:",
+                error
+            );
         },
     });
 
@@ -138,6 +215,13 @@ export function usePortfolio(
 
         isDeleting:
             deleteMutation.isPending,
+
+
+        toggleDurum:
+            updateStatusMutation.mutateAsync,
+
+        isUpdatingStatus:
+            updateStatusMutation.isPending,
 
 
         updatePortfolio:

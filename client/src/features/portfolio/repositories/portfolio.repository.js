@@ -5,7 +5,9 @@ export function SearchPosts() {
     return {
         async searchPosts(searchQuery) {
             const response =
-                await portfolioProvider.searchPosts(searchQuery);
+                await portfolioProvider.searchPosts(
+                    searchQuery
+                );
 
             return response.map(portfolioAdapter);
         },
@@ -16,7 +18,9 @@ export function getUserPortfolios() {
     return {
         async getUserPortfolios(userId) {
             const response =
-                await portfolioProvider.getUserPortfolios(userId);
+                await portfolioProvider.getUserPortfolios(
+                    userId
+                );
 
             return response.map(portfolioAdapter);
         },
@@ -26,10 +30,9 @@ export function getUserPortfolios() {
 export function deletePortfolio() {
     return {
         async deletePortfolio(id) {
-            const response =
-                await portfolioProvider.deletePortfolio(id);
-
-        return response;
+            return await portfolioProvider.deletePortfolio(
+                id
+            );
         },
     };
 }
@@ -38,7 +41,9 @@ export function getPortfolioDetail() {
     return {
         async getPortfolioDetail(id) {
             const response =
-                await portfolioProvider.getPortfolioDetail(id);
+                await portfolioProvider.getPortfolioDetail(
+                    id
+                );
 
             return portfolioAdapter(response);
         },
@@ -55,6 +60,17 @@ export function updatePortfolio() {
                 );
 
             return portfolioAdapter(response);
+        },
+    };
+}
+
+export function updatePortfolioStatus() {
+    return {
+        async updatePortfolioStatus(id, durum) {
+            return await portfolioProvider.updatePortfolioStatus(
+                id,
+                durum
+            );
         },
     };
 }

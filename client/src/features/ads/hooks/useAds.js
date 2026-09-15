@@ -16,6 +16,20 @@ export function useAds(id) {
     const userId = login?.result?._id;
     const firstName = login?.result?.firstName;
 
+    const adsRepositoryInstance =
+        adsRepository.getAds();
+
+    const detailRepository =
+        adsRepository.getDetailAds();
+
+    const createRepository =
+        adsRepository.createWorkPost();
+
+    const deleteRepository =
+        adsRepository.deletedAds();
+
+    const updateRepository =
+        adsRepository.updateAds();
 
     const {
         data: posts = [],
@@ -24,10 +38,10 @@ export function useAds(id) {
         error,
     } = useQuery({
         queryKey: ["ads", userId],
-        queryFn: () => adsRepository.getAds(userId),
+        queryFn: () =>
+            adsRepositoryInstance.getAds(userId),
         enabled: !!userId,
     });
-
 
     const {
         data: details = null,
@@ -36,14 +50,14 @@ export function useAds(id) {
         error: detailsError,
     } = useQuery({
         queryKey: ["ad", id],
-        queryFn: () => adsRepository.getDetailAds(id),
+        queryFn: () =>
+            detailRepository.getDetailAds(id),
         enabled: !!id,
     });
 
-
     const createMutation = useMutation({
         mutationFn: (post) =>
-            adsRepository.createWorkPost(post),
+            createRepository.createWorkPost(post),
 
         onSuccess: (newPost) => {
             queryClient.setQueryData(
@@ -67,10 +81,9 @@ export function useAds(id) {
         },
     });
 
-
     const deleteMutation = useMutation({
         mutationFn: (id) =>
-            adsRepository.deletedAds(id),
+            deleteRepository.deleteAds(id),
 
         onSuccess: (_, deletedId) => {
             queryClient.setQueryData(
@@ -98,10 +111,9 @@ export function useAds(id) {
         },
     });
 
-
     const updateMutation = useMutation({
         mutationFn: ({ id, post }) =>
-            adsRepository.updateAds(id, post),
+            updateRepository.updateAds(id, post),
 
         onSuccess: (updatedPost, variables) => {
             queryClient.setQueryData(
@@ -136,33 +148,31 @@ export function useAds(id) {
         userId,
         firstName,
 
-
         posts,
         isLoading,
         isError,
         error,
-
 
         details,
         isDetailsLoading,
         isDetailsError,
         detailsError,
 
-
         createWorkPost:
             createMutation.mutateAsync,
+
         isCreating:
             createMutation.isPending,
 
-
         deleteClickPost:
             deleteMutation.mutate,
+
         isDeleting:
             deleteMutation.isPending,
 
-
         updatePost:
             updateMutation.mutate,
+
         isUpdating:
             updateMutation.isPending,
     };

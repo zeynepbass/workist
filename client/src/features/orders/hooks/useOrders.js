@@ -1,31 +1,49 @@
-
-import * as ordersRepository from "../repositories/orders.repository";
 import { useQuery } from "@tanstack/react-query";
+import * as ordersRepository from "../repositories/orders.repository";
 
 export function useOrders(userId) {
+    const userPostsRepository =
+        ordersRepository.getUserPosts();
+
+    const postsRepository =
+        ordersRepository.getPosts();
 
     const userPostsQuery = useQuery({
         queryKey: ["orders", "user", userId],
-        queryFn: () => ordersRepository.getUserPosts(userId),
+
+        queryFn: () =>
+            userPostsRepository.getUserPosts(userId),
+
         enabled: !!userId,
     });
 
     const postsQuery = useQuery({
         queryKey: ["orders"],
-        queryFn: ordersRepository.getPosts,
+
+        queryFn: () =>
+            postsRepository.getPosts(),
     });
 
     return {
-        userPosts: userPostsQuery.data,
-        posts: postsQuery.data,
+        userPosts: userPostsQuery.data ?? [],
+        posts: postsQuery.data ?? [],
 
-        isUserPostsLoading: userPostsQuery.isLoading,
-        isPostsLoading: postsQuery.isLoading,
+        isUserPostsLoading:
+            userPostsQuery.isLoading,
 
-        isUserPostsError: userPostsQuery.isError,
-        isPostsError: postsQuery.isError,
+        isPostsLoading:
+            postsQuery.isLoading,
 
-        userPostsError: userPostsQuery.error,
-        postsError: postsQuery.error,
+        isUserPostsError:
+            userPostsQuery.isError,
+
+        isPostsError:
+            postsQuery.isError,
+
+        userPostsError:
+            userPostsQuery.error,
+
+        postsError:
+            postsQuery.error,
     };
 }

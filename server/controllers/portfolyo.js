@@ -67,13 +67,41 @@ const Updated=async(req,res)=>{
     const guncelPost=await Portfolyo.findByIdAndUpdate(_id,post,{new:true});
     res.status(200).json(guncelPost)
 }
+const updatePortfolioStatus = async (req, res) => {
+  try {
+      const { id } = req.params;
+      const { durum } = req.body;
 
+      const portfolio = await Portfolyo.findByIdAndUpdate(
+          id,
+          { durum },
+          {
+              new: true,
+              runValidators: true,
+          }
+      );
+
+      if (!portfolio) {
+          return res.status(404).json({
+              message: "Portfolyo bulunamadı.",
+          });
+      }
+
+      res.status(200).json(portfolio);
+  } catch (error) {
+      res.status(500).json({
+          message: "Portfolyo durumu güncellenemedi.",
+          error: error.message,
+      });
+  }
+};
 
 export {
     getPosts,
     CreatePost,
     Delete,
     Details,
+    updatePortfolioStatus,
     Updated
 
 }

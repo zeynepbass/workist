@@ -1,7 +1,6 @@
 import * as authApi from "../features/auth/api/auth.api";
 
-export default function authProvider() {
-  return {
+const authProvider = {
     login: authApi.login,
     register: authApi.register,
     account: authApi.account,
@@ -11,5 +10,6 @@ export default function authProvider() {
     getMessageData: authApi.getMessageData,
     updateDetails: authApi.updateDetails,
     getDetails: authApi.getDetails,
-  };
-}
+};
+
+export default authProvider;

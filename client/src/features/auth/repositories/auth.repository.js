@@ -1,44 +1,46 @@
-import userAdapter from "../adapters/auth.adapter"
-import authProvider from "@/providers/auth.provider"
-export async function login(){
-    const response=await authProvider.login("/signin")
-    return response.data
+import userAdapter from "../adapters/auth.adapter";
+import authProvider from "@/providers/auth.provider";
+
+export async function login(data) {
+    return await authProvider.login(data);
 }
-export async function register(){
-    const response=await authProvider.login("/uye-ol")
-    return response.data
+
+export async function register(data) {
+    return await authProvider.register(data);
 }
-export async function account(email){
-    const response=await authProvider.get(`/users/${email}`)
-    return response.data.map(userAdapter)
+
+export async function account(email) {
+    const response = await authProvider.account(email);
+    return response.map(userAdapter);
 }
-export async function details(email){
-    const response=await authProvider.get(`/duzenle/${email}`)
-    return response.data.map(userAdapter)
+
+export async function details(email) {
+    const response = await authProvider.details(email);
+    return response.map(userAdapter);
 }
 
 export async function getMessages(userId) {
-  const response = await authProvider.get(`/konusmalar/${userId}`);
-  return response.data;
+    return await authProvider.getMessages(userId);
 }
 
 export async function getUsers() {
-  const response = await authProvider.get("/users");
-  return response.data;
+    return await authProvider.getUsers();
 }
 
 export async function getMessageData(currentId, targetId) {
-  const response = await authProvider.get(`/${currentId}/${targetId}`);
-  return response.data;
+    return await authProvider.getMessageData(
+        currentId,
+        targetId
+    );
 }
 
 export async function updateDetails(email, formData) {
-  const response = await authProvider.put(`/duzenle/${email}`, formData);
-  return response.data;
+    return await authProvider.updateDetails(
+        email,
+        formData
+    );
 }
 
 export async function getDetails(email) {
-  const response = await authProvider.get(`/duzenle/${email}`);
-  return response.data;
+    return await authProvider.getDetails(email);
 }
-

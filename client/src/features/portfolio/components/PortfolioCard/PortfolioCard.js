@@ -20,8 +20,7 @@ export default function PortfolioCard({
     onEdit,
     onDelete,
 
-    isDeleting = false,
-    isUpdatingStatus = false,
+    isDeleting = false
 }) {
     const isOwner = userId === post.userId;
     const isPublished = post.durum === "yayinda";
@@ -45,7 +44,7 @@ export default function PortfolioCard({
                                     post.durum
                                 )
                             }
-                            disabled={isUpdatingStatus}
+         
                             className="text-gray-200 hover:text-white"
                             title={
                                 isPublished

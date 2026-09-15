@@ -1,34 +1,85 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+    useQuery,
+    useQueryClient,
+} from "@tanstack/react-query";
+
 import * as messageRepository from "../repositories/message.repository";
+
 export function useMessages(gonderenId, aliciId) {
     const queryClient = useQueryClient();
 
+    const messagesRepository =
+        messageRepository.getMessages();
+
+    const userRepository =
+        messageRepository.getUser();
+
+    const usersRepository =
+        messageRepository.getUsers();
+
+    const conversationsRepository =
+        messageRepository.getConversations();
+
+    const messageDataRepository =
+        messageRepository.getMessageData();
+
     const messagesQuery = useQuery({
-        queryKey: ["messages", gonderenId, aliciId],
-        queryFn: () => messageRepository.getMessages(gonderenId, aliciId),
-        enabled: Boolean(gonderenId && aliciId),
+        queryKey: [
+            "messages",
+            gonderenId,
+            aliciId,
+        ],
+
+        queryFn: () =>
+            messagesRepository.getMessages(
+                gonderenId,
+                aliciId
+            ),
+
+        enabled: Boolean(
+            gonderenId && aliciId
+        ),
     });
 
     const userListQuery = useQuery({
         queryKey: ["user", gonderenId],
-        queryFn: () => messageRepository.getUser(gonderenId),
+
+        queryFn: () =>
+            userRepository.getUser(
+                gonderenId
+            ),
+
         enabled: Boolean(gonderenId),
     });
 
     const usersQuery = useQuery({
         queryKey: ["users"],
-        queryFn: messageRepository.getUsers,
+
+        queryFn: () =>
+            usersRepository.getUsers(),
     });
 
     const conversationsQuery = useQuery({
-        queryKey: ["conversations", gonderenId],
-        queryFn: () => messageRepository.getConversations(gonderenId),
+        queryKey: [
+            "conversations",
+            gonderenId,
+        ],
+
+        queryFn: () =>
+            conversationsRepository.getConversations(
+                gonderenId
+            ),
+
         enabled: Boolean(gonderenId),
     });
 
     const addMessageToCache = (message) => {
         queryClient.setQueryData(
-            ["messages", gonderenId, aliciId],
+            [
+                "messages",
+                gonderenId,
+                aliciId,
+            ],
             (oldMessages = []) => [
                 ...oldMessages,
                 message,
@@ -36,38 +87,66 @@ export function useMessages(gonderenId, aliciId) {
         );
     };
 
-    const deleteMessages = async (currentId, targetId) => {
+    const deleteMessages = async (
+        currentId,
+        targetId
+    ) => {
         try {
-            const response = await messageRepository.getMessageData(
-                currentId,
-                targetId
-            );
+            const response =
+                await messageDataRepository.getMessageData(
+                    currentId,
+                    targetId
+                );
 
             queryClient.setQueryData(
-                ["messages", currentId, targetId],
+                [
+                    "messages",
+                    currentId,
+                    targetId,
+                ],
                 []
             );
 
             await queryClient.invalidateQueries({
-                queryKey: ["conversations", currentId],
+                queryKey: [
+                    "conversations",
+                    currentId,
+                ],
             });
 
             return response;
         } catch (error) {
-            console.error("Mesaj silme hatası:", error);
+            console.error(
+                "Mesaj silme hatası:",
+                error
+            );
+
             throw error;
         }
     };
 
     return {
-        messages: messagesQuery.data ?? [],
-        userList: userListQuery.data ?? [],
-        users: usersQuery.data ?? [],
-        konusmalar: conversationsQuery.data ?? [],
+        messages:
+            messagesQuery.data ?? [],
 
-        isMessagesLoading: messagesQuery.isLoading,
-        isUsersLoading: userListQuery.isLoading,
-        isAllUsersLoading: usersQuery.isLoading,
+        userList:
+            userListQuery.data ?? [],
+
+        users:
+            usersQuery.data ?? [],
+
+        konusmalar:
+            conversationsQuery.data ?? [],
+
+        isMessagesLoading:
+            messagesQuery.isLoading,
+
+        isUsersLoading:
+            userListQuery.isLoading,
+
+        isAllUsersLoading:
+            usersQuery.isLoading,
+
         isConversationsLoading:
             conversationsQuery.isLoading,
 

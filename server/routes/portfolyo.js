@@ -1,5 +1,5 @@
 import express from "express"
-import { getPosts,CreatePost,Delete,Details,Updated} from "../controllers/portfolyo.js"
+import {updatePortfolioStatus, getPosts,CreatePost,Delete,Details,Updated} from "../controllers/portfolyo.js"
 
 const router=express.Router()
 
@@ -8,5 +8,5 @@ router.post('/portfolyo',CreatePost);
 router.delete('/portfolyo/:id',Delete);
 router.get('/portfolyo/:id',Details);
 router.put('/portfolyo/:id',Updated);
-
+router.patch("/portfolyo/:id", updatePortfolioStatus);
 export default router;
