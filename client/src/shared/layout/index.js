@@ -5,7 +5,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 
-const Layouts = () => {
+export default function Layouts  () {
   return (
     <>
       <div>
@@ -38,4 +38,3 @@ const Layouts = () => {
   );
 };
 
-export default Layouts;

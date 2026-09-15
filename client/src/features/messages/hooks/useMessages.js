@@ -1,35 +1,28 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-    getMessages,
-    getUser,
-    getUsers,
-    getConversations,
-    getMessageData,
-} from "../repositories/message.repository";
-
+import * as messageRepository from "../repositories/message.repository";
 export function useMessages(gonderenId, aliciId) {
     const queryClient = useQueryClient();
 
     const messagesQuery = useQuery({
         queryKey: ["messages", gonderenId, aliciId],
-        queryFn: () => getMessages(gonderenId, aliciId),
+        queryFn: () => messageRepository.getMessages(gonderenId, aliciId),
         enabled: Boolean(gonderenId && aliciId),
     });
 
     const userListQuery = useQuery({
         queryKey: ["user", gonderenId],
-        queryFn: () => getUser(gonderenId),
+        queryFn: () => messageRepository.getUser(gonderenId),
         enabled: Boolean(gonderenId),
     });
 
     const usersQuery = useQuery({
         queryKey: ["users"],
-        queryFn: getUsers,
+        queryFn: messageRepository.getUsers,
     });
 
     const conversationsQuery = useQuery({
         queryKey: ["conversations", gonderenId],
-        queryFn: () => getConversations(gonderenId),
+        queryFn: () => messageRepository.getConversations(gonderenId),
         enabled: Boolean(gonderenId),
     });
 
@@ -45,7 +38,7 @@ export function useMessages(gonderenId, aliciId) {
 
     const deleteMessages = async (currentId, targetId) => {
         try {
-            const response = await getMessageData(
+            const response = await messageRepository.getMessageData(
                 currentId,
                 targetId
             );

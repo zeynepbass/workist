@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useAds } from "../hooks/useAds";
+import { useAds } from "@/features/ads/hooks/useAds";
 
 export function TopHeader ({title,desc}) {
     const { data: posts = [] } = useAds();

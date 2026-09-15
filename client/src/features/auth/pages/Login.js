@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 
 import { Button,Input } from "@/shared/components/atoms";
-import { useLogin } from "../hooks/useLogin";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Login(){
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export default function Login(){
     handleSubmit,
     togglePasswordVisibility,
     isPending,
-  } = useLogin();
+  } = useAuth();
 
   return (
     <div className="bg-gray-200 min-h-screen flex justify-center items-center">

@@ -1,13 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/shared/components/atoms";
-import { orderDetail } from "@shared/mocks/orderDetail";
+import { orderDetail } from "@/shared/mocks/orderDetail";
 
 import {BackButton} from "@/shared/components/molecules";
-import OrderHeader from "./components/OrderHeader";
-import OrderSummary from "./components/OrderSummary";
-import OrderFiles from "./components/OrderFiles";
-import OrderReview from "./components/OrderReview";
-import OrderProcess from "./components/OrderProcess";
+import OrderHeader from "../components/OrderHeader";
+import OrderSummary from "../components/OrderSummary";
+import OrderFiles from "../components/OrderFiles";
+import OrderReview from "../components/OrderReview";
+import OrderProcess from "../components/OrderProcess";
 
 export default function OrdersDetails  ()  {
     const { id } = useParams();

@@ -1,4 +1,4 @@
-import { adsAdapter } from "../ads.adapters"
+import  adsAdapter from "../adapters/ads.adapters"
 import adsProvider from "@/providers/ads.provider"
 export function getAds(){
     return{
@@ -10,7 +10,7 @@ export function getAds(){
 }
 export function getDetailAds(){
     return{
-        async getAds(){
+        async getDetailAds(){
             const response=await adsProvider.getDetailAds()
             return response.map(adsAdapter)
         }

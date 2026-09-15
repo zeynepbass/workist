@@ -3,7 +3,7 @@ import { FaArrowLeft } from "react-icons/fa";
 
 import { Button } from "@/shared/components/atoms";
 import { usePortfolio } from "../hooks/usePortfolio";
-import PortfolioForm from "./PortfolioForm";
+import PortfolioForm from "../components/PortfolioForm";
 
 export default function PortfolioDetail  () {
     const { id } = useParams();

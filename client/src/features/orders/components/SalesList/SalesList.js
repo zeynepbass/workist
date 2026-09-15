@@ -1,4 +1,4 @@
-import SalesCard from "./SalesCard";
+import SalesCard from "../SalesCard";
 
 export default function SalesList  ({ orders })  {
     if (orders.length === 0) {

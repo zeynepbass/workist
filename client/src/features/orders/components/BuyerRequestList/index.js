@@ -1,1 +1,1 @@
-export {BuyerRequestList} from "./BuyerRequestList"
+export {default} from "./BuyerRequestList"

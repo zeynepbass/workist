@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import { useOrders } from "@/features/orders/hooks/useOrders";
-import StatusMessage from "@/molecules/StatusMessage";
+import {StatusMessage} from "@/shared/components/molecules";
 
-import BuyerRequestHeader from "@/features/orders/components/BuyerRequestHeader";
+import BuyerHeader from "@/features/orders/components/BuyerHeader";
 import BuyerRequestList from "@/features/orders/components/BuyerRequestList";
 import Message from "@/features/messages/pages/Message";
 
@@ -83,7 +83,7 @@ export default function Request() {
     return (
         <div className="mx-auto p-4 rounded-lg h-[100vh] overflow-auto">
 
-            <BuyerRequestHeader />
+            <BuyerHeader />
 
             <BuyerRequestList
                 items={filteredData}

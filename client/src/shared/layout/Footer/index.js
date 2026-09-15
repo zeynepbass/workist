@@ -1,6 +1,6 @@
 import React from 'react'
 
-const index = () => {
+export default function Footer ()  {
     const d = new Date();
     let year = d.getFullYear();
     return (
@@ -14,4 +14,4 @@ const index = () => {
     )
 }
 
-export default index
+

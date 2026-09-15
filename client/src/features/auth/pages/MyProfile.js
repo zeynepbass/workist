@@ -4,7 +4,7 @@ import {StatusMessage} from "@/shared/components/molecules"
 import { Button } from "@/shared/components/atoms";
 import { useDetails } from "../hooks/useDetails";
 const Modal = lazy(() =>
-  import("@/shared/components/organisms").then((module) => ({
+  import("@/shared/components/organism").then((module) => ({
     default: module.Modal,
   }))
 );

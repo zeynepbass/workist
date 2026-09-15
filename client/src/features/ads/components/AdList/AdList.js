@@ -1,4 +1,4 @@
-import {AdCard} from "../AdCard";
+import AdCard from "../AdCard";
 export default function AdList  ({
     posts,
     userId,

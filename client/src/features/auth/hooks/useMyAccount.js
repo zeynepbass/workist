@@ -1,8 +1,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUserDetails, updateUserDetails } from "../repositories/authRepository";
-
-export const useDetails = (email) => {
+import * as authRepository from "../repositories/auth.repository";
+export function useDetails  (email)  {
   const queryClient = useQueryClient();
 
   const {
@@ -12,12 +11,12 @@ export const useDetails = (email) => {
     error,
   } = useQuery({
     queryKey: ["userDetails", email],
-    queryFn: () => getUserDetails(email),
+    queryFn: () => authRepository.getUserDetails(email),
     enabled: !!email,
   });
 
   const updateMutation = useMutation({
-    mutationFn: (formData) => updateUserDetails(email, formData),
+    mutationFn: (formData) => authRepository.updateUserDetails(email, formData),
 
     onSuccess: (data) => {
       queryClient.setQueryData(

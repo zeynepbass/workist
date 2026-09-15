@@ -1,6 +1,7 @@
 import * as messageApi from "../features/messages/api/message.api";
 
-export const messageProvider = {
+export default function messageProvider() {
+  return {
     getMessages: messageApi.getMessages,
 
     getUser: messageApi.getUser,
@@ -8,6 +9,5 @@ export const messageProvider = {
     getUsers: messageApi.getUsers,
 
     getConversations: messageApi.getConversations,
-
-    getMessageData: messageApi.getMessageData,
-};
+  };
+}

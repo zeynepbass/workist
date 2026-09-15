@@ -1,5 +1,5 @@
 import { FaArrowLeft } from "react-icons/fa";
-import { Button } from "@/shared/components/atoms";
+import { Button } from "../../atoms";
 
 export function BackButton  ({ onClick })  {
   return (

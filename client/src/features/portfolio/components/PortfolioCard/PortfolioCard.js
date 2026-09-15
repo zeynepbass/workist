@@ -1,4 +1,4 @@
-import formatToTurkishDate from "@/shared/utils";
+import formatToTurkishDate from "@/shared/utils/formatToTurkishDate";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {

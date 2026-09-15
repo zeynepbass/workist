@@ -1,6 +1,6 @@
 
 import { Button } from "@/shared/components/atoms";
-import formatToTurkishDate from "@/shared/utils";
+import formatToTurkishDate from "@/shared/utils/formatToTurkishDate";
 
 export default function BuyerRequestCard({
     item,

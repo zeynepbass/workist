@@ -1,21 +1,18 @@
-import {
-    getUserPosts,
-    getPosts
-} from "../repositories/orders.repository";
 
+import * as ordersRepository from "../repositories/orders.repository";
 import { useQuery } from "@tanstack/react-query";
 
 export function useOrders(userId) {
 
     const userPostsQuery = useQuery({
         queryKey: ["orders", "user", userId],
-        queryFn: () => getUserPosts(userId),
+        queryFn: () => ordersRepository.getUserPosts(userId),
         enabled: !!userId,
     });
 
     const postsQuery = useQuery({
         queryKey: ["orders"],
-        queryFn: getPosts,
+        queryFn: ordersRepository.getPosts,
     });
 
     return {

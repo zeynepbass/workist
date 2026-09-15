@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { useMemo, useState } from "react";
 import Message from "@/features/messages/pages/Message";
 import { useOrders } from "@/features/orders/hooks/useOrders";
-import StatusMessage from "@/molecules/StatusMessage";
+import {StatusMessage} from "@/shared/components/molecules";
 import BuyerRequestCard from "@/features/orders/components/BuyerRequestCard";
 import BuyerRequestList from "@/features/orders/components/BuyerRequestList";
-import BuyerRequestHeader from "@/features/orders/components/BuyerRequestHeader";
+import BuyerHeader from "@/features/orders/components/BuyerHeader";
 
 export default function BuyerRequest() {
     const [selectedAliciId, setSelectedAliciId] = useState(null);
@@ -125,7 +125,7 @@ export default function BuyerRequest() {
             </div>
 
 
-            <BuyerRequestHeader/>
+            <BuyerHeader/>
 
             <br />
 

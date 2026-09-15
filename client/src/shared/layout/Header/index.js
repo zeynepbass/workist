@@ -9,7 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Profile from '@/features/auth/pages/Profile';
 import { Button,Input } from '@/shared/components/atoms';
 
-const   Index = () => {
+export default function Header() {
 
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
@@ -129,4 +129,4 @@ const   Index = () => {
   );
 };
 
-export default Index;
+

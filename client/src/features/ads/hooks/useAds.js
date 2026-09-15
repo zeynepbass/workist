@@ -3,7 +3,7 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { getAds } from "../respositories/ads.repository";
+import * as adsRepository from "../respositories/ads.repository";
 export function useAds(id) {
   const queryClient = useQueryClient();
 
@@ -23,7 +23,7 @@ export function useAds(id) {
 } = useQuery({
     queryKey: ["ads", userId],
 
-    queryFn: () => getAds.getAds(userId),
+    queryFn: () => adsRepository.getAds(userId),
 
     enabled: !!userId,
 });
@@ -37,12 +37,12 @@ const {
 } = useQuery({
     queryKey: ["ad", id],
 
-    queryFn: () => getAds.getDetailAds(id),
+    queryFn: () => adsRepository.getDetailAds(id),
 
     enabled: !!id,
 });
 const deleteMutation = useMutation({
-    mutationFn: (id) => adsRepository.deleteAds(id),
+    mutationFn: (id) => adsRepository.deletedAds(id),
 
     onSuccess: (_, deletedId) => {
         queryClient.setQueryData(

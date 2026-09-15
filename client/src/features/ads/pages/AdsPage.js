@@ -2,7 +2,7 @@ import { useMemo, useState, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 
 
-import { AdList } from "../components/AdList";
+import  AdList from "../components/AdList";
 
 import { PostSort,TopHeader ,StatusMessage} from "@/shared/components/molecules";
 

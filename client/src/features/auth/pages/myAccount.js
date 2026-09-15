@@ -4,10 +4,9 @@ import ProfileEmail from "../components/ContactSettings";
 import EditableSkills from "../components/EditableSkills";
 import EditableEducation from "../components/EditableEducation";
 import { useDetails } from "../hooks/useDetails";
-export default function myAccount() {
-  const currentUser = JSON.parse(localStorage.getItem("login"));
-  const email = currentUser?.result?.email;
-  const { userDetails, updateDetails, isUpdating } = useDetails(email);
+export default function MyAccount() {
+
+  const { userDetails, updateDetails, isUpdating } = useDetails();
   return (
     <div className="flex flex-col md:flex-row gap-6 p-4">
       <div className="w-full  space-y-4">
