@@ -6,5 +6,6 @@ export default function adsProvider() {
     getDetailAds: adsApi.getAllDetail,
     deleteAds: adsApi.deleteAds,
     updateAds: adsApi.updateAds,
+    createWorkPost:adsApi.createWorkPost
   };
 }

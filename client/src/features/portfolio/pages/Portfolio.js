@@ -31,7 +31,7 @@ export default function Portfolio() {
     deletePortfolio,
     isDeleting,
 
-    updatePortfolioStatus,
+
     isUpdatingStatus,
   } = usePortfolio("", userId);
 
@@ -92,7 +92,7 @@ export default function Portfolio() {
       />
 
       <Suspense fallback={<div>Yükleniyor...</div>}>
-        <Modal />
+        <Modal   />
       </Suspense>
 
       <PortfolioFilters

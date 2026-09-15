@@ -1,5 +1,5 @@
 import portfolioProvider from "@/providers/portfolio.provider";
-import  portfolioAdapter  from "../adapters/portfolio.adapter";
+import portfolioAdapter from "../adapters/portfolio.adapter";
 
 export function SearchPosts() {
     return {
@@ -29,7 +29,7 @@ export function deletePortfolio() {
             const response =
                 await portfolioProvider.deletePortfolio(id);
 
-            return response;
+        return response;
         },
     };
 }

@@ -5,23 +5,46 @@ import {
 } from "@tanstack/react-query";
 
 import * as portfolioRepository from "../repositories/portfolio.repository";
-export function usePortfolio(searchQuery = "", userId, portfolioId) {
+
+export function usePortfolio(
+    searchQuery = "",
+    userId,
+    portfolioId
+) {
     const queryClient = useQueryClient();
 
 
+    const searchPostsRepository =
+        portfolioRepository.SearchPosts();
+
+    const userPortfoliosRepository =
+        portfolioRepository.getUserPortfolios();
+
+    const detailRepository =
+        portfolioRepository.getPortfolioDetail();
+
+    const deleteRepository =
+        portfolioRepository.deletePortfolio();
+
+    const updateRepository =
+        portfolioRepository.updatePortfolio();
 
 
     const postsQuery = useQuery({
         queryKey: ["portfolio", searchQuery],
         queryFn: () =>
-            portfolioRepository.searchPosts(searchQuery),
+            searchPostsRepository.searchPosts(
+                searchQuery
+            ),
     });
 
 
     const userPortfoliosQuery = useQuery({
         queryKey: ["portfolio", "user", userId],
         queryFn: () =>
-            portfolioRepository.getUserPortfolios(userId),
+            userPortfoliosRepository.getUserPortfolios(
+                userId
+            ),
         enabled: !!userId,
     });
 
@@ -29,33 +52,16 @@ export function usePortfolio(searchQuery = "", userId, portfolioId) {
     const detailQuery = useQuery({
         queryKey: ["portfolio", "detail", portfolioId],
         queryFn: () =>
-            portfolioRepository.getPortfolioDetail(portfolioId),
+            detailRepository.getPortfolioDetail(
+                portfolioId
+            ),
         enabled: !!portfolioId,
     });
 
 
     const deleteMutation = useMutation({
         mutationFn: (id) =>
-            portfolioRepository.deletePortfolio(id),
-
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["portfolio", "user", userId],
-            });
-
-            queryClient.invalidateQueries({
-                queryKey: ["portfolio"],
-            });
-        },
-    });
-
-
-    const statusMutation = useMutation({
-        mutationFn: ({ id, durum }) =>
-            portfolioRepository.updatePortfolioStatus(
-                id,
-                durum
-            ),
+            deleteRepository.deletePortfolio(id),
 
         onSuccess: () => {
             queryClient.invalidateQueries({
@@ -71,7 +77,7 @@ export function usePortfolio(searchQuery = "", userId, portfolioId) {
 
     const updateMutation = useMutation({
         mutationFn: ({ id, formData }) =>
-            portfolioRepository.updatePortfolio(
+            updateRepository.updatePortfolio(
                 id,
                 formData
             ),
@@ -104,37 +110,39 @@ export function usePortfolio(searchQuery = "", userId, portfolioId) {
 
         userPortfolios:
             userPortfoliosQuery.data ?? [],
+
         isUserPortfoliosLoading:
             userPortfoliosQuery.isLoading,
+
         isUserPortfoliosError:
             userPortfoliosQuery.isError,
+
         userPortfoliosError:
             userPortfoliosQuery.error,
 
 
         detail: detailQuery.data ?? null,
+
         isDetailLoading:
             detailQuery.isLoading,
+
         isDetailError:
             detailQuery.isError,
+
         detailError:
             detailQuery.error,
 
 
         deletePortfolio:
             deleteMutation.mutateAsync,
+
         isDeleting:
             deleteMutation.isPending,
 
 
-        updatePortfolioStatus:
-            statusMutation.mutateAsync,
-        isUpdatingStatus:
-            statusMutation.isPending,
-
-
         updatePortfolio:
             updateMutation.mutateAsync,
+
         isUpdating:
             updateMutation.isPending,
     };

@@ -24,8 +24,16 @@ export async function deleteAds(id){
 }
 export async function updateAds(id,post){
     const response = await apiClient.put(
-        `${baseUrl}/ilanlarim/${id}`,
+        `/ilanlarim/${id}`,
               post
+    );
+
+    return response.data;
+}
+export async function createWorkPost(post) {
+    const response = await apiClient.post(
+        "/ilanlarim",
+        post
     );
 
     return response.data;

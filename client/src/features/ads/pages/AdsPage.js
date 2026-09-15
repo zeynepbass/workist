@@ -9,13 +9,18 @@ import { PostSort,TopHeader ,StatusMessage} from "@/shared/components/molecules"
 
 import { useAds } from "../hooks/useAds";
 
-const Modal = lazy(() => import("../components/AdsModal"));
+const Modal = lazy(() =>
+  import("@/shared/components/organism").then((module) => ({
+    default: module.Modal,
+  }))
+);
 export default function AdsPage() {
   const [sortType, setSortType] = useState("all");
 
   const {
     data: posts = [],
     userId,
+    createWorkPost,
     firstName,
     isLoading,
     isError,
@@ -71,7 +76,12 @@ export default function AdsPage() {
 
       <PostSort sortType={sortType} onChange={handleChange} />
       <Suspense fallback={<div>Yükleniyor...</div>}>
-        <Modal />
+      <Modal
+    type="ads"
+    createWorkPost={createWorkPost}
+    userId={userId}
+    firstName={firstName}
+/>
       </Suspense>
 
       <AdList

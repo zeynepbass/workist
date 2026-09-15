@@ -32,3 +32,13 @@ export function updateAds(){
         }
     }
 }
+export function createWorkPost() {
+    return {
+        async createWorkPost(post) {
+            const response =
+                await adsProvider.createWorkPost(post);
+
+            return adsAdapter(response);
+        },
+    };
+}
