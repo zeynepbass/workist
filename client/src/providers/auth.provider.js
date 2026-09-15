@@ -1,4 +1,4 @@
-import * as authApi from "../features/auth/api/auth.api";
+import {authApi} from "../features/auth/api/auth.api";
 
 const authProvider = {
     login: authApi.login,

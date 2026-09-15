@@ -1,39 +1,23 @@
 import apiClient from "@/shared/api";
 
-export async function getMessages(gonderenId, aliciId) {
-    const response = await apiClient.get(
-        `/mesajlar/${gonderenId}/${aliciId}`
-    );
+export const messageApi = {
+  getMessages(gonderenId, aliciId) {
+    return apiClient.get(`/mesajlar/${gonderenId}/${aliciId}`);
+  },
 
-    return response.data;
-}
+  getUser(userId) {
+    return apiClient.get(`/users/${userId}`);
+  },
 
-export async function getUser(userId) {
-    const response = await apiClient.get(
-        `/users/${userId}`
-    );
+  getUsers() {
+    return apiClient.get("/users");
+  },
 
-    return response.data;
-}
+  getConversations(userId) {
+    return apiClient.get(`/konusmalar/${userId}`);
+  },
 
-export async function getUsers() {
-    const response = await apiClient.get("/users");
-
-    return response.data;
-}
-
-export async function getConversations(userId) {
-    const response = await apiClient.get(
-        `/konusmalar/${userId}`
-    );
-
-    return response.data;
-}
-
-export async function getMessageData(currentId, targetId) {
-    const response = await apiClient.get(
-        `/${currentId}/${targetId}`
-    );
-
-    return response.data;
-}
+  getMessageData(currentId, targetId) {
+    return apiClient.get(`/${currentId}/${targetId}`);
+  },
+};

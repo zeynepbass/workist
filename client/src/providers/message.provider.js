@@ -1,4 +1,4 @@
-import * as messageApi from "../features/messages/api/message.api";
+import  {messageApi} from "../features/messages/api/message.api";
 
 const messageProvider = {
     getMessages: messageApi.getMessages,

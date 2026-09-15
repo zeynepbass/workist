@@ -1,4 +1,4 @@
-import * as portfolioApi from "@/features/portfolio/api/portfolio.api";
+import  {portfolioApi} from "@/features/portfolio/api/portfolio.api";
 
 const portfolioProvider = {
     searchPosts: portfolioApi.searchPosts,
@@ -6,8 +6,7 @@ const portfolioProvider = {
     deletePortfolio: portfolioApi.deletePortfolio,
     getPortfolioDetail: portfolioApi.getPortfolioDetail,
     updatePortfolio: portfolioApi.updatePortfolio,
-    updatePortfolioStatus:
-        portfolioApi.updatePortfolioStatus,
+    updatePortfolioStatus:portfolioApi.updatePortfolioStatus,
 };
 
 export default portfolioProvider;
