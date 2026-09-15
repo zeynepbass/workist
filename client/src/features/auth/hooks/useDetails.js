@@ -1,45 +1,59 @@
-
 import { useQuery, useMutation } from "@tanstack/react-query";
 import * as authRepository from "../repositories/auth.repository";
 
 export function useDetails() {
-  const currentUser = JSON.parse(localStorage.getItem("login"));
-  const email = currentUser?.result?.email;
-  const {
-    data: emailResponse,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["details"],
-    queryFn: () => authRepository.details(email),
-  });
+    const currentUser = JSON.parse(
+        localStorage.getItem("login") || "null"
+    );
 
-  const accountMutation = useMutation({
-    mutationFn: () => authRepository.account(email),
+    const email = currentUser?.result?.email;
 
-    onSuccess: () => {
-      console.log("Hesap donduruldu.");
-    },
+    const detailsRepository =
+        authRepository.details();
 
-    onError: (error) => {
-      console.error("Hesap dondurma hatası:", error);
-    },
-  });
+    const accountRepository =
+        authRepository.account();
 
-  const hesabiDondur = () => {
-    accountMutation.mutate();
-  };
+    const {
+        data: emailResponse,
+        isLoading,
+        isError,
+        error,
+    } = useQuery({
+        queryKey: ["details", email],
+        queryFn: () =>
+            detailsRepository.details(email),
+        enabled: !!email,
+    });
 
-  return {
-    email: emailResponse?.data,
+    const accountMutation = useMutation({
+        mutationFn: () =>
+            accountRepository.account(email),
 
-    isLoading,
-    isError,
-    error,
+        onSuccess: () => {
+            console.log("Hesap donduruldu.");
+        },
 
-    hesabiDondur,
-    isDeleting: accountMutation.isPending,
-  };
-};
+        onError: (error) => {
+            console.error(
+                "Hesap dondurma hatası:",
+                error
+            );
+        },
+    });
 
+    const hesabiDondur = () => {
+        accountMutation.mutate();
+    };
+
+    return {
+        email: emailResponse,
+
+        isLoading,
+        isError,
+        error,
+
+        hesabiDondur,
+        isDeleting: accountMutation.isPending,
+    };
+}

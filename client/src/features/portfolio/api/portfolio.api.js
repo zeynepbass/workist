@@ -36,3 +36,11 @@ export async function updatePortfolio(id, formData) {
 
     return response.data;
 }
+export async function updatePortfolioStatus(id, durum) {
+    const response = await apiClient.patch(
+        `/portfolyo/${id}`,
+        { durum }
+    );
+
+    return response.data;
+}

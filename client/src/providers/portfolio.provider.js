@@ -1,11 +1,13 @@
 import * as portfolioApi from "@/features/portfolio/api/portfolio.api";
 
-export default function portfolioProvider() {
-  return {
+const portfolioProvider = {
     searchPosts: portfolioApi.searchPosts,
     getUserPortfolios: portfolioApi.getUserPortfolios,
     deletePortfolio: portfolioApi.deletePortfolio,
     getPortfolioDetail: portfolioApi.getPortfolioDetail,
     updatePortfolio: portfolioApi.updatePortfolio,
-  };
-}
+    updatePortfolioStatus:
+        portfolioApi.updatePortfolioStatus,
+};
+
+export default portfolioProvider;

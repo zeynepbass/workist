@@ -1,129 +1,179 @@
 import {
-  useQuery,
-  useMutation,
-  useQueryClient,
+    useQuery,
+    useMutation,
+    useQueryClient,
 } from "@tanstack/react-query";
+
 import * as adsRepository from "../respositories/ads.repository";
+
 export function useAds(id) {
-  const queryClient = useQueryClient();
+    const queryClient = useQueryClient();
 
-  const login = JSON.parse(
-      localStorage.getItem("login") || "null"
-  );
+    const login = JSON.parse(
+        localStorage.getItem("login") || "null"
+    );
 
-  const userId = login?.result?._id;
-  const firstName = login?.result?.firstName;
+    const userId = login?.result?._id;
+    const firstName = login?.result?.firstName;
 
+    const adsRepositoryInstance =
+        adsRepository.getAds();
 
-  const {
-    data: posts = [],
-    isLoading,
-    isError,
-    error,
-} = useQuery({
-    queryKey: ["ads", userId],
+    const detailRepository =
+        adsRepository.getDetailAds();
 
-    queryFn: () => adsRepository.getAds(userId),
+    const createRepository =
+        adsRepository.createWorkPost();
 
-    enabled: !!userId,
-});
+    const deleteRepository =
+        adsRepository.deletedAds();
 
+    const updateRepository =
+        adsRepository.updateAds();
 
-const {
-    data: details = null,
-    isLoading: isDetailsLoading,
-    isError: isDetailsError,
-    error: detailsError,
-} = useQuery({
-    queryKey: ["ad", id],
+    const {
+        data: posts = [],
+        isLoading,
+        isError,
+        error,
+    } = useQuery({
+        queryKey: ["ads", userId],
+        queryFn: () =>
+            adsRepositoryInstance.getAds(userId),
+        enabled: !!userId,
+    });
 
-    queryFn: () => adsRepository.getDetailAds(id),
+    const {
+        data: details = null,
+        isLoading: isDetailsLoading,
+        isError: isDetailsError,
+        error: detailsError,
+    } = useQuery({
+        queryKey: ["ad", id],
+        queryFn: () =>
+            detailRepository.getDetailAds(id),
+        enabled: !!id,
+    });
 
-    enabled: !!id,
-});
-const deleteMutation = useMutation({
-    mutationFn: (id) => adsRepository.deletedAds(id),
+    const createMutation = useMutation({
+        mutationFn: (post) =>
+            createRepository.createWorkPost(post),
 
-    onSuccess: (_, deletedId) => {
-        queryClient.setQueryData(
-            ["ads", userId],
-            (oldPosts = []) =>
-                oldPosts.filter(
-                    (item) => item.id !== deletedId
-                )
-        );
+        onSuccess: (newPost) => {
+            queryClient.setQueryData(
+                ["ads", userId],
+                (oldPosts = []) => [
+                    ...oldPosts,
+                    newPost,
+                ]
+            );
 
-        queryClient.removeQueries({
-            queryKey: ["ad", deletedId],
-        });
+            queryClient.invalidateQueries({
+                queryKey: ["ads", userId],
+            });
+        },
 
-        queryClient.invalidateQueries({
-            queryKey: ["ads", userId],
-        });
-    },
+        onError: (error) => {
+            console.error(
+                "Post oluşturma hatası:",
+                error
+            );
+        },
+    });
 
-    onError: (error) => {
-        console.error(
-            "İlan silme hatası:",
-            error
-        );
-    },
-});
-const updateMutation = useMutation({
-    mutationFn: ({ id, post }) =>
-        adsRepository.updateAds(id, post),
+    const deleteMutation = useMutation({
+        mutationFn: (id) =>
+            deleteRepository.deleteAds(id),
 
-    onSuccess: (updatedPost, variables) => {
-        queryClient.setQueryData(
-            ["ad", variables.id],
-            updatedPost
-        );
+        onSuccess: (_, deletedId) => {
+            queryClient.setQueryData(
+                ["ads", userId],
+                (oldPosts = []) =>
+                    oldPosts.filter(
+                        (item) => item.id !== deletedId
+                    )
+            );
 
-        queryClient.setQueryData(
-            ["ads", userId],
-            (oldPosts = []) =>
-                oldPosts.map((item) =>
-                    item.id === variables.id
-                        ? updatedPost
-                        : item
-                )
-        );
+            queryClient.removeQueries({
+                queryKey: ["ad", deletedId],
+            });
 
-        queryClient.invalidateQueries({
-            queryKey: ["ads", userId],
-        });
-    },
+            queryClient.invalidateQueries({
+                queryKey: ["ads", userId],
+            });
+        },
 
-    onError: (error) => {
-        console.error(
-            "İlan güncelleme hatası:",
-            error
-        );
-    },
-});
+        onError: (error) => {
+            console.error(
+                "İlan silme hatası:",
+                error
+            );
+        },
+    });
 
-  return {
+    const updateMutation = useMutation({
+        mutationFn: ({ id, post }) =>
+            updateRepository.updateAds(id, post),
 
-      userId,
-      firstName,
+        onSuccess: (updatedPost, variables) => {
+            queryClient.setQueryData(
+                ["ad", variables.id],
+                updatedPost
+            );
 
+            queryClient.setQueryData(
+                ["ads", userId],
+                (oldPosts = []) =>
+                    oldPosts.map((item) =>
+                        item.id === variables.id
+                            ? updatedPost
+                            : item
+                    )
+            );
 
-      posts,
-      isLoading,
-      isError,
-      error,
+            queryClient.invalidateQueries({
+                queryKey: ["ads", userId],
+            });
+        },
 
+        onError: (error) => {
+            console.error(
+                "İlan güncelleme hatası:",
+                error
+            );
+        },
+    });
 
-      details,
-      isDetailsLoading,
-      isDetailsError,
-      detailsError,
+    return {
+        userId,
+        firstName,
 
-      
-      deleteClickPost: deleteMutation.mutate,
-      isDeleting: deleteMutation.isPending,
+        posts,
+        isLoading,
+        isError,
+        error,
 
-      updatePost: updateMutation.mutate,
-      isUpdating: updateMutation.isPending,
-  };
+        details,
+        isDetailsLoading,
+        isDetailsError,
+        detailsError,
+
+        createWorkPost:
+            createMutation.mutateAsync,
+
+        isCreating:
+            createMutation.isPending,
+
+        deleteClickPost:
+            deleteMutation.mutate,
+
+        isDeleting:
+            deleteMutation.isPending,
+
+        updatePost:
+            updateMutation.mutate,
+
+        isUpdating:
+            updateMutation.isPending,
+    };
 }

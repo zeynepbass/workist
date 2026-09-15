@@ -28,36 +28,61 @@ const Detay = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-const signin=async (req,res)=>{
+const signin = async (req, res) => {
+  console.log("CONTENT-TYPE:", req.headers["content-type"]);
+  console.log("BODY:", req.body);
 
-    const {email,password}=req.body;
+  if (!req.body) {
+      return res.status(400).json({
+          message: "Request body boş",
+      });
+  }
 
-    try {
+  const { email, password } = req.body;
 
-        const isim=await User.findOne({email})
-    
-        
-        if(!isim) return res.status(404).json({message:'Kullanıcı Bulunamadı'})
+  try {
+      const kullanici = await User.findOne({ email });
 
-        const kullanici=await User.findOne({email})
-    
-        
-        if(!kullanici) return res.status(404).json({message:'Kullanıcı Bulunamadı'})
+      if (!kullanici) {
+          return res.status(404).json({
+              message: "Kullanıcı Bulunamadı",
+          });
+      }
 
-        const parolaKontrolSonuc=await bcrypt.compare(password,kullanici.password);
+      const parolaKontrolSonuc = await bcrypt.compare(
+          password,
+          kullanici.password
+      );
 
-        if(!parolaKontrolSonuc) return res.status(400).json({message:'Parolayı doğru giriniz'})
+      if (!parolaKontrolSonuc) {
+          return res.status(400).json({
+              message: "Parolayı doğru giriniz",
+          });
+      }
 
-        const token=jwt.sign({email:kullanici.email,id:kullanici._id},'aos-secret-code',    { expiresIn: '1h' } )
+      const token = jwt.sign(
+          {
+              email: kullanici.email,
+              id: kullanici._id,
+          },
+          "aos-secret-code",
+          {
+              expiresIn: "1h",
+          }
+      );
 
-        res.status(200).json({result:kullanici,token})
+      res.status(200).json({
+          result: kullanici,
+          token,
+      });
+  } catch (error) {
+      console.error("SIGNIN ERROR:", error);
 
-    } catch (error) {
-
-        res.status(500).json({message:'Bir hata oluştu'})
-        
-    }
-}
+      res.status(500).json({
+          message: "Bir hata oluştu",
+      });
+  }
+};
 const duzenle = async (req, res) => {
     const { email } = req.params; 
     const updatedFields = req.body;
@@ -119,15 +144,29 @@ const Delete = async (req, res) => {
     }
   };
 
-const signup = async (req, res) => {
-    const { email, password, confirmPassword, firstName, lastName } = req.body;
+  const signup = async (req, res) => {
+    const {
+        email,
+        password,
+        confirmPassword,
+        firstName,
+        lastName
+    } = req.body;
 
     try {
         const kullanici = await User.findOne({ email });
 
-        if (kullanici) return res.status(400).json({ message: 'Kullanıcı Zaten Bulunuyor' });
+        if (kullanici) {
+            return res.status(400).json({
+                message: "Kullanıcı Zaten Bulunuyor"
+            });
+        }
 
-        if (password !== confirmPassword) return res.status(400).json({ message: 'Parolalar uyuşmadı!' });
+        if (password !== confirmPassword) {
+            return res.status(400).json({
+                message: "Parolalar uyuşmadı!"
+            });
+        }
 
         const sifrelenmisParola = await bcrypt.hash(password, 12);
 
@@ -138,11 +177,28 @@ const signup = async (req, res) => {
             lastName,
         });
 
-        const token = jwt.sign({ email: result.email, id: result._id }, 'aos-secret-key', { expiresIn: '30d' });
+        const token = jwt.sign(
+            {
+                email: result.email,
+                id: result._id
+            },
+            "aos-secret-key",
+            {
+                expiresIn: "30d"
+            }
+        );
 
-        res.status(200).json({ result, token });
+        res.status(200).json({
+            result,
+            token
+        });
+
     } catch (error) {
-        res.status(500).json({ message: 'Bir hata oluştu' });
+        console.error("SIGNUP ERROR:", error);
+
+        res.status(500).json({
+            message: error.message
+        });
     }
 };
 

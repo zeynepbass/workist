@@ -9,7 +9,7 @@ export default function PortfolioList({
     onEdit,
     onDelete,
     isDeleting,
-    isUpdatingStatus,
+
 }) {
     if (!posts || posts.length === 0) {
         return (
@@ -32,7 +32,7 @@ export default function PortfolioList({
                     onEdit={onEdit}
                     onDelete={onDelete}
                     isDeleting={isDeleting}
-                    isUpdatingStatus={isUpdatingStatus}
+   
                 />
             ))}
         </div>

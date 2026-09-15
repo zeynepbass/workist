@@ -1,51 +1,67 @@
-
 import { useQuery } from "@tanstack/react-query";
 import * as authRepository from "../repositories/auth.repository";
-export function useMessages  ()  {
-  const userid = JSON.parse(localStorage.getItem("login"));
-  const userId = userid?.result?._id;
 
+export function useMessages() {
+    const currentUser = JSON.parse(
+        localStorage.getItem("login") || "null"
+    );
 
-  const {
-    data: messagesResponse,
-    isLoading: isMessagesLoading,
-    isError: isMessagesError,
-    error: messagesError,
-  } = useQuery({
-    queryKey: ["messages", userId],
-    queryFn: () => authRepository.getMessages(userId),
-    enabled: !!userId,
-  });
+    const userId = currentUser?.result?._id;
 
+    const messagesRepository =
+        authRepository.getMessages();
 
-  const {
-    data: usersResponse,
-    isLoading: isUsersLoading,
-    isError: isUsersError,
-    error: usersError,
-  } = useQuery({
-    queryKey: ["users"],
-    queryFn: () => authRepository.getUsers(),
-  });
+    const usersRepository =
+        authRepository.getUsers();
 
+    const messageDataRepository =
+        authRepository.getMessageData();
 
-  const getMessageData = (currentId, targetId) => {
-    return authRepository.getMessageData(currentId, targetId);
-  };
+    const {
+        data: messagesResponse,
+        isLoading: isMessagesLoading,
+        isError: isMessagesError,
+        error: messagesError,
+    } = useQuery({
+        queryKey: ["messages", userId],
+        queryFn: () =>
+            messagesRepository.getMessages(userId),
+        enabled: !!userId,
+    });
 
-  return {
-    konusmalar: messagesResponse?.data || [],
-    users: usersResponse?.data || [],
+    const {
+        data: usersResponse,
+        isLoading: isUsersLoading,
+        isError: isUsersError,
+        error: usersError,
+    } = useQuery({
+        queryKey: ["users"],
+        queryFn: () =>
+            usersRepository.getUsers(),
+    });
 
-    getMessageData,
+    const getMessageData = (
+        currentId,
+        targetId
+    ) => {
+        return messageDataRepository.getMessageData(
+            currentId,
+            targetId
+        );
+    };
 
-    isMessagesLoading,
-    isMessagesError,
-    messagesError,
+    return {
+        konusmalar: messagesResponse || [],
+        users: usersResponse || [],
 
-    isUsersLoading,
-    isUsersError,
-    usersError,
-  };
-};
+        getMessageData,
 
+        isMessagesLoading,
+        isMessagesError,
+        messagesError,
+
+        isUsersLoading,
+        isUsersError,
+        usersError,
+    };
+}

@@ -5,80 +5,152 @@ import {
 } from "@tanstack/react-query";
 
 import * as portfolioRepository from "../repositories/portfolio.repository";
-export function usePortfolio(searchQuery = "", userId, portfolioId) {
+
+export function usePortfolio(
+    searchQuery = "",
+    userId,
+    portfolioId
+) {
     const queryClient = useQueryClient();
 
+    const searchPostsRepository =
+        portfolioRepository.SearchPosts();
 
+    const userPortfoliosRepository =
+        portfolioRepository.getUserPortfolios();
 
+    const detailRepository =
+        portfolioRepository.getPortfolioDetail();
+
+    const deleteRepository =
+        portfolioRepository.deletePortfolio();
+
+    const updateRepository =
+        portfolioRepository.updatePortfolio();
+
+    const updateStatusRepository =
+        portfolioRepository.updatePortfolioStatus();
 
     const postsQuery = useQuery({
         queryKey: ["portfolio", searchQuery],
+
         queryFn: () =>
-            portfolioRepository.searchPosts(searchQuery),
+            searchPostsRepository.searchPosts(
+                searchQuery
+            ),
     });
 
-
     const userPortfoliosQuery = useQuery({
-        queryKey: ["portfolio", "user", userId],
+        queryKey: [
+            "portfolio",
+            "user",
+            userId,
+        ],
+
         queryFn: () =>
-            portfolioRepository.getUserPortfolios(userId),
+            userPortfoliosRepository.getUserPortfolios(
+                userId
+            ),
+
         enabled: !!userId,
     });
 
-
     const detailQuery = useQuery({
-        queryKey: ["portfolio", "detail", portfolioId],
+        queryKey: [
+            "portfolio",
+            "detail",
+            portfolioId,
+        ],
+
         queryFn: () =>
-            portfolioRepository.getPortfolioDetail(portfolioId),
+            detailRepository.getPortfolioDetail(
+                portfolioId
+            ),
+
         enabled: !!portfolioId,
     });
 
 
-    const deleteMutation = useMutation({
-        mutationFn: (id) =>
-            portfolioRepository.deletePortfolio(id),
-
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["portfolio", "user", userId],
-            });
-
-            queryClient.invalidateQueries({
-                queryKey: ["portfolio"],
-            });
-        },
-    });
-
-
-    const statusMutation = useMutation({
+    const updateStatusMutation = useMutation({
         mutationFn: ({ id, durum }) =>
-            portfolioRepository.updatePortfolioStatus(
+            updateStatusRepository.updatePortfolioStatus(
                 id,
                 durum
             ),
 
+        onSuccess: (_, variables) => {
+            const { id, durum } = variables;
+
+            queryClient.setQueryData(
+                [
+                    "portfolio",
+                    "user",
+                    userId,
+                ],
+                (oldPosts = []) =>
+                    oldPosts.map((item) =>
+                        item.id === id
+                            ? {
+                                  ...item,
+                                  durum,
+                              }
+                            : item
+                    )
+            );
+
+            queryClient.invalidateQueries({
+                queryKey: ["portfolio"],
+            });
+        },
+
+        onError: (error) => {
+            console.error(
+                "Portfolyo durumu güncelleme hatası:",
+                error
+            );
+        },
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: (id) =>
+            deleteRepository.deletePortfolio(id),
+
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["portfolio", "user", userId],
+                queryKey: [
+                    "portfolio",
+                    "user",
+                    userId,
+                ],
             });
 
             queryClient.invalidateQueries({
                 queryKey: ["portfolio"],
             });
         },
-    });
 
+        onError: (error) => {
+            console.error(
+                "Portfolyo silme hatası:",
+                error
+            );
+        },
+    });
 
     const updateMutation = useMutation({
         mutationFn: ({ id, formData }) =>
-            portfolioRepository.updatePortfolio(
+            updateRepository.updatePortfolio(
                 id,
                 formData
             ),
 
         onSuccess: (updatedPortfolio) => {
             queryClient.invalidateQueries({
-                queryKey: ["portfolio", "user", userId],
+                queryKey: [
+                    "portfolio",
+                    "user",
+                    userId,
+                ],
             });
 
             queryClient.invalidateQueries({
@@ -87,10 +159,21 @@ export function usePortfolio(searchQuery = "", userId, portfolioId) {
 
             if (portfolioId) {
                 queryClient.setQueryData(
-                    ["portfolio", "detail", portfolioId],
+                    [
+                        "portfolio",
+                        "detail",
+                        portfolioId,
+                    ],
                     updatedPortfolio
                 );
             }
+        },
+
+        onError: (error) => {
+            console.error(
+                "Portfolyo güncelleme hatası:",
+                error
+            );
         },
     });
 
@@ -104,37 +187,46 @@ export function usePortfolio(searchQuery = "", userId, portfolioId) {
 
         userPortfolios:
             userPortfoliosQuery.data ?? [],
+
         isUserPortfoliosLoading:
             userPortfoliosQuery.isLoading,
+
         isUserPortfoliosError:
             userPortfoliosQuery.isError,
+
         userPortfoliosError:
             userPortfoliosQuery.error,
 
 
         detail: detailQuery.data ?? null,
+
         isDetailLoading:
             detailQuery.isLoading,
+
         isDetailError:
             detailQuery.isError,
+
         detailError:
             detailQuery.error,
 
 
         deletePortfolio:
             deleteMutation.mutateAsync,
+
         isDeleting:
             deleteMutation.isPending,
 
 
-        updatePortfolioStatus:
-            statusMutation.mutateAsync,
+        toggleDurum:
+            updateStatusMutation.mutateAsync,
+
         isUpdatingStatus:
-            statusMutation.isPending,
+            updateStatusMutation.isPending,
 
 
         updatePortfolio:
             updateMutation.mutateAsync,
+
         isUpdating:
             updateMutation.isPending,
     };

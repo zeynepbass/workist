@@ -148,8 +148,8 @@ export default function MyProfile  ()  {
                 </h6>
               </div>
 
-              <Suspense fallback={<div>Yükleniyor...</div>}>
-        <Modal />
+      <Suspense fallback={<div>Yükleniyor...</div>}>
+      <Modal     />
       </Suspense>
             </div>
           </div>
