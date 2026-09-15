@@ -1,4 +1,4 @@
-import * as adsApi from "../features/ads/api/ads.api";
+import {adsApi} from "../features/ads/api/ads.api";
 
 const adsProvider = {
     getAllAds: adsApi.getAds,

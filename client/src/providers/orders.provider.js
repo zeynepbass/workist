@@ -1,4 +1,4 @@
-import * as ordersApi from "../features/orders/api/orders.api";
+import  {ordersApi} from "../features/orders/api/orders.api";
 
 const ordersProvider = {
     getUserPosts: ordersApi.getUserPosts,

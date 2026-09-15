@@ -1,40 +1,25 @@
+
 import apiClient from "@/shared/api";
 
-export async function getAds(userId) {
-    const response = await apiClient.get(
-        `/ilanlarim/${userId}`
-    );
+export const adsApi = {
+  getAds(userId) {
+    return apiClient.get(`/ilanlarim/${userId}`);
+  },
 
-    return response.data;
-}
+  getAllDetail(id) {
+    return apiClient.get(`/ilanlarim/${id}`);
+  },
 
-export async function getAllDetail(id) {
-    const response = await apiClient.get(
-        `/ilanlarim/${id}`
-    );
+  deletedAds(id) {
+    return apiClient.delete(`/ilanlarim/${id}`);
+  },
 
-    return response.data;
-}
-export async function deletedAds(id){
-    const response = await apiClient.delete(
-        `/ilanlarim/${id}`
-    );
+  updateAds(id, post) {
+    return apiClient.put(`/ilanlarim/${id}`, post);
+  },
 
-    return response.data;
-}
-export async function updateAds(id,post){
-    const response = await apiClient.put(
-        `/ilanlarim/${id}`,
-              post
-    );
+  createWorkPost(post) {
+    return apiClient.post("/ilanlarim", post);
+  },
+};
 
-    return response.data;
-}
-export async function createWorkPost(post) {
-    const response = await apiClient.post(
-        "/ilanlarim",
-        post
-    );
-
-    return response.data;
-}
