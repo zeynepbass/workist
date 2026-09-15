@@ -1,76 +1,43 @@
+
 import portfolioProvider from "@/providers/portfolio.provider";
 import portfolioAdapter from "../adapters/portfolio.adapter";
 
-export function SearchPosts() {
-    return {
-        async searchPosts(searchQuery) {
-            const response =
-                await portfolioProvider.searchPosts(
-                    searchQuery
-                );
+export async function searchPosts(searchQuery) {
+    const response =
+        await portfolioProvider.searchPosts(searchQuery);
 
-            return response.map(portfolioAdapter);
-        },
-    };
+    return response.map(portfolioAdapter);
 }
 
-export function getUserPortfolios() {
-    return {
-        async getUserPortfolios(userId) {
-            const response =
-                await portfolioProvider.getUserPortfolios(
-                    userId
-                );
+export async function getUserPortfolios(userId) {
+    const response =
+        await portfolioProvider.getUserPortfolios(userId);
 
-            return response.map(portfolioAdapter);
-        },
-    };
+    return response.map(portfolioAdapter);
 }
 
-export function deletePortfolio() {
-    return {
-        async deletePortfolio(id) {
-            return await portfolioProvider.deletePortfolio(
-                id
-            );
-        },
-    };
+export async function deletePortfolio(id) {
+    return await portfolioProvider.deletePortfolio(id);
 }
 
-export function getPortfolioDetail() {
-    return {
-        async getPortfolioDetail(id) {
-            const response =
-                await portfolioProvider.getPortfolioDetail(
-                    id
-                );
+export async function getPortfolioDetail(id) {
+    const response =
+        await portfolioProvider.getPortfolioDetail(id);
 
-            return portfolioAdapter(response);
-        },
-    };
+    return portfolioAdapter(response);
 }
 
-export function updatePortfolio() {
-    return {
-        async updatePortfolio(id, formData) {
-            const response =
-                await portfolioProvider.updatePortfolio(
-                    id,
-                    formData
-                );
+export async function updatePortfolio(id, formData) {
+    const response =
+        await portfolioProvider.updatePortfolio(id, formData);
 
-            return portfolioAdapter(response);
-        },
-    };
+    return portfolioAdapter(response);
 }
 
-export function updatePortfolioStatus() {
-    return {
-        async updatePortfolioStatus(id, durum) {
-            return await portfolioProvider.updatePortfolioStatus(
-                id,
-                durum
-            );
-        },
-    };
+export async function updatePortfolioStatus(id, durum) {
+    return await portfolioProvider.updatePortfolioStatus(
+        id,
+        durum
+    );
 }
+
