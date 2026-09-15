@@ -1,4 +1,4 @@
-import { Select } from "@/shared/atoms";
+import { Select } from "../../atoms";
 export function PostSort  ({ sortType, onChange })  {
     const sortLabels = {
         all: "Tüm İlanlar Göster",

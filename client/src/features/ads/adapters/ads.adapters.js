@@ -1,4 +1,4 @@
-export const adsAdapter = (ilan) => {
+export default function adsAdapter (ilan) {
     if (!ilan) return null;
 
     return {

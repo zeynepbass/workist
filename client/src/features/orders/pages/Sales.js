@@ -4,8 +4,8 @@ import { TopHeader } from "@/shared/components/molecules";
 
 import { siparislerOrnek } from "@/shared/mocks/sales";
 
-import SalesFilters from "./components/SalesFilters";
-import SalesList from "./components/SalesList";
+import SalesFilters from "../components/SalesFilters";
+import SalesList from "../components/SalesList";
 
 export default function Sales  ()  {
     const [durumFilter, setDurumFilter] = useState("tum");

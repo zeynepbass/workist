@@ -1,4 +1,4 @@
-import OrderActions from "./OrderActions";
+import OrderActions from "../OrderActions";
 
 export default function OrderCard  ({
   siparis,

@@ -4,11 +4,11 @@ import { FaArrowLeft } from "react-icons/fa";
 
 import { useAds } from "../hooks/useAds";
 import { Button,Input,Select,Textarea } from "@/shared/components/atoms";
-import { AdsInfo } from "../components/AdsInfo";
-import { AdsWarning } from "../components/AdsWarning";
-import {AdsPricingOptions} from "../components/AdsPricingOptions";
-import {AdsPriceField} from "../components/AdsPriceField";
-import {AdsFileUpload} from "../components/AdsFileUpload";
+import AdsInfo  from "../components/AdsInfo";
+import  AdsWarning from "../components/AdsWarning";
+import AdsPricingOptions from "../components/AdsPricingOptions";
+import AdsPriceField  from "../components/AdsPriceField";
+import AdsFileUpload from "../components/AdsFileUpload";
 
 import {StatusMessage} from "@/shared/components/molecules";
 

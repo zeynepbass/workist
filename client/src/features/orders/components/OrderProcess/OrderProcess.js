@@ -1,4 +1,4 @@
-import ProcessItem from "./ProcessItem";
+import ProcessItem from "../ProcessItem";
 
 export default function OrderProcess  ({ steps = [] }) {
     return (

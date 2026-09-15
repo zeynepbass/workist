@@ -11,7 +11,7 @@ import {
     faHandshake
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom"
-const index = () => {
+export default function Sidebar ()  {
     const icons = [
         { icon: faGlobe, label: "General", link: "/ilanlar" },
         { icon: faCode, label: "Workist", link: "/workist" },
@@ -55,4 +55,4 @@ const index = () => {
     )
 }
 
-export default index
+

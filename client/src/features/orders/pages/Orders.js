@@ -2,9 +2,9 @@ import { useMemo, useState } from "react";
 
 import { siparislerOrnek } from "@/shared/mocks/orders";
 
-import OrderList from "./components/OrderList";
-import OrderDetailsModal from "./components/OrderDetailsModal";
-import OrderFilters from "./components/OrderFilters";
+import OrderList from "../components/OrderList";
+import OrderDetailsModal from "../components/OrderDetailsModal";
+import OrderFilters from "../components/OrderFilters";
 
 export default function Orders() {
     const [durumFilter, setDurumFilter] = useState("tum");

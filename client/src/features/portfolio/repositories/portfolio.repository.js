@@ -1,5 +1,5 @@
 import portfolioProvider from "@/providers/portfolio.provider";
-import { portfolioAdapter } from "../portfolio.adapter";
+import  portfolioAdapter  from "../adapters/portfolio.adapter";
 
 export function SearchPosts() {
     return {

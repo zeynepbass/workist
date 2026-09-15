@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { PortfolioContext } from '../../../../Context/workContext';
-import {Textarea,Button,Input} from "@/shared/components/molecules"
-import {Select} from "@/shared/components/atoms"
+import {Textarea,Button,Input,Select} from "@/shared/components/atoms"
+
 export default function AdsModal  () {
   const { createWorkPost,userId,userid} = useContext(PortfolioContext);
 

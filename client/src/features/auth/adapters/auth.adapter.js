@@ -1,4 +1,4 @@
-export const userAdapter = (user) => {
+export default function userAdapter  (user)  {
     if (!user) return null;
   
     return {

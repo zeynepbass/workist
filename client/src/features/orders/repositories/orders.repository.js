@@ -1,4 +1,4 @@
-import {ordersAdapter} from "../orders.adapter"
+import ordersAdapter from "../adapters/orders.adapter"
 import ordersProvider from "@/providers/orders.provider"
 export function getUserPosts(){
     return{
@@ -12,7 +12,7 @@ export function getPosts(){
     return{
         async getPosts(){
             const response=await ordersProvider.getPosts()
-            return response.map(adsAdapter)
+            return response.map(ordersAdapter)
         }
     }
 }

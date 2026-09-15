@@ -1,1 +1,1 @@
-export {default} from "./PostSort"
+export {PostSort} from "./PostSort"

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import io from "socket.io-client";
 
 import { useMessages } from "../hooks/useMessages";
-import { messageAdapter } from "../adapters/messageAdapter";
+import  messageAdapter  from "../adapters/message.adapter";
 
 import ChatUserList from "../components/ChatUserList";
 import ChatMessageList from "../components/ChatMessageList";

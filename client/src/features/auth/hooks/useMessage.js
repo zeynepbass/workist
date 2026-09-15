@@ -1,8 +1,7 @@
 
 import { useQuery } from "@tanstack/react-query";
-import messageRepository from "../repositories/authRepository";
-
-export const useMessages = () => {
+import * as authRepository from "../repositories/auth.repository";
+export function useMessages  ()  {
   const userid = JSON.parse(localStorage.getItem("login"));
   const userId = userid?.result?._id;
 
@@ -14,7 +13,7 @@ export const useMessages = () => {
     error: messagesError,
   } = useQuery({
     queryKey: ["messages", userId],
-    queryFn: () => messageRepository.getMessages(userId),
+    queryFn: () => authRepository.getMessages(userId),
     enabled: !!userId,
   });
 
@@ -26,12 +25,12 @@ export const useMessages = () => {
     error: usersError,
   } = useQuery({
     queryKey: ["users"],
-    queryFn: () => messageRepository.getUsers(),
+    queryFn: () => authRepository.getUsers(),
   });
 
 
   const getMessageData = (currentId, targetId) => {
-    return messageRepository.getMessageData(currentId, targetId);
+    return authRepository.getMessageData(currentId, targetId);
   };
 
   return {

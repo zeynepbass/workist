@@ -4,37 +4,24 @@ import {
     useQueryClient,
 } from "@tanstack/react-query";
 
-import {
-    SearchPosts,
-    getUserPortfolios,
-    deletePortfolio,
-    updatePortfolioStatus,
-    getPortfolioDetail,
-    updatePortfolio,
-} from "../repositories/portfolio.repository";
-
+import * as portfolioRepository from "../repositories/portfolio.repository";
 export function usePortfolio(searchQuery = "", userId, portfolioId) {
     const queryClient = useQueryClient();
 
-    const searchRepository = SearchPosts();
-    const userPortfolioRepository = getUserPortfolios();
-    const deleteRepository = deletePortfolio();
-    const statusRepository = updatePortfolioStatus();
-    const detailRepository = getPortfolioDetail();
-    const updateRepository = updatePortfolio();
+
 
 
     const postsQuery = useQuery({
         queryKey: ["portfolio", searchQuery],
         queryFn: () =>
-            searchRepository.searchPosts(searchQuery),
+            portfolioRepository.searchPosts(searchQuery),
     });
 
 
     const userPortfoliosQuery = useQuery({
         queryKey: ["portfolio", "user", userId],
         queryFn: () =>
-            userPortfolioRepository.getUserPortfolios(userId),
+            portfolioRepository.getUserPortfolios(userId),
         enabled: !!userId,
     });
 
@@ -42,14 +29,14 @@ export function usePortfolio(searchQuery = "", userId, portfolioId) {
     const detailQuery = useQuery({
         queryKey: ["portfolio", "detail", portfolioId],
         queryFn: () =>
-            detailRepository.getPortfolioDetail(portfolioId),
+            portfolioRepository.getPortfolioDetail(portfolioId),
         enabled: !!portfolioId,
     });
 
 
     const deleteMutation = useMutation({
         mutationFn: (id) =>
-            deleteRepository.deletePortfolio(id),
+            portfolioRepository.deletePortfolio(id),
 
         onSuccess: () => {
             queryClient.invalidateQueries({
@@ -65,7 +52,7 @@ export function usePortfolio(searchQuery = "", userId, portfolioId) {
 
     const statusMutation = useMutation({
         mutationFn: ({ id, durum }) =>
-            statusRepository.updatePortfolioStatus(
+            portfolioRepository.updatePortfolioStatus(
                 id,
                 durum
             ),
@@ -84,7 +71,7 @@ export function usePortfolio(searchQuery = "", userId, portfolioId) {
 
     const updateMutation = useMutation({
         mutationFn: ({ id, formData }) =>
-            updateRepository.updatePortfolio(
+            portfolioRepository.updatePortfolio(
                 id,
                 formData
             ),

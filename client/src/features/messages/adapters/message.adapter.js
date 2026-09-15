@@ -1,7 +1,9 @@
-export const messageAdapter = (message) => ({
+export default function messageAdapter(message) {
+  return {
     id: message._id,
     senderId: message.gonderenId,
     receiverId: message.aliciId,
     text: message.text,
     time: message.time,
-});
+  };
+}

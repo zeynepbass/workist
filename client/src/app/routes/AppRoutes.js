@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 
 import PrivateRoute from "./PrivateRoute";
-import Layouts from "@/shared/layout";
+import Layouts from "@/shared/layout/index";
 import Section from "@/features/orders/pages/BuyerRequest";
 import General from "@/features/portfolio/pages/General";
 import Ads from "@/features/ads/pages/AdsPage";
-import AdsDetail from "@/eatures/ads/pages/AdsDetail";
+import AdsDetail from "@/features/ads/pages/AdsDetail";
 import Portfolyo from "@/features/portfolio/pages/Portfolio";
 import PortfolyoDetail from "@/features/portfolio/pages/PortfolioDetail";
 

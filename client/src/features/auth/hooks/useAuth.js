@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import authRepository from "../repositories/authRepository";
+import * as authRepository from "../repositories/auth.repository";
 
-export const useAuth = () => {
+export function useAuth ()  {
   const navigate = useNavigate();
 
   const [passwordVisible, setPasswordVisible] = useState(false);

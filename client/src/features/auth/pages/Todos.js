@@ -2,8 +2,8 @@
 import { useState } from "react";
 import MessagingUI from "@/features/messages/pages/Message";
 import { Button,Input } from "@/shared/components/atoms";
-import formatToTurkishDate from "@/shared/utils";
-import { useMessages } from "../hooks";
+import formatToTurkishDate from "@/shared/utils/formatToTurkishDate";
+import { useMessages } from "../hooks/useMessage";
 
 export default function Todos (){
   const [open, setOpen] = useState(false);

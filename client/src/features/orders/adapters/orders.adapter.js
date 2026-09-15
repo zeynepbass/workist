@@ -1,4 +1,7 @@
-export const postAdapter = (post) => ({
+export default function postAdapter  (post)  {
+    return{
+        
+
     id: post._id,
 
     hizmetTuru: post.hizmetTuru,
@@ -33,4 +36,4 @@ export const postAdapter = (post) => ({
 
     createdAt: post.createdAt,
     updatedAt: post.updatedAt,
-});
+}    };

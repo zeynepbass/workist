@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function BuyerRequestHeader({
+export default function BuyerHeader({
     count,
     onShowAll,
 }) {

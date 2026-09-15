@@ -7,7 +7,7 @@ import {
     Select,
 } from "@/shared/components/atoms";
 
-import PortfolioImageUpload from "./PortfolioImageUpload";
+import PortfolioImageUpload from "../PortfolioImageUpload";
 
 export default function PortfolioForm({
     detail,
