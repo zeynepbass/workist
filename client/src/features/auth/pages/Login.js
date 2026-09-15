@@ -16,7 +16,7 @@ export default function Login() {
         formData,
         passwordVisible,
         handleChange,
-        handleSubmit,
+        handleLoginSubmit,
         togglePasswordVisibility,
         isPending,
     } = useAuth();
@@ -36,7 +36,7 @@ export default function Login() {
                     </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleLoginSubmit} className="space-y-5">
 
     
                     <Input
@@ -73,7 +73,7 @@ export default function Login() {
                             />
 
                             <Button
-                                type="button"
+                                type="submit"
                                 onClick={togglePasswordVisibility}
                                 className="absolute right-3 top-[38px] text-gray-500 hover:text-purple-600 transition"
                                 aria-label={

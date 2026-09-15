@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import * as authRepository from "../repositories/auth.repository";
 
 export function useAuth() {
@@ -17,48 +18,40 @@ export function useAuth() {
         lastName: "",
         confirmPassword: "",
     });
-
     const loginMutation = useMutation({
-        mutationFn: (data) =>
-            authRepository.login(data),
-
+        mutationFn: (data) => authRepository.login(data),
+    
         onSuccess: (data) => {
-            console.log("Login başarılı:", data);
+            toast.success(data?.message || "Giriş başarılı.");
+            navigate("/");
         },
-
+    
         onError: (error) => {
-            console.error("Login hatası:", error);
-
-            alert(
+            toast.error(
                 error?.response?.data?.message ||
                 "E-posta veya parola hatalı."
             );
         },
     });
-
-    const registerMutation = useMutation({
-        mutationFn: (data) =>
-            authRepository.register(data),
-
-        onSuccess: () => {
     
-
-            alert(
-                "Kayıt başarılı. Giriş yapabilirsiniz."
+    const registerMutation = useMutation({
+        mutationFn: (data) => authRepository.register(data),
+    
+        onSuccess: (data) => {
+            toast.success(
+                data?.message || "Kayıt başarılı. Giriş yapabilirsiniz."
             );
-
+    
             navigate("/");
         },
-
+    
         onError: (error) => {
-            console.error( "wefwe",error);
-
-            alert(
-                error?.response?.message
+            toast.error(
+                error?.response?.data?.message ||
+                "Kayıt sırasında bir hata oluştu."
             );
         },
     });
-
     const handleChange = (e) => {
         const { name, value } = e.target;
 

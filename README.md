@@ -103,8 +103,8 @@ WORKIST, kullanıcıların ihtiyaçlarına yönelik freelance hizmet ilanları o
   <img src="./client/public/assets/screenshots/1752590136337.jpeg" alt="Dashboards" width="900">
 </p>
 <p align="center">
-  <img src="./client/public/assets/screenshots/1752590136291.jpeg" alt="Giris yap" width="900">
+  <img src="./client/public/assets/screenshots/1752590136291.png" alt="Giris yap" width="900">
 </p>
 <p align="center">
-  <img src="./client/public/assets/screenshots/1752590136180.jpeg" alt="Kayıt ol" width="900">
+  <img src="./client/public/assets/screenshots/1752590136180.png" alt="Kayıt ol" width="900">
 </p>
