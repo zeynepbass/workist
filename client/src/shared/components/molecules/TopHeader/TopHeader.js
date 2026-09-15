@@ -2,35 +2,7 @@ import { useMemo, useState } from "react";
 import { useAds } from "@/features/ads/hooks/useAds";
 
 export function TopHeader ({title,desc}) {
-    const { data: posts = [] } = useAds();
 
-    const [sortType, setSortType] = useState("all");
-
-    const sortedPosts = useMemo(() => {
-        const sorted = [...posts];
-
-        if (sortType === "oldToNew") {
-            sorted.sort(
-                (a, b) =>
-                    new Date(a.createdAt) -
-                    new Date(b.createdAt)
-            );
-        }
-
-        if (sortType === "newToOld") {
-            sorted.sort(
-                (a, b) =>
-                    new Date(b.createdAt) -
-                    new Date(a.createdAt)
-            );
-        }
-
-        return sorted;
-    }, [posts, sortType]);
-
-    const handleChange = (e) => {
-        setSortType(e.target.value);
-    };
 
     return (
         <>
