@@ -14,8 +14,8 @@ export async function getDetailAds(id) {
     return adsAdapter(response);
 }
 
-export async function deleteAds(id) {
-    return await adsProvider.deleteAds(id);
+export async function deletedAds(id) {
+    return await adsProvider.deletedAds(id);
 }
 
 export async function updateAds(id, post) {

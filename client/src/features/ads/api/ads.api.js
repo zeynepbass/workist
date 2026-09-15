@@ -15,7 +15,7 @@ export async function getAllDetail(id) {
 
     return response.data;
 }
-export async function deleteAds(id){
+export async function deletedAds(id){
     const response = await apiClient.delete(
         `/ilanlarim/${id}`
     );

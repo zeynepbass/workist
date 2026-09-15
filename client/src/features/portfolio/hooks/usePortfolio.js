@@ -14,7 +14,7 @@ export function usePortfolio(
     const queryClient = useQueryClient();
 
     const searchPostsRepository =
-        portfolioRepository.SearchPosts();
+        portfolioRepository.searchPosts();
 
     const userPortfoliosRepository =
         portfolioRepository.getUserPortfolios();
