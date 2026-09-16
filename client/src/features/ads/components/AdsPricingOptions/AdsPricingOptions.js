@@ -32,66 +32,65 @@ export default function AdsPricingOptions ({
     ];
 
     return (
-        <>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-500">
+                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">
                     Kod Fiyatlandırma*
                 </h3>
 
-                <div className="flex flex-col space-y-3">
+                <div className="space-y-2">
                     {codeOptions.map((item) => (
-                               <div
-                               key={item.key}
-                               className="flex items-center space-x-2"
-                           >
-          
-                        <Input
-                        type="checkbox"
-                        checked={kodFiyatlandirma[item.key]}
-                        onChange={() =>
-                            onCheckboxChange(
-                                "kodFiyatlandirma",
-                                item.key
-                            )
-                        }
-                        
-                        >            <span>{item.label}</span></Input>
-                 
-                        </div>
+                        <label
+                            key={item.key}
+                            className="flex cursor-pointer items-center gap-3 rounded-lg border border-gray-200 px-4 py-3 text-sm text-gray-700 hover:bg-purple-50"
+                        >
+                            <Input
+                                type="checkbox"
+                                checked={kodFiyatlandirma[item.key]}
+                                onChange={() =>
+                                    onCheckboxChange(
+                                        "kodFiyatlandirma",
+                                        item.key
+                                    )
+                                }
+                                className="h-4 w-4 accent-purple-600"
+                            />
+                            <span>{item.label}</span>
+                            <span className="ml-auto text-xs text-gray-400">+100 TL</span>
+                        </label>
                     ))}
                 </div>
             </div>
 
             <div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-500">
+                <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">
                     Extra*
                 </h3>
 
-                <div className="flex flex-col space-y-3">
+                <div className="space-y-2">
                     {extraOptions.map((item) => (
-                                                <div
-                                                key={item.key}
-                                                className="flex items-center space-x-2"
-                                            >
-                           
-                                         <Input
-                                    type="checkbox"
-                                    checked={ekstraOzellikler[item.key]}
-                                    onChange={() =>
-                                        onCheckboxChange(
-                                            "ekstraOzellikler",
-                                            item.key
-                                        )
-                                    }
-                                         
-                                         >            <span>{item.label}</span></Input>
-                                  
-                                         </div>
-      
+                        <label
+                            key={item.key}
+                            className="flex cursor-pointer items-center gap-3 rounded-lg border border-gray-200 px-4 py-3 text-sm text-gray-700 hover:bg-purple-50"
+                        >
+                            <Input
+                                type="checkbox"
+                                checked={ekstraOzellikler[item.key]}
+                                onChange={() =>
+                                    onCheckboxChange(
+                                        "ekstraOzellikler",
+                                        item.key
+                                    )
+                                }
+                                className="h-4 w-4 accent-purple-600"
+                            />
+                            <span>{item.label}</span>
+                            <span className="ml-auto text-xs text-gray-400">+100 TL</span>
+                        </label>
                     ))}
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

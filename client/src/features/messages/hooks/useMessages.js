@@ -66,7 +66,7 @@ export function useMessages(gonderenId, aliciId) {
         targetId
     ) => {
         const response =
-            await messageRepository.getMessageData(
+            await messageRepository.deleteConversation(
                 currentId,
                 targetId
             );

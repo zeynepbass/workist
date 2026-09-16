@@ -32,8 +32,8 @@ export default function ConversationTable({
     }
 
     return (
-        <div className="flex justify-start">
-            <table className="h-[400px] w-[100vh] table-auto overflow-auto border bg-white">
+        <div className="flex justify-start w-full overflow-x-auto">
+            <table className="h-[400px] w-full min-w-[640px] table-auto overflow-auto border bg-white">
                 <thead className="bg-white text-center font-medium text-gray-600">
                     <tr>
                         <th className="border p-4">Tarih</th>

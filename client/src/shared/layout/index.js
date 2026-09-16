@@ -13,12 +13,12 @@ export default function Layouts() {
         </div>
       </header>
 
-      <div className="flex-1 grid grid-cols-5">
-        <aside className="col-span-1">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-5">
+        <aside className="md:col-span-1 border-b md:border-b-0">
           <Sidebar />
         </aside>
 
-        <main className="col-span-4 bg-gray-100 p-10">
+        <main className="md:col-span-4 bg-gray-100 p-4 md:p-10">
           <Outlet />
         </main>
       </div>

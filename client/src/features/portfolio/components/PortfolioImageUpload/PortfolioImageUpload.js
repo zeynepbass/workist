@@ -24,9 +24,9 @@ export default function PortfolioImageUpload  ({
 
                 <div className="py-5">
 
-                    <div className="flex justify-center">
+                    <div className="flex justify-center pl-10">
                         <Input
-                            label="Dosya Seç"
+                            label=""
                             type="file"
                             onChange={onChange}
                             className="text-gray-800 file:bg-purple-600 file:text-white file:rounded file:px-4 file:py-2 file:border-0 file:cursor-pointer"

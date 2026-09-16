@@ -40,12 +40,14 @@ export const getConversations = async (req, res) => {
         { gonderenId: objectUserId },
         { aliciId: objectUserId }
       ]
-    }).sort({ createdAt: -1 });
+    }).sort({ time: -1 });
 
     const conversations = {};
     messages.forEach(msg => {
       const otherUser = msg.gonderenId.toString() === userId ? msg.aliciId.toString() : msg.gonderenId.toString();
-      conversations[otherUser] = msg;
+      if (!conversations[otherUser]) {
+        conversations[otherUser] = msg;
+      }
     });
 
     res.json(Object.values(conversations));

@@ -20,6 +20,7 @@ export default function Chat() {
     const {
         messages,
         userList,
+        konusmalar,
         addMessageToCache,
         isMessagesLoading,
         isUsersLoading,
@@ -37,24 +38,22 @@ export default function Chat() {
     };
 
     const filteredUsers = useMemo(() => {
-        if (!userList.length || !messages.length) {
+        if (!userList.length || !konusmalar.length) {
             return [];
         }
 
-        return userList.filter((user) =>
-            messages.some(
-                (msg) =>
-                    (
-                        msg.senderId === gonderenId &&
-                        msg.receiverId === user._id
-                    ) ||
-                    (
-                        msg.receiverId === gonderenId &&
-                        msg.senderId === user._id
-                    )
+        const partnerIds = new Set(
+            konusmalar.map((item) =>
+                item.gonderenId === gonderenId
+                    ? item.aliciId
+                    : item.gonderenId
             )
         );
-    }, [userList, messages, gonderenId]);
+
+        return userList.filter((user) =>
+            partnerIds.has(user._id)
+        );
+    }, [userList, konusmalar, gonderenId]);
 
     useEffect(() => {
         const handleReceiveMessage = (msg) => {

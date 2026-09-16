@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 
 import {
@@ -6,6 +7,7 @@ import {
     Input,
     Select,
 } from "@/shared/components/atoms";
+
 import toast from "react-hot-toast";
 import PortfolioImageUpload from "../PortfolioImageUpload";
 
@@ -17,7 +19,7 @@ export default function PortfolioForm({
 }) {
     const [formData, setFormData] = useState({
         title: "",
-        durum: "",
+        durum: "yayinda",
         fiyat: "",
         description: "",
         file: "",
@@ -31,13 +33,12 @@ export default function PortfolioForm({
 
         setFormData({
             title: detail.title || "",
-            durum: detail.durum || "",
+            durum: detail.durum || "yayinda",
             fiyat: detail.fiyat || "",
             description: detail.description || "",
             file: detail.file || "",
             currency: detail.currency || "TL",
-            selectedCategory:
-                detail.selectedCategory || "",
+            selectedCategory: detail.selectedCategory || "",
             userId: detail.userId || userId,
         });
     }, [detail, userId]);
@@ -78,133 +79,197 @@ export default function PortfolioForm({
             formData.file === "" ||
             Number(formData.fiyat) < 100
         ) {
-            toast.error(  "Tüm alanları doldurun ve fiyat en az 100 TL olmalıdır!");
-   
+            toast.error(
+                "Tüm alanları doldurun ve fiyat en az 100 TL olmalıdır!"
+            );
+
             return;
         }
 
         try {
             await onSubmit(formData);
         } catch (error) {
-            // hata toast'u zaten mutation onError'da gösteriliyor
+            console.error(error);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div className="space-y-6">
+        <form onSubmit={handleSubmit} className="w-full">
+            <div className="">
+                <div className="border-b border-gray-200 bg-gray-50/70 ">
+                    <h2 className="text-xl font-semibold text-gray-900">
+                        Portfolyo Bilgileri
+                    </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <p className="mt-1 text-sm text-gray-500">
+                        Portfolyonuzun bilgilerini güncelleyin.
+                    </p>
+                </div>
 
-                    <Select
-                        label="Kategori Seçimi"
-                        name="selectedCategory"
-                        value={formData.selectedCategory}
-                        onChange={handleChange}
-                        className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
-                        options={[
-                            {
-                                value: "Grafik & Tasarım",
-                                label: "Grafik & Tasarım",
-                            },
-                            {
-                                value: "Yazı & Çeviri",
-                                label: "Yazı & Çeviri",
-                            },
-                            {
-                                value: "Yazılım & Teknoloji",
-                                label: "Yazılım & Teknoloji",
-                            },
-                        ]}
-                        placeholder={null}
-                    />
+                <div className="space-y-8 p-6 md:p-8">
+                    <section>
+                        <div className="mb-5">
+                            <h3 className="text-base font-semibold text-gray-900">
+                                Temel Bilgiler
+                            </h3>
 
-                    <Input
-                        label="Başlığınızla ziyaretçiyi etkile*"
-                        type="text"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                        placeholder="Portfolyonuz için başlık girin"
-                        className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
-                    />
-
-                    <Input
-                        label="Durum*"
-                        type="text"
-                        name="durum"
-                        value={formData.durum}
-                        onChange={handleChange}
-                        placeholder="Portfolyonuz için durum girin"
-                        className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
-                    />
-
-                    <div className="flex items-center space-x-2">
-
-                        <div className="w-full">
-                            <Input
-                                label="Fiyat*"
-                                type="number"
-                                name="fiyat"
-                                value={formData.fiyat}
-                                onChange={handleChange}
-                                placeholder="Portfolyonuz için fiyat girin"
-                                className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
-                            />
+                            <p className="mt-1 text-sm text-gray-500">
+                                Portfolyonuzun kategori, başlık ve fiyat
+                                bilgilerini düzenleyin.
+                            </p>
                         </div>
 
-                        <div className="pt-7">
+                        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                             <Select
-                                name="currency"
-                                value={formData.currency}
+                                label="Kategori"
+                                name="selectedCategory"
+                                value={formData.selectedCategory}
                                 onChange={handleChange}
-                                className="p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
                                 options={[
                                     {
-                                        value: "TL",
-                                        label: "TL",
+                                        value: "Grafik & Tasarım",
+                                        label: "Grafik & Tasarım",
                                     },
                                     {
-                                        value: "USD",
-                                        label: "USD",
+                                        value: "Yazı & Çeviri",
+                                        label: "Yazı & Çeviri",
+                                    },
+                                    {
+                                        value: "Yazılım & Teknoloji",
+                                        label: "Yazılım & Teknoloji",
+                                    },
+                                ]}
+                            />
+
+                            <Select
+                                label="Yayın Durumu"
+                                name="durum"
+                                value={formData.durum}
+                                onChange={handleChange}
+                                options={[
+                                    {
+                                        value: "yayinda",
+                                        label: "Yayında",
+                                    },
+                                    {
+                                        value: "yayindaDegil",
+                                        label: "Yayında Değil",
                                     },
                                 ]}
                                 placeholder={null}
                             />
+                       <div className="min-w-0 flex-1">
+                            <Input
+                                label="Başlık"
+                                type="text"
+                                name="title"
+                                value={formData.title}
+                                className="w-full"
+                                onChange={handleChange}
+                                placeholder="Portfolyonuz için başlık girin"
+                                variant="default"
+                            />
+</div>
+                            <div className="flex items-end gap-3">
+                                <div className="min-w-0 flex-1">
+                                    <Input
+                                        label="Fiyat"
+                                        type="number"
+                                        name="fiyat"
+                                                   className="w-full"
+                                        value={formData.fiyat}
+                                        onChange={handleChange}
+                                        placeholder="En az 100 TL"
+                                        variant="default"
+                                    />
+                                </div>
+
+                                <div className="w-24">
+                                    <Select
+                                        name="currency"
+                                        value={formData.currency}
+                                        onChange={handleChange}
+                                        options={[
+                                            {
+                                                value: "TL",
+                                                label: "TL",
+                                            },
+                                            {
+                                                value: "USD",
+                                                label: "USD",
+                                            },
+                                        ]}
+                                        placeholder={null}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div className="h-px bg-gray-100" />
+
+                    <section className="w-full">
+                        <div className="mb-5">
+                            <h3 className="text-base font-semibold text-gray-900">
+                                Portfolyo Açıklaması
+                            </h3>
+
+                            <p className="mt-1 text-sm text-gray-500">
+                                Projenizi ve sunduğunuz hizmeti detaylı şekilde
+                                açıklayın.
+                            </p>
                         </div>
 
+                        <div className="w-full">
+                            <Textarea
+                                label="Açıklama"
+                                name="description"
+                                rows={6}
+                                value={formData.description}
+                                onChange={handleChange}
+                                placeholder="Projeniz, kullandığınız teknolojiler ve sunduğunuz hizmet hakkında bilgi verin..."
+                                variant="default"
+                                className="w-full"
+                            />
+                        </div>
+                    </section>
+
+                    <div className="h-px bg-gray-100" />
+
+                    <section className="w-full">
+                        <div className="mb-5">
+                            <h3 className="text-base font-semibold text-gray-900">
+                                Portfolyo Görseli
+                            </h3>
+
+                            <p className="mt-1 text-sm text-gray-500">
+                                Portfolyonuzu temsil edecek bir görsel yükleyin.
+                            </p>
+                        </div>
+
+                        <div className="w-full rounded-xl border border-dashed border-gray-300 bg-gray-50/50 p-5">
+                            <PortfolioImageUpload
+                                file={formData.file}
+                                onChange={handleFileChange}
+                            />
+                        </div>
+                    </section>
+
+                    <div className="flex justify-center border-t border-gray-100 pt-6">
+                        <Button
+                            type="submit"
+                            variant="primary"
+                            disabled={isUpdating}
+                            className="w-full px-8 py-3 sm:w-auto"
+                        >
+                            {isUpdating
+                                ? "Güncelleniyor..."
+                                : "Portfolyoyu Güncelle"}
+                        </Button>
                     </div>
                 </div>
-
-                <Textarea
-                    label="Portfolyonuzu Detaylıca Açıklayın*"
-                    name="description"
-                    rows={5}
-                    value={formData.description}
-                    onChange={handleChange}
-                    placeholder="Detaylı açıklama girin"
-                    className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
-                />
-
-                <PortfolioImageUpload
-                    file={formData.file}
-                    onChange={handleFileChange}
-                />
-
-                <div className="flex justify-center pt-5">
-                    <Button
-                        type="submit"
-                        disabled={isUpdating}
-                        className="mt-4 bg-gray-800 text-white rounded hover:bg-gray-700 px-10 py-3"
-                    >
-                        {isUpdating
-                            ? "Güncelleniyor..."
-                            : "Güncelle"}
-                    </Button>
-                </div>
-
             </div>
         </form>
     );
-};
+}
 

@@ -30,22 +30,24 @@ export default function PortfolioCard({
         (onToggleStatus || onEdit || onDelete);
 
     return (
-        <div className="relative bg-white rounded-lg shadow-md border w-full sm:w-1/4 p-4 flex flex-col">
+        <div className="relative bg-white rounded-lg shadow-md border w-full sm:w-[48%] md:w-[31%] lg:w-[23%] p-4 flex flex-col">
 
 
             {isManageable && (
-                <div className="absolute top-2 right-2 rounded-lg p-2 flex space-x-2 bg-gray-800 rounded-bl-md z-10">
+                <div className="absolute top-2 right-2 flex space-x-1 rounded-md bg-gray-800/90 p-1 z-10">
 
                     {onToggleStatus && (
                         <Button
                             onClick={() =>
-                                onToggleStatus(
-                                    post.id,
-                                    post.durum
-                                )
+                                onToggleStatus({
+                                    id: post.id,
+                                    durum: isPublished
+                                        ? "yayindaDegil"
+                                        : "yayinda",
+                                })
                             }
-         
-                            className="text-gray-200 hover:text-white"
+
+                            className="flex h-7 w-7 items-center justify-center rounded text-gray-200 hover:bg-gray-700 hover:text-white"
                             title={
                                 isPublished
                                     ? "Yayından kaldır"
@@ -58,7 +60,7 @@ export default function PortfolioCard({
                                         ? faEye
                                         : faEyeSlash
                                 }
-                                size="lg"
+                                size="sm"
                             />
                         </Button>
                     )}
@@ -66,12 +68,12 @@ export default function PortfolioCard({
                     {onEdit && (
                         <Button
                             onClick={() => onEdit(post.id)}
-                            className="text-gray-200 hover:text-white"
+                            className="flex h-7 w-7 items-center justify-center rounded text-gray-200 hover:bg-gray-700 hover:text-white"
                             title="Düzenle"
                         >
                             <FontAwesomeIcon
                                 icon={faPen}
-                                size="lg"
+                                size="sm"
                             />
                         </Button>
                     )}
@@ -80,12 +82,12 @@ export default function PortfolioCard({
                         <Button
                             onClick={() => onDelete(post.id)}
                             disabled={isDeleting}
-                            className="text-gray-200 hover:text-white"
+                            className="flex h-7 w-7 items-center justify-center rounded text-gray-200 hover:bg-red-600 hover:text-white"
                             title="Sil"
                         >
                             <FontAwesomeIcon
                                 icon={faTrash}
-                                size="lg"
+                                size="sm"
                             />
                         </Button>
                     )}

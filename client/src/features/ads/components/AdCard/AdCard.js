@@ -19,15 +19,16 @@ export default function AdCard({
         <div className="relative bg-white rounded-lg shadow-md border p-4 flex flex-col w-full sm:w-[48%] md:w-[31%] lg:w-[23%]">
 
             {userId === post.userId && (
-                <div className="absolute top-2 right-2 rounded-lg p-2 flex space-x-2 bg-gray-800 rounded-bl-md z-10">
+                <div className="absolute top-2 right-2 flex space-x-1 rounded-md bg-gray-800/90 p-1 z-10">
 
                     <Button
                         ariaLabel="İlanı düzenle"
                         onClick={() => onEdit(post.id)}
+                        className="flex h-7 w-7 items-center justify-center rounded text-gray-200 hover:bg-gray-700 hover:text-white"
                         icon={
                             <FontAwesomeIcon
                                 icon={faPen}
-                                className="p-2 cursor-pointer"
+                                size="sm"
                             />
                         }
                     />
@@ -36,10 +37,11 @@ export default function AdCard({
                         ariaLabel="İlanı sil"
                         disabled={isDeleting}
                         onClick={() => onDelete(post.id)}
+                        className="flex h-7 w-7 items-center justify-center rounded text-gray-200 hover:bg-red-600 hover:text-white"
                         icon={
                             <FontAwesomeIcon
                                 icon={faTrash}
-                                className="p-2 cursor-pointer"
+                                size="sm"
                             />
                         }
                     />

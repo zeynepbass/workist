@@ -37,18 +37,18 @@ export default function Header() {
   const [categories, setCategories] = useState(false)
   return (
     <div className="border-b-2 ">
-      <div className="grid grid-cols-12 items-center gap-4 ">
+      <div className="flex flex-wrap items-center gap-4 p-4 md:p-2">
 
-        <div className="col-span-2">
+        <div className="order-1">
           <Button
           onClick={() => Navigate("/workist")}
-          className="text-purple-950 font-bold uppercase cursor-pointer"
+          className="text-purple-950 font-bold uppercase cursor-pointer hover:text-gray-500"
            >workist</Button>
-    
+
         </div>
 
 
-        <div className="col-span-7 flex flex-row items-center justify-center">
+        <div className="order-3 md:order-2 w-full md:w-auto md:flex-1 flex flex-col sm:flex-row items-center justify-center gap-2">
 
           <div className="relative w-full max-w-lg">
             <FontAwesomeIcon
@@ -69,24 +69,24 @@ export default function Header() {
             />
 
           </div>
-          <div className="flex justify-center gap-6 mt-2 text-md text-purple-950 p-5">
+          <div className="flex justify-center gap-6 text-md text-purple-950 py-2 sm:p-5">
             <Link to="/yapilacaklar">
               <FontAwesomeIcon icon={faBook} className="hover:text-purple-600 " />
             </Link>
 
-            <FontAwesomeIcon icon={faComment} className="hover:text-purple-600 cursor-pointer pt-1" onClick={()=>Navigate("/sohbet")} />
+            <FontAwesomeIcon icon={faComment} className="hover:text-purple-600 cursor-pointer" onClick={()=>Navigate("/sohbet")} />
           </div>
 
 
         </div>
 
 
-        <div className="col-span-3 flex justify-end">
+        <div className="order-2 md:order-3 ml-auto md:ml-0 flex justify-end">
           <Profile />
         </div>
       </div>
       <hr />
-      <ul className='flex justify-around items-center text-gray-400 capitalize p-5'>
+      <ul className='flex flex-wrap justify-around items-center gap-x-4 gap-y-2 text-gray-400 capitalize p-3 md:p-5'>
         {subcategories && subcategories.map((item) => (
           <li key={item.category} className="relative z-10">
             <div

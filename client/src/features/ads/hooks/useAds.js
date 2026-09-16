@@ -74,10 +74,6 @@ export function useAds(id) {
                 queryKey: ["ad", deletedId],
             });
 
-            queryClient.invalidateQueries({
-                queryKey: ["ads"],
-            });
-
             toast.success("İlan silindi.");
         },
 
@@ -108,10 +104,6 @@ export function useAds(id) {
                             : item
                     )
             );
-
-            queryClient.invalidateQueries({
-                queryKey: ["ads"],
-            });
 
             toast.success("İlan güncellendi.");
         },
