@@ -1,3 +1,4 @@
+
 import {
     useQuery,
     useMutation,
@@ -13,15 +14,28 @@ export function useAds(id) {
         localStorage.getItem("login") || "null"
     );
 
-    const userId = login?._id || login?.result?._id;
-    const firstName =
-        login?.result?.firstName || login?.firstName;
+    const userId =
+        login?._id ||
+        login?.result?._id;
 
-    const adsRepositoryInstance = adsRepository.getAds();
-    const detailRepository = adsRepository.getDetailAds();
-    const createRepository = adsRepository.createWorkPost();
-    const deleteRepository = adsRepository.deletedAds();
-    const updateRepository = adsRepository.updateAds();
+    const firstName =
+        login?.result?.firstName ||
+        login?.firstName;
+
+    const adsRepositoryInstance =
+        adsRepository.getAds();
+
+    const detailRepository =
+        adsRepository.getDetailAds();
+
+    const createRepository =
+        adsRepository.createWorkPost();
+
+    const deleteRepository =
+        adsRepository.deletedAds();
+
+    const updateRepository =
+        adsRepository.updateAds();
 
     const {
         data: posts = [],
@@ -31,7 +45,7 @@ export function useAds(id) {
     } = useQuery({
         queryKey: ["ads"],
         queryFn: () =>
-            adsRepositoryInstance.getAds()
+            adsRepositoryInstance.getAds(),
     });
 
     const {
@@ -52,7 +66,7 @@ export function useAds(id) {
 
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["ads", userId],
+                queryKey: ["ads"],
             });
         },
 
@@ -70,10 +84,11 @@ export function useAds(id) {
 
         onSuccess: (_, deletedId) => {
             queryClient.setQueryData(
-                ["ads", userId],
+                ["ads"],
                 (oldPosts = []) =>
                     oldPosts.filter(
-                        (item) => item._id !== deletedId
+                        (item) =>
+                            item._id !== deletedId
                     )
             );
 
@@ -82,7 +97,7 @@ export function useAds(id) {
             });
 
             queryClient.invalidateQueries({
-                queryKey: ["ads", userId],
+                queryKey: ["ads"],
             });
         },
 
@@ -105,7 +120,7 @@ export function useAds(id) {
             );
 
             queryClient.setQueryData(
-                ["ads", userId],
+                ["ads"],
                 (oldPosts = []) =>
                     oldPosts.map((item) =>
                         item._id === variables.id
@@ -115,7 +130,7 @@ export function useAds(id) {
             );
 
             queryClient.invalidateQueries({
-                queryKey: ["ads", userId],
+                queryKey: ["ads"],
             });
         },
 

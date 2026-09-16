@@ -5,7 +5,7 @@ import adsProvider from "@/providers/ads.provider";
 export async function getAds() {
     const response = await adsProvider.getAllAds();
 
-    return response.map(adsAdapter);
+    return response.data
 }
 
 export async function getDetailAds(id) {
@@ -15,7 +15,8 @@ export async function getDetailAds(id) {
 }
 
 export async function deletedAds(id) {
-    return await adsProvider.deletedAds(id);
+   const response= await adsProvider.deletedAds(id);
+   return response
 }
 
 export async function updateAds(id, post) {

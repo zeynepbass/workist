@@ -1,24 +1,33 @@
+
 import { useLocation } from "react-router-dom";
+
 import { usePortfolio } from "@/features/portfolio/hooks/usePortfolio";
 import PortfolioList from "@/features/portfolio/components/PortfolioList";
-import {StatusMessage} from "@/shared/components/molecules"
+import { StatusMessage } from "@/shared/components/molecules";
+
 export default function General() {
     const location = useLocation();
 
-    const searchParams = new URLSearchParams(location.search);
-    const searchQuery = searchParams.get("search") || "";
-    const login = JSON.parse(localStorage.getItem("login"));
-    const firstName = login?.result?.firstName || login?.result?.firstName;
-    const userId = login?._id || login?.result?._id;
+    const searchParams = new URLSearchParams(
+        location.search
+    );
+
+    const searchQuery =
+        searchParams.get("search") || "";
+
+    const login = JSON.parse(
+        localStorage.getItem("login") || "null"
+    );
+
+    const firstName =
+        login?.result?.firstName ||
+        login?.firstName;
+
     const {
         posts,
         isLoading,
         isError,
-    } = usePortfolio(searchQuery = "",
-        userId,
-        portfolioId);
-
-
+    } = usePortfolio(searchQuery);
 
     if (isLoading) {
         return (
@@ -28,7 +37,7 @@ export default function General() {
             />
         );
     }
-    
+
     if (isError) {
         return (
             <StatusMessage
@@ -40,7 +49,6 @@ export default function General() {
 
     return (
         <div className="h-[100vh]">
-
             <p className="text-gray-700 text-2xl font-semibold mb-6 text-left">
                 Workis'te Nelere{" "}
                 <span className="text-purple-700">
@@ -58,7 +66,6 @@ export default function General() {
                 posts={posts}
                 firstName={firstName}
             />
-
         </div>
     );
 }
