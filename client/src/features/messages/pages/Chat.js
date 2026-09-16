@@ -15,7 +15,7 @@ export default function Chat() {
         localStorage.getItem("login")
     );
 
-    const gonderenId = currentUser?.result?._id;
+    const gonderenId = currentUser?.result?._id || currentUser?._id;
 
     const [aliciId, setAliciId] = useState(null);
     const [newMessage, setNewMessage] = useState("");

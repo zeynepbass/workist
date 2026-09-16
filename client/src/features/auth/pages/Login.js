@@ -47,7 +47,8 @@ export default function Login() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="E-posta adresiniz"
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+    className="w-full p-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+
                         autoComplete="email"
                         required
                     />

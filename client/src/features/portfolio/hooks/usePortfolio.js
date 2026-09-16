@@ -13,33 +13,19 @@ export function usePortfolio(
 ) {
     const queryClient = useQueryClient();
 
-    const searchPostsRepository =
-        portfolioRepository.searchPosts();
-
-    const userPortfoliosRepository =
-        portfolioRepository.getUserPortfolios();
-
-    const detailRepository =
-        portfolioRepository.getPortfolioDetail();
-
-    const deleteRepository =
-        portfolioRepository.deletePortfolio();
-
-    const updateRepository =
-        portfolioRepository.updatePortfolio();
-
-    const updateStatusRepository =
-        portfolioRepository.updatePortfolioStatus();
-
+    // -------------------------
+    // Tüm portfolyolar
+    // -------------------------
     const postsQuery = useQuery({
         queryKey: ["portfolio", searchQuery],
 
         queryFn: () =>
-            searchPostsRepository.searchPosts(
-                searchQuery
-            ),
+            portfolioRepository.searchPosts(searchQuery),
     });
 
+    // -------------------------
+    // Kullanıcının portfolyoları
+    // -------------------------
     const userPortfoliosQuery = useQuery({
         queryKey: [
             "portfolio",
@@ -48,13 +34,16 @@ export function usePortfolio(
         ],
 
         queryFn: () =>
-            userPortfoliosRepository.getUserPortfolios(
+            portfolioRepository.getUserPortfolios(
                 userId
             ),
 
         enabled: !!userId,
     });
 
+    // -------------------------
+    // Portfolio detay
+    // -------------------------
     const detailQuery = useQuery({
         queryKey: [
             "portfolio",
@@ -63,17 +52,19 @@ export function usePortfolio(
         ],
 
         queryFn: () =>
-            detailRepository.getPortfolioDetail(
+            portfolioRepository.getPortfolioDetail(
                 portfolioId
             ),
 
         enabled: !!portfolioId,
     });
 
-
+    // -------------------------
+    // Durum güncelle
+    // -------------------------
     const updateStatusMutation = useMutation({
         mutationFn: ({ id, durum }) =>
-            updateStatusRepository.updatePortfolioStatus(
+            portfolioRepository.updatePortfolioStatus(
                 id,
                 durum
             ),
@@ -111,9 +102,12 @@ export function usePortfolio(
         },
     });
 
+    // -------------------------
+    // Sil
+    // -------------------------
     const deleteMutation = useMutation({
         mutationFn: (id) =>
-            deleteRepository.deletePortfolio(id),
+            portfolioRepository.deletePortfolio(id),
 
         onSuccess: () => {
             queryClient.invalidateQueries({
@@ -137,9 +131,12 @@ export function usePortfolio(
         },
     });
 
+    // -------------------------
+    // Güncelle
+    // -------------------------
     const updateMutation = useMutation({
         mutationFn: ({ id, formData }) =>
-            updateRepository.updatePortfolio(
+            portfolioRepository.updatePortfolio(
                 id,
                 formData
             ),
@@ -178,13 +175,13 @@ export function usePortfolio(
     });
 
     return {
-
+        // Tüm portfolyolar
         posts: postsQuery.data ?? [],
         isLoading: postsQuery.isLoading,
         isError: postsQuery.isError,
         error: postsQuery.error,
 
-
+        // Kullanıcı portfolyoları
         userPortfolios:
             userPortfoliosQuery.data ?? [],
 
@@ -197,7 +194,7 @@ export function usePortfolio(
         userPortfoliosError:
             userPortfoliosQuery.error,
 
-
+        // Detay
         detail: detailQuery.data ?? null,
 
         isDetailLoading:
@@ -209,21 +206,21 @@ export function usePortfolio(
         detailError:
             detailQuery.error,
 
-
+        // Sil
         deletePortfolio:
             deleteMutation.mutateAsync,
 
         isDeleting:
             deleteMutation.isPending,
 
-
+        // Durum
         toggleDurum:
             updateStatusMutation.mutateAsync,
 
         isUpdatingStatus:
             updateStatusMutation.isPending,
 
-
+        // Güncelle
         updatePortfolio:
             updateMutation.mutateAsync,
 

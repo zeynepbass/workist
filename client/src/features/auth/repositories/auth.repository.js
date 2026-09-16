@@ -6,7 +6,12 @@ export async function login(data) {
   
     return response.data;
 }
+export async function portfolyoCreate(data) {
+  const response =
+      await authProvider.portfolyoCreate(data);
 
+  return response.data;
+}
 export async function register(data) {
   const response = await authProvider.register(data);
   

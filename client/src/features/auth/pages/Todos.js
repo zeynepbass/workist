@@ -19,7 +19,7 @@ export default function Todos (){
   } = useMessages();
 
   const currentUser = JSON.parse(localStorage.getItem("login"));
-  const currentFirstName = currentUser?.result?.firstName;
+  const currentFirstName = currentUser?.result?.firstName || currentUser?.firstName;
 
   const handleClick = (id) => {
     setSelectedId(id);

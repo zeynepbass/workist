@@ -6,13 +6,9 @@ export function useDetails() {
         localStorage.getItem("login") || "null"
     );
 
-    const email = currentUser?.result?.email;
-
-    const detailsRepository =
-        authRepository.details();
-
-    const accountRepository =
-        authRepository.account();
+    const email =
+        currentUser?.email ||
+        currentUser?.result?.email;
 
     const {
         data: emailResponse,
@@ -21,14 +17,34 @@ export function useDetails() {
         error,
     } = useQuery({
         queryKey: ["details", email],
+
         queryFn: () =>
-            detailsRepository.details(email),
+            authRepository.details(email),
+
         enabled: !!email,
     });
+    const portfolioMutation = useMutation({
+        mutationFn: (data) =>
+            authRepository.portfolyoCreate(data),
 
+        onSuccess: () => {
+            console.log("Portfolyo başarıyla oluşturuldu.");
+        },
+
+        onError: (error) => {
+            console.error(
+                "Portfolyo oluşturma hatası:",
+                error
+            );
+        },
+    });
+
+    const portfolyoCreate = (data) => {
+        portfolioMutation.mutate(data);
+    };
     const accountMutation = useMutation({
         mutationFn: () =>
-            accountRepository.account(email),
+            authRepository.account(email),
 
         onSuccess: () => {
             console.log("Hesap donduruldu.");
@@ -52,6 +68,10 @@ export function useDetails() {
         isLoading,
         isError,
         error,
+        portfolyoCreate,
+        isCreating: portfolioMutation.isPending,
+        isError: portfolioMutation.isError,
+        error: portfolioMutation.error,
 
         hesabiDondur,
         isDeleting: accountMutation.isPending,

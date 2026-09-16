@@ -73,7 +73,7 @@ export default function BuyerRequestCard({
 
             {item?.description?.length > 400 && (
                 <p
-                    className="text-purple-500 font-semibold text-sm cursor-pointer p-4"
+                    className="text-purple-950 font-semibold text-sm cursor-pointer p-4"
                     onClick={() => onToggleText(item.id)}
                 >
                     {expanded

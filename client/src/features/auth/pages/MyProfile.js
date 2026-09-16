@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import {StatusMessage} from "@/shared/components/molecules"
+import { StatusMessage } from "@/shared/components/molecules";
 import { Button } from "@/shared/components/atoms";
 import { useDetails } from "../hooks/useDetails";
 const Modal = lazy(() =>
@@ -8,28 +8,23 @@ const Modal = lazy(() =>
     default: module.Modal,
   }))
 );
-export default function MyProfile  ()  {
-  const { email, hesabiDondur, isLoading } = useDetails();
+export default function MyProfile() {
+  const { email, hesabiDondur, isLoading, portfolyoCreate } = useDetails();
   const Navigate = useNavigate();
   const Delete = () => {
     hesabiDondur();
     Navigate("/hesap-donduruldu");
   };
   if (isLoading) {
-    return (
-        <StatusMessage
-            type="loading"
-            message="Yükleniyor..."
-        />
-    );
-}
+    return <StatusMessage type="loading" message="Yükleniyor..." />;
+  }
   return (
     <div className="flex flex-col md:flex-row gap-6 px-20 h-[90vh] ">
       <div className="w-full md:w-1/3 space-y-4">
         <div className="bg-white p-4 rounded-[10px] shadow ">
           <div className="flex justify-between items-center">
             <img
-              src={email.file}
+              src={email?.file}
               width="100"
               height="100"
               className="rounded-full shadow-lg shadow-indigo-500/50 "
@@ -46,9 +41,9 @@ export default function MyProfile  ()  {
           </div>
           <br />
           <p>
-            {email.firstName} {email.lastName}
+            {email?.firstName} {email?.lastName}
           </p>
-          <p className="text-gray-400 italic">{email.unvan}</p>
+          <p className="text-gray-400 italic">{email?.unvan}</p>
           <br />
           <p className="mt-2 flex text-orange-300">
             {" "}
@@ -77,11 +72,11 @@ export default function MyProfile  ()  {
         <div className="bg-white p-4 rounded-[10px] shadow">
           <div className="flex justify-between items-center">
             <h6 className="text-left text-gray-600">Hakkında</h6>
-            <Link to="/Account">
+            <Link to="/hesabim">
               <span className="text-purple-600">Düzenle</span>
             </Link>
           </div>
-          <p className="text-sm mt-2 text-gray-400">{email.hakkimda}</p>
+          <p className="text-sm mt-2 text-gray-400">{email?.hakkimda}</p>
         </div>
 
         <div className="bg-white p-4 rounded-[10px] shadow">
@@ -90,7 +85,7 @@ export default function MyProfile  ()  {
               Uzmanı Olduğu Alanlar & Araçlar
             </h6>
             <br />
-            <Link to="/Account">
+            <Link to="/hesabim">
               <span className="text-purple-600">Düzenle</span>
             </Link>
           </div>
@@ -134,7 +129,7 @@ export default function MyProfile  ()  {
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
                 <img
-                  src=".assets/network.png"
+                  src="/assets/network.png"
                   width="50"
                   height="50"
                   alt="Presentation"
@@ -148,9 +143,9 @@ export default function MyProfile  ()  {
                 </h6>
               </div>
 
-      <Suspense fallback={<div>Yükleniyor...</div>}>
-      <Modal     />
-      </Suspense>
+              <Suspense fallback={<div>Yükleniyor...</div>}>
+                <Modal type="portfolio" createWorkPost={portfolyoCreate} />
+              </Suspense>
             </div>
           </div>
         </div>
@@ -159,7 +154,7 @@ export default function MyProfile  ()  {
           <div className="flex justify-between items-center">
             <p className="text-gray-600">Verdiğin Hizmetler</p>
             <div className="flex gap-2 items-center">
-              <Link to="/Ads">
+              <Link to="/ilanlarim">
                 <p className="text-purple-600">İlanlarını yönet</p>
               </Link>
             </div>
@@ -167,7 +162,7 @@ export default function MyProfile  ()  {
           <div className="mt-4 justify-center flex">
             <Button
               className="bg-purple-800 text-white px-4 py-2 rounded "
-              onClick={() => Navigate("/Ads")}
+              onClick={() => Navigate("/ilanlarim")}
             >
               İlanlarıma Git
             </Button>
@@ -245,7 +240,7 @@ export default function MyProfile  ()  {
               />
 
               <div className="pl-4">
-                <Link to="/Account">
+                <Link to="/hesabim">
                   <span className="text-gray-800 text-left">
                     <strong>memochiz</strong>{" "}
                   </span>
@@ -264,5 +259,4 @@ export default function MyProfile  ()  {
       </div>
     </div>
   );
-};
-
+}

@@ -13,8 +13,8 @@ export function useAds(id) {
         localStorage.getItem("login") || "null"
     );
 
-    const userId = login?.result?._id;
-    const firstName = login?.result?.firstName;
+    const userId = login?._id;
+    const firstName = login?.result?.firstName || login?.firstName;
 
     const adsRepositoryInstance =
         adsRepository.getAds();

@@ -1,35 +1,40 @@
 import { useLocation } from "react-router-dom";
 import { usePortfolio } from "@/features/portfolio/hooks/usePortfolio";
 import PortfolioList from "@/features/portfolio/components/PortfolioList";
-
+import {StatusMessage} from "@/shared/components/molecules"
 export default function General() {
     const location = useLocation();
 
     const searchParams = new URLSearchParams(location.search);
     const searchQuery = searchParams.get("search") || "";
-
+    const login = JSON.parse(localStorage.getItem("login"));
+    const firstName = login?.result?.firstName || login?.result?.firstName;
+    const userId = login?._id || login?.result?._id;
     const {
         posts,
         isLoading,
         isError,
-    } = usePortfolio(searchQuery);
+    } = usePortfolio(    searchQuery = "",
+        userId,
+        portfolioId);
 
-    const login = JSON.parse(localStorage.getItem("login"));
-    const firstName = login?.result?.firstName;
+
 
     if (isLoading) {
         return (
-            <p className="text-gray-500 p-4">
-                İlanlar yükleniyor...
-            </p>
+            <StatusMessage
+                type="loading"
+                message="İlanlar yükleniyor..."
+            />
         );
     }
-
+    
     if (isError) {
         return (
-            <p className="text-red-500 p-4">
-                İlanlar yüklenirken bir hata oluştu.
-            </p>
+            <StatusMessage
+                type="error"
+                message="İlanlar yüklenirken bir hata oluştu."
+            />
         );
     }
 

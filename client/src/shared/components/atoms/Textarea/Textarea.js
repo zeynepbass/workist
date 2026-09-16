@@ -5,6 +5,7 @@ export function Textarea({
   value,
   onChange,
   className,
+  name,
   rows,
   placeholder,
 }) {
@@ -15,6 +16,7 @@ export function Textarea({
       </label>
 
       <textarea
+      name={name}
         value={value}
         onChange={onChange}
         placeholder={placeholder}

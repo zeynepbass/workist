@@ -29,9 +29,9 @@ export default function Portfolio() {
         localStorage.getItem("login") || "null"
     );
 
-    const userId = login?.result?._id;
-    const firstName = login?.result?.firstName;
-    const unvan = login?.result?.unvan;
+    const userId = login?._id || login?.result?._id;
+    const firstName = login?.result?.firstName || login?.firstName;
+    const unvan = login?.result?.unvan || login?.unvan;
 
     const {
         userPortfolios,
@@ -44,7 +44,7 @@ export default function Portfolio() {
         toggleDurum,
         isUpdatingStatus,
 
-    } = usePortfolio("", userId);
+    } = usePortfolio(userId);
 
     const handleEditClick = (id) => {
         navigate(`/portfolyom/${id}`);

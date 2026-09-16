@@ -1,70 +1,66 @@
 import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+    useMutation,
+    useQuery,
+    useQueryClient,
+  } from "@tanstack/react-query";
+  
+  import * as authRepository from "../repositories/auth.repository";
+  
+  export function useMyAccount() {
+    const currentUser = JSON.parse(
+        localStorage.getItem("login") || "null"
+    );
 
-import * as authRepository from "../repositories/auth.repository";
-
-export function useDetails(email) {
-  const queryClient = useQueryClient();
-
-  const detailsRepository =
-      authRepository.getDetails();
-
-  const updateRepository =
-      authRepository.updateDetails();
-
-  const {
+    const email = currentUser?.result?.email || currentUser?.email;
+    console.log(email)
+    const queryClient = useQueryClient();
+  
+    const {
       data: userDetails,
       isLoading,
       isError,
       error,
-  } = useQuery({
+    } = useQuery({
       queryKey: ["userDetails", email],
-      queryFn: () =>
-          detailsRepository.getDetails(email),
+      queryFn: () => authRepository.getDetails(email),
       enabled: !!email,
-  });
-
-  const updateMutation = useMutation({
+    });
+  
+    const updateMutation = useMutation({
       mutationFn: (formData) =>
-          updateRepository.updateDetails(
-              email,
-              formData
-          ),
-
+        authRepository.updateDetails(email, formData),
+  
       onSuccess: (data) => {
-          queryClient.setQueryData(
-              ["userDetails", email],
-              data
-          );
-
-          localStorage.setItem(
-              "login",
-              JSON.stringify({
-                  result: data,
-              })
-          );
+        queryClient.setQueryData(
+          ["userDetails", email],
+          data
+        );
+  
+        localStorage.setItem(
+          "login",
+          JSON.stringify({
+            result: data,
+          })
+        );
       },
-
+  
       onError: (error) => {
-          console.error(
-              "Profil güncelleme hatası:",
-              error
-          );
+        console.error(
+          "Profil güncelleme hatası:",
+          error
+        );
       },
-  });
-
-  return {
+    });
+  
+    return {
       userDetails,
-
+  
       isLoading,
       isError,
       error,
-
+  
       updateDetails: updateMutation.mutate,
       isUpdating: updateMutation.isPending,
       updateError: updateMutation.error,
-  };
-}
+    };
+  }

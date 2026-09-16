@@ -19,7 +19,7 @@ export default function BuyerRequest() {
     const navigate = useNavigate();
 
     const userid = JSON.parse(localStorage.getItem("login"));
-    const userId = userid?.result?._id;
+    const userId = userid?._id || userid?.result?._id;
 
     const {
         userPosts,
@@ -181,7 +181,7 @@ export default function BuyerRequest() {
                 <span>
                     <h3
                         className="text-purple-300 text-right cursor-pointer"
-                        onClick={() => navigate("/Ads")}
+                        onClick={() => navigate("/ilanlarim")}
                     >
                         Tüm ilanlarım
                     </h3>

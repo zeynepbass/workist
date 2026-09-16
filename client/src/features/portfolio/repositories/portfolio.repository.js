@@ -9,6 +9,7 @@ export async function searchPosts(searchQuery) {
     return response.map(portfolioAdapter);
 }
 
+
 export async function getUserPortfolios(userId) {
     const response =
         await portfolioProvider.getUserPortfolios(userId);

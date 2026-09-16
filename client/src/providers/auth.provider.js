@@ -10,6 +10,7 @@ const authProvider = {
     getMessageData: authApi.getMessageData,
     updateDetails: authApi.updateDetails,
     getDetails: authApi.getDetails,
+    portfolyoCreate:authApi.portfolyoCreate
 };
 
 export default authProvider;

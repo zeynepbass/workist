@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 import {
@@ -8,7 +9,7 @@ import {
 } from "@/shared/components/atoms";
 
 export function Modal({
-    type = "portfolio",
+    type,
     createWorkPost,
     userId,
     firstName,
@@ -22,19 +23,20 @@ export function Modal({
     const [selectedSubcategory, setSelectedSubcategory] =
         useState("");
 
+    const isPortfolio = type === "portfolio";
+    const isAds = type === "ads";
+
     const subcategories = {
         "Grafik & Tasarım": [
             "Logo Tasarımı",
             "Afiş Tasarımı",
             "Sosyal Medya Postu",
         ],
-
         "Yazı & Çeviri": [
             "Makale",
             "Blog Yazısı",
             "Kitap Çevirisi",
         ],
-
         "Yazılım & Teknoloji": [
             "Web Uygulaması",
             "Mobil Uygulama",
@@ -45,25 +47,23 @@ export function Modal({
     const iconMap = {
         "Grafik & Tasarım": (
             <img
-                src="/images/graphic-designer.png"
+                src="/assets/graphic-designer.png"
                 width="50"
                 height="50"
                 alt="Grafik ve Tasarım"
             />
         ),
-
         "Yazı & Çeviri": (
             <img
-                src="/images/ab.png"
+                src="/assets/ab.png"
                 width="50"
                 height="50"
                 alt="Yazı ve Çeviri"
             />
         ),
-
         "Yazılım & Teknoloji": (
             <img
-                src="/images/software.png"
+                src="/assets/software.png"
                 width="50"
                 height="50"
                 alt="Yazılım ve Teknoloji"
@@ -83,54 +83,69 @@ export function Modal({
         sure: "",
         description: "",
         fiyat: "",
-
+        currency: "TL",
         kodFiyatlandirma: {
             logo: false,
             kaynakKod: false,
             fonMuzigi: false,
         },
-
         ekstraOzellikler: {
             hizliTeslimat: false,
             fullHd: false,
         },
-
         revizyon: "",
-        title: "Ben,",
+        title: "Ben, ",
         hizmetTuru: "",
         file: "",
     };
 
+    const getInitialForm = () => {
+        if (isPortfolio) {
+            return { ...portfolioInitialForm };
+        }
+
+        return {
+            ...adsInitialForm,
+            kodFiyatlandirma: {
+                ...adsInitialForm.kodFiyatlandirma,
+            },
+            ekstraOzellikler: {
+                ...adsInitialForm.ekstraOzellikler,
+            },
+        };
+    };
+
     const [formData, setFormData] = useState(
-        type === "portfolio"
-            ? portfolioInitialForm
-            : adsInitialForm
+        getInitialForm()
     );
 
-    const isPortfolio = type === "portfolio";
-
     const resetForm = () => {
-        setFormData(
-            isPortfolio
-                ? portfolioInitialForm
-                : adsInitialForm
-        );
-
+        setFormData(getInitialForm());
         setSelectedCategory("");
         setSelectedSubcategory("");
         setStep(1);
         setIsOpen(false);
     };
 
-    const handleCheckboxChange = (section, key, e) => {
-        const checked = e.target.checked;
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
 
         setFormData((prev) => ({
             ...prev,
+            [name]: value,
+        }));
+    };
 
+    const handleCheckboxChange = (
+        section,
+        key,
+        e
+    ) => {
+        setFormData((prev) => ({
+            ...prev,
             [section]: {
                 ...prev[section],
-                [key]: checked,
+                [key]: e.target.checked,
             },
         }));
     };
@@ -138,7 +153,9 @@ export function Modal({
     const handleFileChange = (e) => {
         const file = e.target.files?.[0];
 
-        if (!file) return;
+        if (!file) {
+            return;
+        }
 
         const reader = new FileReader();
 
@@ -168,9 +185,11 @@ export function Modal({
             };
 
             if (
-                payload.file === "" ||
-                payload.description === "" ||
-                payload.title === "" ||
+                !payload.file ||
+                !payload.description ||
+                !payload.title ||
+                !selectedCategory ||
+                !selectedSubcategory ||
                 Number(payload.fiyat) < 100
             ) {
                 alert(
@@ -193,83 +212,85 @@ export function Modal({
             return;
         }
 
-        const kodSelectedCount = Object.values(
-            formData.kodFiyatlandirma
-        ).filter(Boolean).length;
+        if (isAds) {
+            const kodSelectedCount = Object.values(
+                formData.kodFiyatlandirma
+            ).filter(Boolean).length;
 
-        const ekstraSelectedCount = Object.values(
-            formData.ekstraOzellikler
-        ).filter(Boolean).length;
+            const ekstraSelectedCount = Object.values(
+                formData.ekstraOzellikler
+            ).filter(Boolean).length;
 
-        const totalCheckboxCount =
-            kodSelectedCount + ekstraSelectedCount;
+            const totalCheckboxCount =
+                kodSelectedCount +
+                ekstraSelectedCount;
 
-        const fiyatNum =
-            Number(formData.fiyat) || 0;
+            const fiyatNum =
+                Number(formData.fiyat) || 0;
 
-        const toplamFiyat =
-            fiyatNum + totalCheckboxCount * 100;
+            const toplamFiyat =
+                fiyatNum +
+                totalCheckboxCount * 100;
 
-        const payload = {
-            sure: formData.sure,
+            const payload = {
+                sure: formData.sure,
+                kodFiyatlandirma:
+                    formData.kodFiyatlandirma,
+                ekstraOzellikler:
+                    formData.ekstraOzellikler,
+                hizmetTuru:
+                    formData.hizmetTuru,
+                revizyon:
+                    formData.revizyon,
+                title:
+                    formData.title,
+                description:
+                    formData.description,
+                file:
+                    formData.file,
+                currency:
+                    formData.currency,
+                selectedCategory,
+                selectedSubcategory,
+                fiyat: toplamFiyat,
+                userId,
+                kullaniciAd: firstName,
+            };
 
-            kodFiyatlandirma:
-                formData.kodFiyatlandirma,
+            if (
+                !payload.sure ||
+                !payload.title ||
+                !payload.hizmetTuru ||
+                !payload.revizyon ||
+                !payload.description ||
+                !payload.file ||
+                !selectedCategory ||
+                !selectedSubcategory ||
+                Number(payload.fiyat) < 100
+            ) {
+                alert(
+                    "Tüm alanları doldurun ve fiyat en az 100 TL olmalıdır!"
+                );
 
-            ekstraOzellikler:
-                formData.ekstraOzellikler,
+                return;
+            }
 
-            hizmetTuru: formData.hizmetTuru,
-
-            revizyon: formData.revizyon,
-
-            title: formData.title,
-
-            description: formData.description,
-
-            file: formData.file,
-
-            selectedCategory,
-
-            selectedSubcategory,
-
-            fiyat: toplamFiyat,
-
-            userId,
-
-            kullaniciAd: firstName,
-        };
-
-        if (
-            payload.sure === "" ||
-            payload.title === "" ||
-            payload.hizmetTuru === "" ||
-            payload.revizyon === "" ||
-            payload.description === "" ||
-            payload.file === "" ||
-            Number(payload.fiyat) < 100
-        ) {
-            alert(
-                "Tüm alanları doldurun ve fiyat en az 100 TL olmalıdır!"
-            );
-
-            return;
-        }
-
-        try {
-            await createWorkPost(payload);
-            resetForm();
-        } catch (error) {
-            console.error(
-                "İlan oluşturma hatası:",
-                error
-            );
+            try {
+                await createWorkPost(payload);
+                resetForm();
+            } catch (error) {
+                console.error(
+                    "İlan oluşturma hatası:",
+                    error
+                );
+            }
         }
     };
 
     return (
         <>
             <Button
+                type="button"
                 className="
                     bg-purple-500
                     float-right
@@ -292,10 +313,14 @@ export function Modal({
             </Button>
 
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white w-full max-w-2xl p-6 rounded-md space-y-6 max-h-[90vh] overflow-y-auto">
-
-                        {/* STEP 1 */}
+    <div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-4"
+        onClick={resetForm}
+    >
+        <div
+            className="bg-white w-full max-w-2xl p-6 rounded-md space-y-6 max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+        >
                         {step === 1 && (
                             <>
                                 <h2 className="text-xl font-semibold text-gray-400">
@@ -305,6 +330,7 @@ export function Modal({
                                 <p className="text-gray-400 italic">
                                     Hadi, başlayalım. 😎
                                     <br />
+
                                     {isPortfolio
                                         ? "Ekleyeceğin portfolyo hangi ana kategoriye giriyor?"
                                         : "Eklemek istediğin iş ilanı hangi kategoriye giriyor?"}
@@ -346,9 +372,8 @@ export function Modal({
 
                                 <div className="flex justify-end mt-4">
                                     <Button
-                                        disabled={
-                                            !selectedCategory
-                                        }
+                                        type="button"
+                                        disabled={!selectedCategory}
                                         className="
                                             bg-purple-600
                                             text-white
@@ -368,11 +393,11 @@ export function Modal({
                             </>
                         )}
 
-                        {/* STEP 2 */}
+                   
                         {step === 2 && (
                             <>
                                 <h2 className="text-xl font-semibold text-gray-400">
-                                    <span className="text-purple-400">
+                                    <span className="text-purple-950">
                                         {selectedCategory}
                                     </span>{" "}
                                     kategorisinin alt alanı?
@@ -383,9 +408,11 @@ export function Modal({
                                 </p>
 
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    {subcategories[
-                                        selectedCategory
-                                    ]?.map(
+                                    {(
+                                        subcategories[
+                                            selectedCategory
+                                        ] || []
+                                    ).map(
                                         (subcategory) => (
                                             <div
                                                 key={
@@ -428,7 +455,7 @@ export function Modal({
                                         }
                                     >
                                         <img
-                                            src="/images/left-arrow.png"
+                                            src="/assets/left-arrow.png"
                                             width="40"
                                             height="40"
                                             alt="Geri"
@@ -436,6 +463,7 @@ export function Modal({
                                     </Button>
 
                                     <Button
+                                        type="button"
                                         disabled={
                                             !selectedSubcategory
                                         }
@@ -458,77 +486,55 @@ export function Modal({
                             </>
                         )}
 
-                        {/* STEP 3 */}
+
                         {step === 3 && (
                             <form
                                 onSubmit={handleFormSubmit}
                                 className="space-y-6"
                             >
-                                {isPortfolio ? (
+
+                                {isPortfolio && (
                                     <>
                                         <h2 className="text-xl font-semibold text-gray-400">
                                             Biraz Bahseder misin?
                                         </h2>
 
                                         <Input
+                                            name="title"
                                             type="text"
                                             placeholder="Etkileyici bir başlık"
                                             value={
                                                 formData.title
                                             }
-                                            onChange={(e) =>
-                                                setFormData(
-                                                    (prev) => ({
-                                                        ...prev,
-                                                        title: e
-                                                            .target
-                                                            .value,
-                                                    })
-                                                )
+                                            onChange={
+                                                handleInputChange
                                             }
                                             className="w-full p-3 border-2 border-purple-500 rounded bg-white text-gray-800"
                                         />
 
                                         <Textarea
+                                            name="description"
                                             rows={4}
                                             placeholder="Portfolyon hakkında detaylı bilgi ver..."
                                             value={
                                                 formData.description
                                             }
-                                            onChange={(e) =>
-                                                setFormData(
-                                                    (prev) => ({
-                                                        ...prev,
-                                                        description:
-                                                            e
-                                                                .target
-                                                                .value,
-                                                    })
-                                                )
+                                            onChange={
+                                                handleInputChange
                                             }
                                             className="w-full p-3 border-2 border-purple-500 rounded bg-white text-gray-800"
                                         />
 
                                         <div className="flex space-x-2 items-center">
                                             <Input
+                                                name="fiyat"
                                                 type="number"
                                                 placeholder="Fiyat girin"
                                                 value={
                                                     formData.fiyat
                                                 }
-                                                onChange={(
-                                                    e
-                                                ) =>
-                                                    setFormData(
-                                                        (
-                                                            prev
-                                                        ) => ({
-                                                            ...prev,
-                                                            fiyat: e
-                                                                .target
-                                                                .value,
-                                                        })
-                                                    )
+                                                onChange={
+                                                    handleInputChange
                                                 }
                                                 className="flex-grow p-3 border-2 border-purple-500 rounded bg-white text-gray-800"
                                             />
@@ -562,9 +568,7 @@ export function Modal({
                                                         label: "USD",
                                                     },
                                                 ]}
-                                                placeholder={
-                                                    null
-                                                }
+                                                placeholder={null}
                                                 className="p-3 border-2 border-purple-500 rounded bg-white text-gray-800 cursor-pointer"
                                             />
                                         </div>
@@ -578,13 +582,17 @@ export function Modal({
                                             }
                                         />
                                     </>
-                                ) : (
+                                )}
+
+                  
+                                {isAds && (
                                     <>
                                         <h2 className="text-xl font-semibold text-gray-400">
                                             Biraz Bahseder misin?
                                         </h2>
 
                                         <Input
+                                            name="title"
                                             label="Başlık"
                                             type="text"
                                             value={
@@ -614,60 +622,69 @@ export function Modal({
                                         />
 
                                         <Input
+                                            name="revizyon"
                                             type="number"
                                             label="Revizyon"
                                             value={
                                                 formData.revizyon
                                             }
-                                            onChange={(e) =>
-                                                setFormData(
-                                                    (prev) => ({
-                                                        ...prev,
-                                                        revizyon:
-                                                            e
-                                                                .target
-                                                                .value,
-                                                    })
-                                                )
+                                            onChange={
+                                                handleInputChange
                                             }
                                             className="w-full p-3 border-2 border-purple-300 rounded"
                                         />
 
                                         <Input
+                                            name="sure"
                                             label="Süre"
                                             type="text"
                                             value={
                                                 formData.sure
                                             }
-                                            onChange={(e) =>
-                                                setFormData(
-                                                    (prev) => ({
-                                                        ...prev,
-                                                        sure: e
-                                                            .target
-                                                            .value,
-                                                    })
-                                                )
+                                            onChange={
+                                                handleInputChange
                                             }
                                             className="w-full p-3 border-2 border-purple-300 rounded"
                                         />
 
                                         <Input
+                                            name="fiyat"
                                             type="number"
                                             label="Fiyat"
                                             value={
                                                 formData.fiyat
                                             }
+                                            onChange={
+                                                handleInputChange
+                                            }
+                                            className="w-full p-3 border-2 border-purple-300 rounded"
+                                        />
+
+                                        <Select
+                                            value={
+                                                formData.currency
+                                            }
                                             onChange={(e) =>
                                                 setFormData(
                                                     (prev) => ({
                                                         ...prev,
-                                                        fiyat: e
-                                                            .target
-                                                            .value,
+                                                        currency:
+                                                            e.target
+                                                                .value,
                                                     })
                                                 )
                                             }
+                                            options={[
+                                                {
+                                                    value: "TL",
+                                                    label: "TL",
+                                                },
+                                                {
+                                                    value: "USD",
+                                                    label: "USD",
+                                                },
+                                            ]}
+                                            placeholder={null}
                                             className="w-full p-3 border-2 border-purple-300 rounded"
                                         />
 
@@ -677,22 +694,33 @@ export function Modal({
                                             </h3>
 
                                             {[
-                                                "logo",
-                                                "kaynakKod",
-                                                "fonMuzigi",
+                                                {
+                                                    key: "logo",
+                                                    label: "Logo",
+                                                },
+                                                {
+                                                    key: "kaynakKod",
+                                                    label: "Kaynak Kod",
+                                                },
+                                                {
+                                                    key: "fonMuzigi",
+                                                    label: "Fon Müziği",
+                                                },
                                             ].map(
-                                                (item) => (
+                                                ({
+                                                    key,
+                                                    label,
+                                                }) => (
                                                     <div
-                                                        key={
-                                                            item
-                                                        }
+                                                        key={key}
+                                                        className="flex items-center space-x-2 mt-2"
                                                     >
                                                         <Input
                                                             type="checkbox"
                                                             checked={
                                                                 formData
                                                                     .kodFiyatlandirma[
-                                                                    item
+                                                                    key
                                                                 ]
                                                             }
                                                             onChange={(
@@ -700,21 +728,17 @@ export function Modal({
                                                             ) =>
                                                                 handleCheckboxChange(
                                                                     "kodFiyatlandirma",
-                                                                    item,
+                                                                    key,
                                                                     e
                                                                 )
                                                             }
-                                                        >
-                                                            <span>
-                                                                {item ===
-                                                                "kaynakKod"
-                                                                    ? "Kaynak Kod"
-                                                                    : item ===
-                                                                      "fonMuzigi"
-                                                                    ? "Fon Müziği"
-                                                                    : "Logo"}
-                                                            </span>
-                                                        </Input>
+                                                        />
+
+                                                        <span className="text-gray-500">
+                                                            {
+                                                                label
+                                                            }
+                                                        </span>
                                                     </div>
                                                 )
                                             )}
@@ -726,14 +750,21 @@ export function Modal({
                                             </h3>
 
                                             {[
-                                                "hizliTeslimat",
-                                                "fullHd",
+                                                {
+                                                    key: "hizliTeslimat",
+                                                    label: "Süper Hızlı Teslimat",
+                                                },
+                                                {
+                                                    key: "fullHd",
+                                                    label: "Full HD (1080px)",
+                                                },
                                             ].map(
-                                                (item) => (
+                                                ({
+                                                    key,
+                                                    label,
+                                                }) => (
                                                     <div
-                                                        key={
-                                                            item
-                                                        }
+                                                        key={key}
                                                         className="flex items-center space-x-2 mt-2"
                                                     >
                                                         <Input
@@ -741,7 +772,7 @@ export function Modal({
                                                             checked={
                                                                 formData
                                                                     .ekstraOzellikler[
-                                                                    item
+                                                                    key
                                                                 ]
                                                             }
                                                             onChange={(
@@ -749,24 +780,24 @@ export function Modal({
                                                             ) =>
                                                                 handleCheckboxChange(
                                                                     "ekstraOzellikler",
-                                                                    item,
+                                                                    key,
                                                                     e
                                                                 )
                                                             }
-                                                        >
-                                                            <span>
-                                                                {item ===
-                                                                "hizliTeslimat"
-                                                                    ? "Süper Hızlı Teslimat"
-                                                                    : "Full HD (1080px)"}
-                                                            </span>
-                                                        </Input>
+                                                        />
+
+                                                        <span className="text-gray-500">
+                                                            {
+                                                                label
+                                                            }
+                                                        </span>
                                                     </div>
                                                 )
                                             )}
                                         </div>
 
                                         <Select
+                                            label="Hizmet Türü"
                                             value={
                                                 formData.hizmetTuru
                                             }
@@ -775,35 +806,38 @@ export function Modal({
                                                     (prev) => ({
                                                         ...prev,
                                                         hizmetTuru:
-                                                            e
-                                                                .target
+                                                            e.target
                                                                 .value,
                                                     })
                                                 )
                                             }
                                             options={[
-                                                "Admin Panel",
-                                                "Özel kodlanmış web tasarımı",
-                                                "Hata Giderme",
+                                                {
+                                                    value: "Admin Panel",
+                                                    label: "Admin Panel",
+                                                },
+                                                {
+                                                    value: "Özel kodlanmış web tasarımı",
+                                                    label: "Özel kodlanmış web tasarımı",
+                                                },
+                                                {
+                                                    value: "Hata Giderme",
+                                                    label: "Hata Giderme",
+                                                },
                                             ]}
+                                            placeholder="Hizmet türü seçin"
+                                            className="w-full p-3 border-2 border-purple-300 rounded"
                                         />
 
                                         <Textarea
+                                            name="description"
                                             label="İlan Açıklaması"
                                             rows={4}
                                             value={
                                                 formData.description
                                             }
-                                            onChange={(e) =>
-                                                setFormData(
-                                                    (prev) => ({
-                                                        ...prev,
-                                                        description:
-                                                            e
-                                                                .target
-                                                                .value,
-                                                    })
-                                                )
+                                            onChange={
+                                                handleInputChange
                                             }
                                             className="w-full p-3 border-2 border-purple-300 rounded"
                                         />
@@ -827,7 +861,7 @@ export function Modal({
                                         }
                                     >
                                         <img
-                                            src="/images/left-arrow.png"
+                                            src="/assets/left-arrow.png"
                                             width="40"
                                             height="40"
                                             alt="Geri"
@@ -836,6 +870,10 @@ export function Modal({
 
                                     <Button
                                         type="submit"
+                                        disabled={
+                                            !isPortfolio &&
+                                            !isAds
+                                        }
                                         className="
                                             bg-purple-600
                                             text-white

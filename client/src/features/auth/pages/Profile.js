@@ -34,7 +34,7 @@ export default function Profile() {
           className="flex items-center gap-4 px-4 py-2 bg-transparent focus:outline-none"
         >
           {" "}
-          {users?.result?.file ? (
+          {users?.result?.file || users?.file ? (
             <img
               className="h-12 w-12 rounded-full object-cover"
               src={users?.result?.file}
@@ -45,11 +45,11 @@ export default function Profile() {
           )}
           <div className="text-left">
             <p className="text-base font-semibold text-gray-800">
-              {users?.result?.firstName} {users?.result?.lastName}
+              {users?.result?.firstName ||  users?.firstName} {users?.result?.lastName || users?.firstName}
             </p>
             <p className="text-sm text-gray-500">
-              {users?.result?.unvan
-                ? users?.result?.unvan
+              {users?.result?.unvan || users?.unvan
+                ? users?.result?.unvan || users?.unvan
                 : "ünvan ekli değil."}
             </p>
           </div>
@@ -65,19 +65,19 @@ export default function Profile() {
             <ul className="py-1">
               <li>
                 <Link
-                  to="/myProfile"
+                  to="/profilim"
                   className="flex items-center px-4 py-2 hover:bg-purple-100 text-gray-400"
                 >
                   <FontAwesomeIcon
                     icon={faUser}
                     className="mr-3 text-purple-600"
                   />
-                  myProfile
+                  Profilim
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/Account"
+                  to="/hesabim"
                   className="flex items-center px-4 py-2 hover:bg-purple-100 text-gray-400"
                 >
                   <FontAwesomeIcon
