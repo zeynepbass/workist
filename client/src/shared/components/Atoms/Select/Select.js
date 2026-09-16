@@ -1,3 +1,8 @@
+const SELECT_VARIANTS = {
+  default: "w-full p-3 border-2 border-purple-300 rounded",
+  error: "w-full p-3 border-2 border-red-400 rounded",
+};
+
 export function Select({
   value,
   onChange,
@@ -5,8 +10,12 @@ export function Select({
   placeholder = "Seçiniz",
   className = "",
   label,
+  variant = "default",
   ...props
 }) {
+  const variantClass =
+      SELECT_VARIANTS[variant] ?? SELECT_VARIANTS.default;
+
   return (
       <div>
           {label && (
@@ -21,7 +30,7 @@ export function Select({
           <select
               value={value}
               onChange={onChange}
-              className={`w-full p-3 border-2 border-purple-300 rounded ${className}`}
+              className={`${variantClass} ${className}`}
               {...props}
           >
               <option value="">

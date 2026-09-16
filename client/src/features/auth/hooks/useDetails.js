@@ -1,59 +1,39 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 import * as authRepository from "../repositories/auth.repository";
+import * as portfolioRepository from "@/features/portfolio/repositories/portfolio.repository";
+import { useCurrentUser } from "./useCurrentUser";
 
 export function useDetails() {
-    const currentUser = JSON.parse(
-        localStorage.getItem("login") || "null"
-    );
+    const { user, isLoading, isError, error } = useCurrentUser();
+    const queryClient = useQueryClient();
 
-    const email =
-        currentUser?.email ||
-        currentUser?.result?.email;
-
-    const {
-        data: emailResponse,
-        isLoading,
-        isError,
-        error,
-    } = useQuery({
-        queryKey: ["details", email],
-
-        queryFn: () =>
-            authRepository.details(email),
-
-        enabled: !!email,
-    });
     const portfolioMutation = useMutation({
         mutationFn: (data) =>
-            authRepository.portfolyoCreate(data),
+            portfolioRepository.createPortfolio(data),
 
         onSuccess: () => {
-            console.log("Portfolyo başarıyla oluşturuldu.");
-        },
-
-        onError: (error) => {
-            console.error(
-                "Portfolyo oluşturma hatası:",
-                error
-            );
+            queryClient.invalidateQueries({
+                queryKey: ["portfolio"],
+            });
         },
     });
 
-    const portfolyoCreate = (data) => {
-        portfolioMutation.mutate(data);
-    };
+    const portfolyoCreate = (data) =>
+        portfolioMutation.mutateAsync(data);
+
     const accountMutation = useMutation({
         mutationFn: () =>
-            authRepository.account(email),
+            authRepository.account(user?.email),
 
         onSuccess: () => {
-            console.log("Hesap donduruldu.");
+            toast.success("Hesap donduruldu.");
         },
 
         onError: (error) => {
-            console.error(
-                "Hesap dondurma hatası:",
-                error
+            toast.error(
+                error?.response?.data?.message ||
+                    "Hesap dondurulurken bir hata oluştu."
             );
         },
     });
@@ -63,15 +43,15 @@ export function useDetails() {
     };
 
     return {
-        email: emailResponse,
+        email: user,
 
         isLoading,
         isError,
         error,
         portfolyoCreate,
         isCreating: portfolioMutation.isPending,
-        isError: portfolioMutation.isError,
-        error: portfolioMutation.error,
+        isCreateError: portfolioMutation.isError,
+        createError: portfolioMutation.error,
 
         hesabiDondur,
         isDeleting: accountMutation.isPending,

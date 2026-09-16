@@ -1,7 +1,9 @@
 import express from "express"
-import { signin,signup,users,Delete,duzenle,Detay,usersMessage } from "../controllers/kullanici.js"
+import { signin,signup,users,Delete,duzenle,Detay,usersMessage,me } from "../controllers/kullanici.js"
+import authMiddleware from "../middleware/auth.js"
 
 const router=express.Router()
+router.get('/me',authMiddleware,me);
 router.get('/users/:id',users);
 router.delete('/users/:email',Delete);
 router.post('/signin',signin);

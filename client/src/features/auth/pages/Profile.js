@@ -8,12 +8,15 @@ import {
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/shared/components/atoms";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 export default function Profile() {
-  const users = JSON.parse(localStorage.getItem("login"));
+  const { user } = useCurrentUser();
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   useEffect(() => {
     function handleClickOutside(e) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -23,8 +26,11 @@ export default function Profile() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  const handleClick = () => {
+  const handleLogout = () => {
+    setOpen(false);
     localStorage.clear();
+    queryClient.clear();
+    toast.success("Çıkış yapıldı");
     navigate("/");
   };
   return (
@@ -35,10 +41,10 @@ export default function Profile() {
           className="flex items-center gap-4 px-4 py-2 bg-transparent focus:outline-none"
         >
           {" "}
-          {users?.result?.file || users?.file ? (
+          {user?.file ? (
             <img
               className="h-12 w-12 rounded-full object-cover"
-              src={users?.result?.file}
+              src={user.file}
               alt="Kullanıcı Fotoğrafı"
             />
           ) : (
@@ -46,12 +52,10 @@ export default function Profile() {
           )}
           <div className="text-left">
             <p className="text-base font-semibold text-gray-800">
-              {users?.result?.firstName ||  users?.firstName} {users?.result?.lastName || users?.firstName}
+              {user?.firstName} {user?.lastName}
             </p>
             <p className="text-sm text-gray-500">
-              {users?.result?.unvan || users?.unvan
-                ? users?.result?.unvan || users?.unvan
-                : "ünvan ekli değil."}
+              {user?.unvan || "ünvan ekli değil."}
             </p>
           </div>
           <FontAwesomeIcon
@@ -89,19 +93,12 @@ export default function Profile() {
                 </Link>
               </li>
               <li
-                onClick={() => {
-                  setOpen(false);
-                  localStorage.clear();
-                  toast.error("Çıkış yapıldı");
-               
-                  navigate("/");
-                }}
+                onClick={handleLogout}
                 className="flex items-center px-4 py-2 hover:bg-purple-100 text-gray-400 cursor-pointer"
               >
                 <FontAwesomeIcon
                   icon={faSignOutAlt}
                   className="mr-3 text-purple-600"
-                  onClick={handleClick}
                 />
                 Çıkış Yap
               </li>

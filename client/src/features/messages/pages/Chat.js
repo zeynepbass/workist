@@ -3,6 +3,7 @@ import io from "socket.io-client";
 
 import { useMessages } from "../hooks/useMessages";
 import  messageAdapter  from "../adapters/message.adapter";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 
 import ChatUserList from "../components/ChatUserList";
 import ChatMessageList from "../components/ChatMessageList";
@@ -11,11 +12,7 @@ import ChatInput from "../components/ChatInput";
 const socket = io(process.env.REACT_APP_BASE_URL);
 
 export default function Chat() {
-    const currentUser = JSON.parse(
-        localStorage.getItem("login")
-    );
-
-    const gonderenId = currentUser?.result?._id || currentUser?._id;
+    const { userId: gonderenId } = useCurrentUser();
 
     const [aliciId, setAliciId] = useState(null);
     const [newMessage, setNewMessage] = useState("");

@@ -1,6 +1,6 @@
 import { Input, Button } from "@/shared/components/atoms";
 import {StatusMessage} from "@/shared/components/molecules";
-import formatToTurkishDate from "@/shared/utils";
+import formatToTurkishDate from "@/shared/utils/formatToTurkishDate";
 
 export default function ConversationTable({
     conversations,

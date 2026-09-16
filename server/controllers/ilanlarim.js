@@ -48,7 +48,7 @@ const getPost = async (req, res) => {
 
 const getPosts = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user._id;
       const posts = await Ilanlarim.find({ userId });
 
       return res.status(200).json(posts);

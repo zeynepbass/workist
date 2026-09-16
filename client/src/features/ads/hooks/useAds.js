@@ -4,38 +4,14 @@ import {
     useMutation,
     useQueryClient,
 } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
-import * as adsRepository from "../respositories/ads.repository";
+import * as adsRepository from "../repositories/ads.repository";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 
 export function useAds(id) {
     const queryClient = useQueryClient();
-
-    const login = JSON.parse(
-        localStorage.getItem("login") || "null"
-    );
-
-    const userId =
-        login?._id ||
-        login?.result?._id;
-
-    const firstName =
-        login?.result?.firstName ||
-        login?.firstName;
-
-    const adsRepositoryInstance =
-        adsRepository.getAds();
-
-    const detailRepository =
-        adsRepository.getDetailAds();
-
-    const createRepository =
-        adsRepository.createWorkPost();
-
-    const deleteRepository =
-        adsRepository.deletedAds();
-
-    const updateRepository =
-        adsRepository.updateAds();
+    const { userId, firstName } = useCurrentUser();
 
     const {
         data: posts = [],
@@ -45,7 +21,7 @@ export function useAds(id) {
     } = useQuery({
         queryKey: ["ads"],
         queryFn: () =>
-            adsRepositoryInstance.getAds(),
+            adsRepository.getAds(),
     });
 
     const {
@@ -56,31 +32,33 @@ export function useAds(id) {
     } = useQuery({
         queryKey: ["ad", id],
         queryFn: () =>
-            detailRepository.getDetailAds(id),
+            adsRepository.getDetailAds(id),
         enabled: !!id,
     });
 
     const createMutation = useMutation({
         mutationFn: (post) =>
-            createRepository.createWorkPost(post),
+            adsRepository.createWorkPost(post),
 
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["ads"],
             });
+
+            toast.success("İlan başarıyla oluşturuldu.");
         },
 
         onError: (error) => {
-            console.error(
-                "Post oluşturma hatası:",
-                error
+            toast.error(
+                error?.response?.data?.message ||
+                    "İlan oluşturulurken bir hata oluştu."
             );
         },
     });
 
     const deleteMutation = useMutation({
         mutationFn: (id) =>
-            deleteRepository.deleteAds(id),
+            adsRepository.deletedAds(id),
 
         onSuccess: (_, deletedId) => {
             queryClient.setQueryData(
@@ -88,7 +66,7 @@ export function useAds(id) {
                 (oldPosts = []) =>
                     oldPosts.filter(
                         (item) =>
-                            item._id !== deletedId
+                            item.id !== deletedId
                     )
             );
 
@@ -99,19 +77,21 @@ export function useAds(id) {
             queryClient.invalidateQueries({
                 queryKey: ["ads"],
             });
+
+            toast.success("İlan silindi.");
         },
 
         onError: (error) => {
-            console.error(
-                "İlan silme hatası:",
-                error
+            toast.error(
+                error?.response?.data?.message ||
+                    "İlan silinirken bir hata oluştu."
             );
         },
     });
 
     const updateMutation = useMutation({
         mutationFn: ({ id, post }) =>
-            updateRepository.updateAds(id, post),
+            adsRepository.updateAds(id, post),
 
         onSuccess: (updatedPost, variables) => {
             queryClient.setQueryData(
@@ -123,7 +103,7 @@ export function useAds(id) {
                 ["ads"],
                 (oldPosts = []) =>
                     oldPosts.map((item) =>
-                        item._id === variables.id
+                        item.id === variables.id
                             ? updatedPost
                             : item
                     )
@@ -132,12 +112,14 @@ export function useAds(id) {
             queryClient.invalidateQueries({
                 queryKey: ["ads"],
             });
+
+            toast.success("İlan güncellendi.");
         },
 
         onError: (error) => {
-            console.error(
-                "İlan güncelleme hatası:",
-                error
+            toast.error(
+                error?.response?.data?.message ||
+                    "İlan güncellenirken bir hata oluştu."
             );
         },
     });

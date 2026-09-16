@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useOrders } from "@/features/orders/hooks/useOrders";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import {StatusMessage} from "@/shared/components/molecules";
 
 import BuyerHeader from "@/features/orders/components/BuyerHeader";
@@ -11,8 +12,7 @@ export default function Request() {
     const [selectedUser, setSelectedUser] = useState(null);
     const [open, setOpen] = useState(false);
 
-    const login = JSON.parse(localStorage.getItem("login"));
-    const userId = login?._id || login?.result?._id;
+    const { userId } = useCurrentUser();
 
     const {
         userPosts,

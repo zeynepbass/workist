@@ -9,10 +9,12 @@ export const portfolioApi = {
     });
   },
 
-
-
   getUserPortfolios() {
     return apiClient.get("/portfolyo");
+  },
+
+  createPortfolio(data) {
+    return apiClient.post("/portfolyo", data);
   },
 
   deletePortfolio(id) {

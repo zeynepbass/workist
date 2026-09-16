@@ -18,13 +18,13 @@ export default function AdsPage() {
   const [sortType, setSortType] = useState("all");
 
   const {
-    data: posts = [],
+    posts,
     userId,
     createWorkPost,
     firstName,
     isLoading,
     isError,
-    deleteAds,
+    deleteClickPost,
     isDeleting,
   } = useAds();
 
@@ -90,7 +90,7 @@ export default function AdsPage() {
         userId={userId}
         firstName={firstName}
         onEdit={handleEditClick}
-        onDelete={deleteAds}
+        onDelete={deleteClickPost}
         isDeleting={isDeleting}
       />
     </div>

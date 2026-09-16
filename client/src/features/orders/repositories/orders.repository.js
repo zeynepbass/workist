@@ -1,16 +1,14 @@
-
+import { ordersApi } from "../api/orders.api";
 import ordersAdapter from "../adapters/orders.adapter";
-import ordersProvider from "@/providers/orders.provider";
 
 export async function getUserPosts(userId) {
-    const response = await ordersProvider.getUserPosts(userId);
+    const response = await ordersApi.getUserPosts(userId);
 
-    return response.data;
+    return response.data.map(ordersAdapter);
 }
 
 export async function getPosts() {
-    const response = await ordersProvider.getPosts();
+    const response = await ordersApi.getPosts();
 
-    return response.map;
+    return response.data.map(ordersAdapter);
 }
-

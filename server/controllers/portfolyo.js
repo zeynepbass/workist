@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 
 const getPosts = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user._id;
 
         const posts = await Portfolyo.find({ userId });
 
@@ -20,7 +20,7 @@ const CreatePost = async (req, res) => {
     try {
         const post = {
             ...req.body,
-            userId: req.user.id,
+            userId: req.user._id,
         };
 
         const newPost = new Portfolyo(post);

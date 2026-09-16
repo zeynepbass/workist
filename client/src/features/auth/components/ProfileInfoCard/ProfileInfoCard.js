@@ -78,6 +78,7 @@ export default function ProfileInfoCard({
         <>
           <img
             src={formData.file}
+            alt="Profil fotoğrafı"
             width="100"
             height="100"
             className="rounded-full shadow-lg"
@@ -137,6 +138,7 @@ export default function ProfileInfoCard({
           <div>
             <img
               src={userDetails?.file}
+              alt="Profil fotoğrafı"
               width="100"
               height="100"
               className="rounded-full shadow-lg"

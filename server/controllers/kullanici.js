@@ -3,6 +3,20 @@ import jwt from 'jsonwebtoken'
 
 import User from '../models/kullanici.js'
 
+const me = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id).select("-password");
+
+        if (!user) {
+            return res.status(404).json({ message: "Kullanıcı bulunamadı" });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: "Kullanıcı bilgisi alınamadı" });
+    }
+};
+
 const usersMessage = async (req, res) => {
     try {
         const users = await User.find();
@@ -190,10 +204,10 @@ const signup = async (req, res) => {
 
         const token = jwt.sign(
             {
+                _id: result._id,
                 email: result.email,
-                id: result._id,
             },
-            "aos-secret-key",
+            process.env.JWT_SECRET,
             {
                 expiresIn: "30d",
             }
@@ -215,4 +229,4 @@ const signup = async (req, res) => {
 };
 
 
-export { signin, signup,users,Delete,duzenle,Detay,usersMessage };
+export { signin, signup, users, Delete, duzenle, Detay, usersMessage, me };

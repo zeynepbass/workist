@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBook,
@@ -12,19 +12,6 @@ import { Button,Input } from '@/shared/components/atoms';
 export default function Header() {
 
   const [search, setSearch] = useState("");
-  const [open, setOpen] = useState(false);
-  const panelRef = useRef();
-
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (panelRef.current && !panelRef.current.contains(event.target)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
   const Navigate = useNavigate()
   const subcategories = [
     {

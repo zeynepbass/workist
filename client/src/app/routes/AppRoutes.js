@@ -15,7 +15,7 @@ import SalesDetail from "@/features/orders/pages/OrdersDetail";
 import Request from "@/features/orders/pages/Request";
 
 import Sohbet from "@/features/messages/pages/Chat";
-import Todo from "@/features/auth/pages/Todos";
+import Todo from "@/features/messages/pages/Todos";
 
 import ProfileHome from "@/features/auth/pages/MyProfile";
 import MyAccount from "@/features/auth/pages/myAccount";

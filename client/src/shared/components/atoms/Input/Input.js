@@ -1,3 +1,10 @@
+const INPUT_VARIANTS = {
+    default:
+        "border-2 border-purple-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-purple-500",
+    error:
+        "border-2 border-red-400 rounded p-2 focus:outline-none focus:ring-2 focus:ring-red-400",
+};
+
 export function Input({
     label,
     type,
@@ -12,7 +19,12 @@ export function Input({
     placeholder,
     required,
     autoComplete,
+    variant,
 }) {
+    const variantClass = variant
+        ? INPUT_VARIANTS[variant] ?? ""
+        : "";
+
     return (
         <>
             {label && (
@@ -27,7 +39,7 @@ export function Input({
                 max={max}
                 value={value}
                 checked={checked}
-                className={className}
+                className={`${variantClass} ${className || ""}`}
                 type={type}
                 accept={accept}
                 onChange={onChange}

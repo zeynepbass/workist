@@ -6,6 +6,7 @@ import { usePortfolio } from "@/features/portfolio/hooks/usePortfolio";
 import PortfolioList from "../components/PortfolioList";
 import PortfolioFilters from "../components/PortfolioFilters";
 import { useDetails } from "@/features/auth/hooks/useDetails";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import {
     StatusMessage,
     TopHeader,
@@ -25,13 +26,8 @@ export default function Portfolio() {
     const [filtreDurum, setFiltreDurum] =
         useState("yayinda");
 
-    const login = JSON.parse(
-        localStorage.getItem("login") || "null"
-    );
-
-    const userId = login?._id || login?.result?._id;
-    const firstName = login?.result?.firstName || login?.firstName;
-    const unvan = login?.result?.unvan || login?.unvan;
+    const { userId, firstName, user } = useCurrentUser();
+    const unvan = user?.unvan;
 
     const {
         userPortfolios,
@@ -44,8 +40,8 @@ export default function Portfolio() {
         toggleDurum,
         isUpdatingStatus,
 
-    } = usePortfolio(userId);
-const {portfolyoCreate} = useDetails();
+    } = usePortfolio();
+    const {portfolyoCreate} = useDetails();
     const handleEditClick = (id) => {
         navigate(`/portfolyom/${id}`);
     };
@@ -54,42 +50,39 @@ const {portfolyoCreate} = useDetails();
         try {
             await deletePortfolio(id);
         } catch (error) {
-            console.error(
-                "Portfolyo silme hatası:",
-                error
-            );
+            // silme başarısız oldu, liste değişmeden kalır
         }
     };
 
-    // const filtrelenmisPortfolyolar = useMemo(() => {
-    //     if (!userPortfolios) return [];
+    const filtrelenmisPortfolyolar = useMemo(() => {
+        if (!userPortfolios) return [];
 
-    //     return userPortfolios.filter((portfolio) => {
-    //         if (filtreDurum === "yayinda") {
-    //             return portfolio.durum === "yayinda";
-    //         }
+        return userPortfolios.filter((portfolio) => {
+            if (filtreDurum === "yayinda") {
+                return portfolio.durum === "yayinda";
+            }
 
-    //         return portfolio.durum !== "yayinda";
-    //     });
-    // }, [userPortfolios, filtreDurum]);
+            return portfolio.durum !== "yayinda";
+        });
+    }, [userPortfolios, filtreDurum]);
 
-    // if (isUserPortfoliosLoading) {
-    //     return (
-    //         <StatusMessage
-    //             type="loading"
-    //             message="Portfolyolar yükleniyor..."
-    //         />
-    //     );
-    // }
+    if (isUserPortfoliosLoading) {
+        return (
+            <StatusMessage
+                type="loading"
+                message="Portfolyolar yükleniyor..."
+            />
+        );
+    }
 
-    // if (isUserPortfoliosError) {
-    //     return (
-    //         <StatusMessage
-    //             type="error"
-    //             message="Portfolyolar yüklenirken bir hata oluştu."
-    //         />
-    //     );
-    // }
+    if (isUserPortfoliosError) {
+        return (
+            <StatusMessage
+                type="error"
+                message="Portfolyolar yüklenirken bir hata oluştu."
+            />
+        );
+    }
 
     return (
         <div className="p-4 h-[100vh]">
@@ -110,7 +103,7 @@ const {portfolyoCreate} = useDetails();
             />
 
             <PortfolioList
-                portfolios={userPortfolios}
+                portfolios={filtrelenmisPortfolyolar}
                 firstName={firstName}
                 unvan={unvan}
                 userId={userId}

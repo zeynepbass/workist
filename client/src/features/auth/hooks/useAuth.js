@@ -1,12 +1,13 @@
 
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import * as authRepository from "../repositories/auth.repository";
 
 export function useAuth() {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
 
     const [passwordVisible, setPasswordVisible] =
         useState(false);
@@ -24,9 +25,13 @@ export function useAuth() {
         onSuccess: (data) => {
             localStorage.setItem("token", data.token);
             localStorage.setItem("login", JSON.stringify(data.result));
-    
+
+            queryClient.invalidateQueries({
+                queryKey: ["currentUser"],
+            });
+
             toast.success(data?.message || "Giriş başarılı.");
-    
+
             navigate("/workist");
         },
     
