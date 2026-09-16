@@ -66,7 +66,6 @@ const duzenle = async (req, res) => {
   
         res.status(200).json(updatedUser);
     } catch (error) {
-        console.error(error);
         res.status(500).send("Internal Server Error");
     }
   };
@@ -99,7 +98,6 @@ const Delete = async (req, res) => {
  
       res.status(200).json({ message: 'Kullanıcı silindi' });
     } catch (error) {
-      console.error('Kullanıcı silme hatası:', error);
       res.status(500).json({ message: 'Bir hata oluştu' });
     }
   };
@@ -156,8 +154,6 @@ const Delete = async (req, res) => {
             message: "Giriş başarılı.",
         });
     } catch (error) {
-        console.error("SIGNIN ERROR:", error);
-
         return res.status(500).json({
             message: "Giriş sırasında bir hata oluştu.",
         });
@@ -220,8 +216,6 @@ const signup = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("SIGNUP ERROR:", error);
-
         return res.status(500).json({
             message: "Kayıt sırasında bir hata oluştu.",
         });

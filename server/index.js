@@ -35,35 +35,23 @@ app.use('/', message);
 
 mongoose
     .connect(process.env.MONGO_URI)
-    .then(() => {
-        console.log("✅ MongoDB bağlantısı kuruldu");
-    })
-    .catch((err) => {
-        console.error("❌ MongoDB bağlantı hatası:", err);
-    });
+    .then(() => {})
+    .catch((err) => {});
 
 io.on('connection', (socket) => {
-  console.log('🔌 Yeni bağlantı:', socket.id);
-
   socket.on('sendMessage', async (data) => {
     try {
       const yeniMesaj = new Mesaj(data);
       await yeniMesaj.save();
 
-      console.log('📩 Yeni mesaj alındı ve kaydedildi:', yeniMesaj);
-
       io.emit('receiveMessage', yeniMesaj);
     } catch (err) {
-      console.error('❌ Mesaj gönderilirken hata:', err.message);
     }
   });
 
   socket.on('disconnect', () => {
-    console.log('❌ Kullanıcı ayrıldı:', socket.id);
   });
 });
 
 const PORT = process.env.PORT || 5430;
-server.listen(PORT, () => {
-  console.log(`🚀 Sunucu ${PORT} portunda çalışıyor`);
-});
+server.listen(PORT, () => {});

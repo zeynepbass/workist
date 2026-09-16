@@ -89,7 +89,6 @@ const Delete = async (req, res) => {
 
     res.status(200).json({ message: 'Post başarıyla silindi' });
   } catch (error) {
-    console.error('Silme hatası:', error);
     res.status(500).json({ message: 'Sunucu hatası', error });
   }
 };
