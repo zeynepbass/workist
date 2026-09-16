@@ -12,6 +12,15 @@ import AdsFileUpload from "../components/AdsFileUpload";
 
 import {StatusMessage} from "@/shared/components/molecules";
 
+const HIZMET_TURU_OPTIONS = [
+    { value: "Admin Panel", label: "Admin Panel" },
+    {
+        value: "Özel kodlanmış web tasarımı",
+        label: "Özel kodlanmış web tasarımı",
+    },
+    { value: "Hata Giderme", label: "Hata Giderme" },
+];
+
 export default function AdsDetail (){
     const navigate = useNavigate();
     const { id } = useParams();
@@ -97,13 +106,9 @@ export default function AdsDetail (){
             form.description === "" ||
             Number(form.fiyat) < 100
         ) {
-            
-
-toast.error(
-    "Tüm alanları doldurun ve fiyat en az 100 TL olmalıdır!"
-);
-
-
+            toast.error(
+                "Tüm alanları doldurun ve fiyat en az 100 TL olmalıdır!"
+            );
 
             return;
         }
@@ -172,120 +177,135 @@ toast.error(
     return (
         <form
             onSubmit={handleSubmit}
-            className="max-w-6xl mx-auto space-y-6 text-gray-800"
+            className="mx-auto max-w-4xl space-y-6 px-4 pb-16 pt-4 text-gray-800 sm:px-6"
         >
-                                        <Button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="flex items-center text-purple-600 hover:text-purple-800 py-5"
-        >
-            <FaArrowLeft className="mr-2" />
-            Geri Dön</Button>
-     
-
-
-            <AdsInfo />
-
-            <AdsWarning />
-
-            <Select
-                value={form.hizmetTuru}
-                onChange={(value) =>
-                    setForm((prev) => ({
-                        ...prev,
-                        hizmetTuru: value,
-                    }))
-                }
-            />
-
-            <AdsPricingOptions
-                kodFiyatlandirma={form.kodFiyatlandirma}
-                ekstraOzellikler={form.ekstraOzellikler}
-                onCheckboxChange={handleCheckboxChange}
-            />
+            <Button
+                type="button"
+                onClick={() => navigate(-1)}
+                className="flex items-center gap-2 text-purple-600 hover:text-purple-800"
+            >
+                <FaArrowLeft />
+                Geri Dön
+            </Button>
 
             <div>
-            <Input
-            label="        Revizyon*"
-      
+                <h1 className="text-2xl font-bold text-gray-800">
+                    İlanı Düzenle
+                </h1>
+                <p className="mt-1 text-sm text-gray-500">
+                    İlan bilgilerini güncelleyip değişiklikleri kaydedebilirsin.
+                </p>
+            </div>
 
-                    type="number"
-                    value={form.revizyon}
+            <AdsInfo />
+            <AdsWarning />
+
+            <div className="space-y-6 rounded-xl border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
+
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <Select
+                        label="Hizmet Türü*"
+                        value={form.hizmetTuru}
+                        options={HIZMET_TURU_OPTIONS}
+                        onChange={(e) =>
+                            setForm((prev) => ({
+                                ...prev,
+                                hizmetTuru: e.target.value,
+                            }))
+                        }
+                    />
+
+                    <Input
+                        label="Başlık*"
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        variant="default"
+                    />
+
+                    <Input
+                        label="Süre*"
+                        type="text"
+                        placeholder="ör. 3 gün"
+                        value={form.sure}
+                        onChange={(e) =>
+                            setForm((prev) => ({
+                                ...prev,
+                                sure: e.target.value,
+                            }))
+                        }
+                        variant="default"
+                    />
+
+                    <Input
+                        label="Revizyon*"
+                        type="number"
+                        value={form.revizyon}
+                        onChange={(e) =>
+                            setForm((prev) => ({
+                                ...prev,
+                                revizyon: e.target.value,
+                            }))
+                        }
+                        variant="default"
+                    />
+                </div>
+
+                <hr className="border-gray-100" />
+
+                <AdsPricingOptions
+                    kodFiyatlandirma={form.kodFiyatlandirma}
+                    ekstraOzellikler={form.ekstraOzellikler}
+                    onCheckboxChange={handleCheckboxChange}
+                />
+
+                <AdsPriceField
+                    value={form.fiyat}
+                    onChange={(value) =>
+                        setForm((prev) => ({
+                            ...prev,
+                            fiyat: value,
+                        }))
+                    }
+                    kodFiyatlandirma={form.kodFiyatlandirma}
+                    ekstraOzellikler={form.ekstraOzellikler}
+                />
+
+                <Textarea
+                    label="Açıklama*"
+                    rows={5}
+                    value={form.description}
                     onChange={(e) =>
                         setForm((prev) => ({
                             ...prev,
-                            revizyon: e.target.value,
+                            description: e.target.value,
                         }))
                     }
-                    className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
-                />
-            </div>
-
-            <div>
-            <Input
-            label="                Süre*"
-            type="text"
-            value={form.sure}
-            onChange={(e) =>
-                setForm((prev) => ({
-                    ...prev,
-                    sure: e.target.value,
-                }))
-            }
-            className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
+                    variant="default"
                 />
 
-
-
+                <AdsFileUpload
+                    value={form.file}
+                    onChange={(value) =>
+                        setForm((prev) => ({
+                            ...prev,
+                            file: value,
+                        }))
+                    }
+                />
             </div>
-
-            <AdsPriceField
-                value={form.fiyat}
-                onChange={(value) =>
-                    setForm((prev) => ({
-                        ...prev,
-                        fiyat: value,
-                    }))
-                }
-                kodFiyatlandirma={form.kodFiyatlandirma}
-                ekstraOzellikler={form.ekstraOzellikler}
-            />
-
-            <AdsPriceField
-                value={title}
-                onChange={setTitle}
-            />
-
-            <Textarea
-                value={form.description}
-                onChange={(value) =>
-                    setForm((prev) => ({
-                        ...prev,
-                        description: value,
-                    }))
-                }
-            />
-
-            <AdsFileUpload
-                value={form.file}
-                onChange={(value) =>
-                    setForm((prev) => ({
-                        ...prev,
-                        file: value,
-                    }))
-                }
-            />
 
             <div className="flex justify-center">
-             <Button
-                   type="submit"
-                   disabled={isUpdating}
-                   className="bg-purple-600 text-white px-8 py-3 rounded hover:bg-purple-700 disabled:opacity-50"
-               >
-              {isUpdating
+                <Button
+                    type="submit"
+                    variant="primary"
+                    disabled={isUpdating}
+                    className="px-10 py-3"
+                >
+                    {isUpdating
                         ? "Kaydediliyor..."
-                        : "Kaydet"}</Button>
-  
+                        : "Kaydet"}
+                </Button>
             </div>
         </form>
     );

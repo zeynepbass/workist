@@ -2,8 +2,8 @@ import { Input } from "@/shared/components/atoms";
 export default function AdsPriceField ({
     value,
     onChange,
-    kodFiyatlandirma,
-    ekstraOzellikler,
+    kodFiyatlandirma = {},
+    ekstraOzellikler = {},
 })  {
     const selectedCodeCount =
         Object.values(kodFiyatlandirma).filter(Boolean).length;

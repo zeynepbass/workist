@@ -10,12 +10,6 @@ export async function getMessages(gonderenId, aliciId) {
     return response.data.map(messageAdapter);
 }
 
-export async function getUser(userId) {
-    const response = await messageApi.getUser(userId);
-
-    return response.data;
-}
-
 export async function getUsers() {
     const response = await messageApi.getUsers();
 
@@ -28,8 +22,8 @@ export async function getConversations(userId) {
     return response.data;
 }
 
-export async function getMessageData(currentId, targetId) {
-    const response = await messageApi.getMessageData(
+export async function deleteConversation(currentId, targetId) {
+    const response = await messageApi.deleteConversation(
         currentId,
         targetId
     );

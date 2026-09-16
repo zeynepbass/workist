@@ -19,7 +19,7 @@ export default function MyProfile() {
     return <StatusMessage type="loading" message="Yükleniyor..." />;
   }
   return (
-    <div className="flex flex-col md:flex-row gap-6 px-20 h-[90vh] ">
+    <div className="flex flex-col md:flex-row gap-6 px-4 md:px-12 lg:px-20 min-h-[90vh] ">
       <div className="w-full md:w-1/3 space-y-4">
         <div className="bg-white p-4 rounded-[10px] shadow ">
           <div className="flex justify-between items-center">

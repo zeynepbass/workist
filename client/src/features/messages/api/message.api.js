@@ -5,10 +5,6 @@ export const messageApi = {
     return apiClient.get(`/mesajlar/${gonderenId}/${aliciId}`);
   },
 
-  getUser(userId) {
-    return apiClient.get(`/users/${userId}`);
-  },
-
   getUsers() {
     return apiClient.get("/users");
   },
@@ -17,7 +13,7 @@ export const messageApi = {
     return apiClient.get(`/konusmalar/${userId}`);
   },
 
-  getMessageData(currentId, targetId) {
-    return apiClient.get(`/${currentId}/${targetId}`);
+  deleteConversation(currentId, targetId) {
+    return apiClient.delete(`/${currentId}/${targetId}`);
   },
 };

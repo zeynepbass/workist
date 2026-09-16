@@ -17,7 +17,7 @@ export default function PortfolioForm({
 }) {
     const [formData, setFormData] = useState({
         title: "",
-        durum: "",
+        durum: "yayinda",
         fiyat: "",
         description: "",
         file: "",
@@ -31,7 +31,7 @@ export default function PortfolioForm({
 
         setFormData({
             title: detail.title || "",
-            durum: detail.durum || "",
+            durum: detail.durum || "yayinda",
             fiyat: detail.fiyat || "",
             description: detail.description || "",
             file: detail.file || "",
@@ -78,8 +78,8 @@ export default function PortfolioForm({
             formData.file === "" ||
             Number(formData.fiyat) < 100
         ) {
-            toast.error(  "Tüm alanları doldurun ve fiyat en az 100 TL olmalıdır!");
-   
+            toast.error("Tüm alanları doldurun ve fiyat en az 100 TL olmalıdır!");
+
             return;
         }
 
@@ -94,14 +94,13 @@ export default function PortfolioForm({
         <form onSubmit={handleSubmit}>
             <div className="space-y-6">
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 
                     <Select
-                        label="Kategori Seçimi"
+                        label="Kategori Seçimi*"
                         name="selectedCategory"
                         value={formData.selectedCategory}
                         onChange={handleChange}
-                        className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
                         options={[
                             {
                                 value: "Grafik & Tasarım",
@@ -116,6 +115,23 @@ export default function PortfolioForm({
                                 label: "Yazılım & Teknoloji",
                             },
                         ]}
+                    />
+
+                    <Select
+                        label="Yayın Durumu*"
+                        name="durum"
+                        value={formData.durum}
+                        onChange={handleChange}
+                        options={[
+                            {
+                                value: "yayinda",
+                                label: "Yayında",
+                            },
+                            {
+                                value: "yayindaDegil",
+                                label: "Yayında Değil",
+                            },
+                        ]}
                         placeholder={null}
                     />
 
@@ -126,39 +142,27 @@ export default function PortfolioForm({
                         value={formData.title}
                         onChange={handleChange}
                         placeholder="Portfolyonuz için başlık girin"
-                        className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
+                        variant="default"
                     />
 
-                    <Input
-                        label="Durum*"
-                        type="text"
-                        name="durum"
-                        value={formData.durum}
-                        onChange={handleChange}
-                        placeholder="Portfolyonuz için durum girin"
-                        className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
-                    />
-
-                    <div className="flex items-center space-x-2">
-
-                        <div className="w-full">
+                    <div className="flex items-end gap-2">
+                        <div className="flex-1">
                             <Input
                                 label="Fiyat*"
                                 type="number"
                                 name="fiyat"
                                 value={formData.fiyat}
                                 onChange={handleChange}
-                                placeholder="Portfolyonuz için fiyat girin"
-                                className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
+                                placeholder="En az 100 TL"
+                                variant="default"
                             />
                         </div>
 
-                        <div className="pt-7">
+                        <div className="w-24 shrink-0">
                             <Select
                                 name="currency"
                                 value={formData.currency}
                                 onChange={handleChange}
-                                className="p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
                                 options={[
                                     {
                                         value: "TL",
@@ -172,7 +176,6 @@ export default function PortfolioForm({
                                 placeholder={null}
                             />
                         </div>
-
                     </div>
                 </div>
 
@@ -183,7 +186,7 @@ export default function PortfolioForm({
                     value={formData.description}
                     onChange={handleChange}
                     placeholder="Detaylı açıklama girin"
-                    className="w-full p-5 border-2 border-purple-300 rounded bg-white text-gray-800"
+                    variant="default"
                 />
 
                 <PortfolioImageUpload
@@ -191,11 +194,12 @@ export default function PortfolioForm({
                     onChange={handleFileChange}
                 />
 
-                <div className="flex justify-center pt-5">
+                <div className="flex justify-center pt-2">
                     <Button
                         type="submit"
+                        variant="primary"
                         disabled={isUpdating}
-                        className="mt-4 bg-gray-800 text-white rounded hover:bg-gray-700 px-10 py-3"
+                        className="px-10 py-3"
                     >
                         {isUpdating
                             ? "Güncelleniyor..."
@@ -207,4 +211,3 @@ export default function PortfolioForm({
         </form>
     );
 };
-

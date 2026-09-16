@@ -46,10 +46,16 @@ export function usePortfolio(
                 durum
             ),
 
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["portfolio"],
-            });
+        onSuccess: (_, variables) => {
+            queryClient.setQueryData(
+                ["portfolio"],
+                (old = []) =>
+                    old.map((item) =>
+                        item.id === variables.id
+                            ? { ...item, durum: variables.durum }
+                            : item
+                    )
+            );
 
             toast.success("Portfolyo durumu güncellendi.");
         },
@@ -66,10 +72,12 @@ export function usePortfolio(
         mutationFn: (id) =>
             portfolioRepository.deletePortfolio(id),
 
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["portfolio"],
-            });
+        onSuccess: (_, deletedId) => {
+            queryClient.setQueryData(
+                ["portfolio"],
+                (old = []) =>
+                    old.filter((item) => item.id !== deletedId)
+            );
 
             toast.success("Portfolyo silindi.");
         },

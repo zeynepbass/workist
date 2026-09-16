@@ -84,7 +84,7 @@ export default function BuyerRequest() {
     }
 
     return (
-        <div className="w-[80%] px-20 relative">
+        <div className="w-full px-4 md:px-12 lg:px-20 relative">
 
 
             <div className="flex justify-left pl-2 items-center">
