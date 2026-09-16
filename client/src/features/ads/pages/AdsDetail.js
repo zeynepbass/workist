@@ -56,31 +56,17 @@ export default function AdsDetail (){
             hizmetTuru: details.hizmetTuru || "",
 
             kodFiyatlandirma: {
-                logo: Array.isArray(details.kodFiyatlandirma)
-                    ? details.kodFiyatlandirma.some(
-                          (item) => item.text === "logo"
-                      )
-                    : false,
-
-                kaynakKod: Array.isArray(details.kodFiyatlandirma)
-                    ? details.kodFiyatlandirma.some(
-                          (item) => item.text === "kaynakKod"
-                      )
-                    : false,
-
-                fonMuzigi: Array.isArray(details.kodFiyatlandirma)
-                    ? details.kodFiyatlandirma.some(
-                          (item) => item.text === "fonMuzigi"
-                      )
-                    : false,
+                logo: details.kodFiyatlandirma?.logo ?? false,
+                kaynakKod: details.kodFiyatlandirma?.kaynakKod ?? false,
+                fonMuzigi: details.kodFiyatlandirma?.fonMuzigi ?? false,
             },
 
             ekstraOzellikler: {
                 hizliTeslimat:
-                    details.extra?.includes("hizliTeslimat") || false,
+                    details.ekstraOzellikler?.hizliTeslimat ?? false,
 
                 fullHd:
-                    details.extra?.includes("fullHd") || false,
+                    details.ekstraOzellikler?.fullHd ?? false,
             },
 
             revizyon: details.revizyon || "",
@@ -135,19 +121,6 @@ toast.error(
             Number(form.fiyat || 0) +
             totalSelectedCount * 100;
 
-        const kodFiyatlandirma = Object.entries(
-            form.kodFiyatlandirma
-        )
-            .filter(([_, value]) => value)
-            .map(([key]) => ({
-                text: key,
-            }));
-
-        const extra = Object.entries(form.ekstraOzellikler)
-            .filter(([_, value]) => value)
-            .map(([key]) => key)
-            .join(",");
-
         const newIlan = {
             fiyat: toplamFiyat,
             sure: form.sure,
@@ -156,10 +129,12 @@ toast.error(
             description: form.description,
             revizyon: form.revizyon,
             file: form.file,
-            kodFiyatlandirma,
-            extra,
-            selectedCategory: "Web",
-            selectedSubcategory: "Frontend",
+            kodFiyatlandirma: form.kodFiyatlandirma,
+            ekstraOzellikler: form.ekstraOzellikler,
+            selectedCategory:
+                details?.selectedCategory || "Web",
+            selectedSubcategory:
+                details?.selectedSubcategory || "Frontend",
             userId,
         };
 
