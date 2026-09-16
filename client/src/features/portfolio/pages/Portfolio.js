@@ -103,7 +103,7 @@ export default function Portfolio() {
             />
 
             <PortfolioList
-                portfolios={filtrelenmisPortfolyolar}
+                posts={filtrelenmisPortfolyolar}
                 firstName={firstName}
                 unvan={unvan}
                 userId={userId}

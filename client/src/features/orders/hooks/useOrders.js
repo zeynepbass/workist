@@ -6,7 +6,7 @@ export function useOrders(userId) {
         queryKey: ["orders", "user", userId],
 
         queryFn: () =>
-            ordersRepository.getUserPosts(userId),
+            ordersRepository.getUserPosts(),
 
         enabled: !!userId,
     });

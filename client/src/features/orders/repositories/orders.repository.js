@@ -1,8 +1,8 @@
 import { ordersApi } from "../api/orders.api";
 import ordersAdapter from "../adapters/orders.adapter";
 
-export async function getUserPosts(userId) {
-    const response = await ordersApi.getUserPosts(userId);
+export async function getUserPosts() {
+    const response = await ordersApi.getUserPosts();
 
     return response.data.map(ordersAdapter);
 }
