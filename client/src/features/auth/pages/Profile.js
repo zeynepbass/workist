@@ -91,8 +91,9 @@ export default function Profile() {
               <li
                 onClick={() => {
                   setOpen(false);
+                  localStorage.clear();
                   toast.error("Çıkış yapıldı");
-
+               
                   navigate("/");
                 }}
                 className="flex items-center px-4 py-2 hover:bg-purple-100 text-gray-400 cursor-pointer"
