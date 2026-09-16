@@ -17,7 +17,7 @@ export default function SalesCard  ({ order })  {
                 {new Date(order.teslimTarihi).toLocaleDateString("tr-TR")}
             </div>
 
-            <div className="text-purple-400 font-semibold w-1/5 text-center">
+            <div className="text-purple-950 font-semibold w-1/5 text-center">
                 ${order.fiyat}
 
                 <br />
@@ -25,7 +25,7 @@ export default function SalesCard  ({ order })  {
 
                 <span
                     className="inline-block w-[150px] text-center border-2 border-purple-300 border-dashed p-2 rounded cursor-pointer"
-                    onClick={() => navigate(`/Sales/${order.id}`)}
+                    onClick={() => navigate(`/siparisler/${order.id}`)}
                 >
                     {order.durum}
                 </span>

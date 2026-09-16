@@ -3,7 +3,7 @@ import * as ordersRepository from "../repositories/orders.repository";
 
 export function useOrders(userId) {
     const userPostsRepository =
-        ordersRepository.getUserPosts();
+        ordersRepository.getUserPosts(userId);
 
     const postsRepository =
         ordersRepository.getPosts();

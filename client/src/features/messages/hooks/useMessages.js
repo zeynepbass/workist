@@ -8,21 +8,6 @@ import * as messageRepository from "../repositories/message.repository";
 export function useMessages(gonderenId, aliciId) {
     const queryClient = useQueryClient();
 
-    const messagesRepository =
-        messageRepository.getMessages();
-
-    const userRepository =
-        messageRepository.getUser();
-
-    const usersRepository =
-        messageRepository.getUsers();
-
-    const conversationsRepository =
-        messageRepository.getConversations();
-
-    const messageDataRepository =
-        messageRepository.getMessageData();
-
     const messagesQuery = useQuery({
         queryKey: [
             "messages",
@@ -31,7 +16,7 @@ export function useMessages(gonderenId, aliciId) {
         ],
 
         queryFn: () =>
-            messagesRepository.getMessages(
+            messageRepository.getMessages(
                 gonderenId,
                 aliciId
             ),
@@ -45,7 +30,7 @@ export function useMessages(gonderenId, aliciId) {
         queryKey: ["user", gonderenId],
 
         queryFn: () =>
-            userRepository.getUser(
+            messageRepository.getUser(
                 gonderenId
             ),
 
@@ -56,7 +41,7 @@ export function useMessages(gonderenId, aliciId) {
         queryKey: ["users"],
 
         queryFn: () =>
-            usersRepository.getUsers(),
+            messageRepository.getUsers(),
     });
 
     const conversationsQuery = useQuery({
@@ -66,7 +51,7 @@ export function useMessages(gonderenId, aliciId) {
         ],
 
         queryFn: () =>
-            conversationsRepository.getConversations(
+            messageRepository.getConversations(
                 gonderenId
             ),
 
@@ -93,7 +78,7 @@ export function useMessages(gonderenId, aliciId) {
     ) => {
         try {
             const response =
-                await messageDataRepository.getMessageData(
+                await messageRepository.getMessageData(
                     currentId,
                     targetId
                 );

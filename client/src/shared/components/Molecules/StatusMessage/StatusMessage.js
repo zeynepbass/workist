@@ -10,7 +10,7 @@ export function StatusMessage  ({ type = "loading", message }) {
             <p
                 className={
                     isError
-                        ? "text-red-500"
+                        ? "text-purple-950"
                         : "text-gray-500"
                 }
             >

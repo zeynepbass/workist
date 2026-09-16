@@ -10,7 +10,7 @@ export default function App()  {
         duration: 3000,
     }}
 />
-        <AppRoutes />;
+        <AppRoutes />
         </>
   ) 
 };

@@ -15,11 +15,11 @@ export default function Sidebar ()  {
     const icons = [
         { icon: faGlobe, label: "General", link: "/ilanlar" },
         { icon: faCode, label: "Workist", link: "/workist" },
-        { icon: faShoppingCart, label: "Siparişlerim", link: "/Sales" },
+        { icon: faShoppingCart, label: "Siparişlerim", link: "/siparisler" },
         { icon: faUsers, label: "Sana uygun istekler", link: "/istekler" },
-        { icon: faThumbtack, label: "Satışlarım", link: "/Sales" },
+        { icon: faThumbtack, label: "Satışlarım", link: "/satislar" },
         { icon: faHome, label: "Portfolyom", link: "/portfolyom" },
-        { icon: faBook, label: "İlanlarım", link: "/Ads" },
+        { icon: faBook, label: "İlanlarım", link: "/ilanlarim" },
         { icon: faHandshake, label: "Sana Uygun Alıcı İstekleri", link: "/istekler" },
     ];
     return (
@@ -28,8 +28,12 @@ export default function Sidebar ()  {
                 {icons.slice(0, 2).map((item) => {
                     return (
                         <>
-                            <Link to={item.link} > <li className="flex flex-row items-center cursor-pointer text-gray-400 hover:text-purple-800 p-3"><span>        <FontAwesomeIcon icon={item.icon} /></span><span className='text-gray-400 pl-2'>{item.label} </span></li></Link>
-                        </>
+                        <Link to={item.link} >   <li className="flex flex-row items-center p-5 gap-2 cursor-pointer text-gray-400 hover:text-purple-800">
+                            <FontAwesomeIcon icon={item.icon} />
+                            <span className='pl-2'>{item.label}</span>
+                        </li></Link>
+
+                    </>
 
                     )
                 })}

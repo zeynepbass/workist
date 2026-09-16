@@ -1,5 +1,3 @@
-import { useMemo, useState } from "react";
-import { useAds } from "@/features/ads/hooks/useAds";
 
 export function TopHeader ({title,desc}) {
 

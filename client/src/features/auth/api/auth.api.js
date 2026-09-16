@@ -33,6 +33,9 @@ export const authApi = {
     return apiClient.put(`/duzenle/${email}`, formData);
   },
 
+  portfolyoCreate(data) {
+    return apiClient.post("/portfolyo", data);
+},
   getDetails(email) {
     return apiClient.get(`/duzenle/${email}`);
   },

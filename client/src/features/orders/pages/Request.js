@@ -12,7 +12,7 @@ export default function Request() {
     const [open, setOpen] = useState(false);
 
     const login = JSON.parse(localStorage.getItem("login"));
-    const userId = login?.result?._id;
+    const userId = login?._id || login?.result?._id;
 
     const {
         userPosts,

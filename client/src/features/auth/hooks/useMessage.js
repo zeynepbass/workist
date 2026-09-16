@@ -6,16 +6,12 @@ export function useMessages() {
         localStorage.getItem("login") || "null"
     );
 
-    const userId = currentUser?.result?._id;
+    const userId =
+        currentUser?._id ||
+        currentUser?.result?._id;
 
-    const messagesRepository =
-        authRepository.getMessages();
-
-    const usersRepository =
-        authRepository.getUsers();
-
-    const messageDataRepository =
-        authRepository.getMessageData();
+    console.log("CURRENT USER:", currentUser);
+    console.log("USER ID:", userId);
 
     const {
         data: messagesResponse,
@@ -24,8 +20,10 @@ export function useMessages() {
         error: messagesError,
     } = useQuery({
         queryKey: ["messages", userId],
+
         queryFn: () =>
-            messagesRepository.getMessages(userId),
+            authRepository.getMessages(userId),
+
         enabled: !!userId,
     });
 
@@ -36,15 +34,16 @@ export function useMessages() {
         error: usersError,
     } = useQuery({
         queryKey: ["users"],
+
         queryFn: () =>
-            usersRepository.getUsers(),
+            authRepository.getUsers(),
     });
 
     const getMessageData = (
         currentId,
         targetId
     ) => {
-        return messageDataRepository.getMessageData(
+        return authRepository.getMessageData(
             currentId,
             targetId
         );

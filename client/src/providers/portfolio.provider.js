@@ -7,6 +7,7 @@ const portfolioProvider = {
     getPortfolioDetail: portfolioApi.getPortfolioDetail,
     updatePortfolio: portfolioApi.updatePortfolio,
     updatePortfolioStatus:portfolioApi.updatePortfolioStatus,
+
 };
 
 export default portfolioProvider;

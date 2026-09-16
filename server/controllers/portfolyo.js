@@ -16,14 +16,21 @@ const getPosts=async (req,res)=>{
 
 
 const CreatePost = async (req, res) => {
-  const post = req.body;
-
   try {
-    const newPost = new Portfolyo(post);
-    await newPost.save();
-    res.status(201).json(newPost);
+      const post = {
+          ...req.body,
+          userId: req.user._id,
+      };
+
+      const newPost = new Portfolyo(post);
+
+      await newPost.save();
+
+      res.status(201).json(newPost);
   } catch (error) {
-    res.status(409).json({ message: error.message });
+      res.status(409).json({
+          message: error.message,
+      });
   }
 };
 

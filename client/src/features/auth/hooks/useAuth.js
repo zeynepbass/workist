@@ -22,8 +22,12 @@ export function useAuth() {
         mutationFn: (data) => authRepository.login(data),
     
         onSuccess: (data) => {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("login", JSON.stringify(data.result));
+    
             toast.success(data?.message || "Giriş başarılı.");
-            navigate("/");
+    
+            navigate("/workist");
         },
     
         onError: (error) => {
@@ -66,18 +70,17 @@ export function useAuth() {
 
     const handleLoginSubmit = (e) => {
         e.preventDefault();
-
+    
         if (!formData.email || !formData.password) {
-            alert("Lütfen tüm alanları doldurun.");
+            toast.error("Lütfen tüm alanları doldurun.");
             return;
         }
-
+    
         loginMutation.mutate({
             email: formData.email,
             password: formData.password,
         });
     };
-
     const handleRegisterSubmit = (e) => {
         e.preventDefault();
 

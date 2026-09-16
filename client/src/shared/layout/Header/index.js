@@ -78,16 +78,16 @@ export default function Header() {
               }}
               type="text"
               placeholder="Arama yap..."
-              className="pl-10 w-full border-b-2 border-gray-300 rounded-md py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="pl-10 w-full border-b-2 border-gray-300 rounded-md py-2 outline-none  focus:ring-2 focus:ring-purple-950"
             />
 
           </div>
-          <div className="flex justify-center gap-6 mt-2 text-xl text-gray-500 p-5">
+          <div className="flex justify-center gap-6 mt-2 text-md text-purple-950 p-5">
             <Link to="/yapilacaklar">
-              <FontAwesomeIcon icon={faBook} className="hover:text-purple-600" />
+              <FontAwesomeIcon icon={faBook} className="hover:text-purple-600 " />
             </Link>
 
-            <FontAwesomeIcon icon={faComment} className="hover:text-purple-600 cursor-pointer" onClick={()=>Navigate("/sohbet")} />
+            <FontAwesomeIcon icon={faComment} className="hover:text-purple-600 cursor-pointer pt-1" onClick={()=>Navigate("/sohbet")} />
           </div>
 
 

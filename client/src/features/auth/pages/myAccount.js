@@ -3,10 +3,10 @@ import ProfileInfoCard from "../components/ProfileInfoCard";
 import ProfileEmail from "../components/ContactSettings";
 import EditableSkills from "../components/EditableSkills";
 import EditableEducation from "../components/EditableEducation";
-import { useDetails } from "../hooks/useDetails";
+import { useMyAccount } from "../hooks/useMyAccount";
 export default function MyAccount() {
 
-  const { userDetails, updateDetails, isUpdating } = useDetails();
+  const { userDetails, updateDetails, isUpdating } = useMyAccount();
   return (
     <div className="flex flex-col md:flex-row gap-6 p-4">
       <div className="w-full  space-y-4">

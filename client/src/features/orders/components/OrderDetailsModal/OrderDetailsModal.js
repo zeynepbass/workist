@@ -15,7 +15,7 @@ export default function OrderDetailsModal({
         className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-xl text-center italic mb-4 text-purple-500">
+        <h2 className="text-xl text-center italic mb-4 text-purple-950">
           Sipariş Detayları
         </h2>
 

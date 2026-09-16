@@ -18,9 +18,9 @@ export default function Todos() {
         localStorage.getItem("login")
     );
 
-    const userId = currentUser?.result?._id;
+    const userId = currentUser?.result?._id || currentUser?._id;
     const currentFirstName =
-        currentUser?.result?.firstName;
+        currentUser?.result?.firstName || currentUser?.firstName;
 
     const {
         konusmalar,

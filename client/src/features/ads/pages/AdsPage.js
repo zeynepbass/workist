@@ -49,7 +49,7 @@ export default function AdsPage() {
   };
 
   const handleEditClick = (id) => {
-    navigate(`/Ads/${id}`);
+    navigate(`/ilanlarim/${id}`);
   };
 
   if (isLoading) {
@@ -67,6 +67,7 @@ export default function AdsPage() {
 
   return (
     <div className="p-4 h-[100vh]">
+      
       <TopHeader
         title="İş İlanlarım"
         desc="Tüm iş ilanlarını buradan takip edebilir,
