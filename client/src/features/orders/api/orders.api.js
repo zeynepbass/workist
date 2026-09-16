@@ -1,8 +1,8 @@
 import apiClient from "@/shared/api";
 
 export const ordersApi = {
-  getUserPosts(userId) {
-    return apiClient.get(`/ilanlarim/${userId}`);
+  getUserPosts() {
+    return apiClient.get("/ilanlarim");
   },
 
   getPosts() {
