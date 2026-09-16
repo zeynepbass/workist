@@ -7,6 +7,7 @@ import {
   faSignOutAlt,
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
+import toast from "react-hot-toast";
 import { Button } from "@/shared/components/atoms";
 export default function Profile() {
   const users = JSON.parse(localStorage.getItem("login"));
@@ -90,7 +91,8 @@ export default function Profile() {
               <li
                 onClick={() => {
                   setOpen(false);
-                  alert("Çıkış yapıldı");
+                  toast.error("Çıkış yapıldı");
+
                   navigate("/");
                 }}
                 className="flex items-center px-4 py-2 hover:bg-purple-100 text-gray-400 cursor-pointer"

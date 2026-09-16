@@ -1,9 +1,9 @@
 import express from "express"
 import { getPosts,getPost,CreatePost,Delete,Details,Updated} from "../controllers/ilanlarim.js"
-
+import authMiddleware from "../middleware/auth.js";
 const router=express.Router()
 router.get('/ilanlar',getPost);
-router.get('/ilanlarim/:userId',getPosts);
+router.get('/ilanlarim',authMiddleware,getPosts);
 router.post('/ilanlarim',CreatePost);
 router.delete('/ilanlarim/:id',Delete);
 router.get('/ilanlarim/:id',Details);

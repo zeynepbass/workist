@@ -4,7 +4,7 @@ import authMiddleware from "../middleware/auth.js";
 
 const router=express.Router()
 
-router.get('/portfolyo/:userId',getPosts);
+router.get('/portfolyo',authMiddleware,getPosts);
 router.post('/portfolyo', authMiddleware,
     CreatePost);
 router.delete('/portfolyo/:id',Delete);

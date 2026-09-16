@@ -10,11 +10,11 @@ export async function searchPosts(searchQuery) {
 }
 
 
-export async function getUserPortfolios(userId) {
+export async function getUserPortfolios() {
     const response =
-        await portfolioProvider.getUserPortfolios(userId);
+        await portfolioProvider.getUserPortfolios();
 
-    return response.map(portfolioAdapter);
+    return response.data.map(portfolioAdapter);
 }
 
 export async function deletePortfolio(id) {

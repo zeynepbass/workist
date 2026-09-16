@@ -109,7 +109,8 @@ const Delete = async (req, res) => {
 
         if (!kullanici) {
             return res.status(404).json({
-                message: "Bu e-posta adresine kayıtlı kullanıcı bulunamadı.",
+                message:
+                    "Bu e-posta adresine kayıtlı kullanıcı bulunamadı.",
             });
         }
 
@@ -126,12 +127,12 @@ const Delete = async (req, res) => {
 
         const token = jwt.sign(
             {
+                _id: kullanici._id,
                 email: kullanici.email,
-                id: kullanici._id,
             },
-            "aos-secret-code",
+            process.env.JWT_SECRET,
             {
-                expiresIn: "1h",
+                expiresIn: "1d",
             }
         );
 
@@ -140,7 +141,6 @@ const Delete = async (req, res) => {
             token,
             message: "Giriş başarılı.",
         });
-
     } catch (error) {
         console.error("SIGNIN ERROR:", error);
 
@@ -149,8 +149,6 @@ const Delete = async (req, res) => {
         });
     }
 };
-
-
 const signup = async (req, res) => {
     const {
         email,

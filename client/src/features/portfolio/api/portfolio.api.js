@@ -11,8 +11,8 @@ export const portfolioApi = {
 
 
 
-  getUserPortfolios(userId) {
-    return apiClient.get(`/portfolyo/${userId}`);
+  getUserPortfolios() {
+    return apiClient.get("/portfolyo");
   },
 
   deletePortfolio(id) {

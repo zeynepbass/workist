@@ -7,11 +7,11 @@ import {
     Input,
     Select,
 } from "@/shared/components/atoms";
-
+import toast from "react-hot-toast";
 export function Modal({
     type,
     createWorkPost,
-    userId,
+
     firstName,
 }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -181,7 +181,7 @@ export function Modal({
                 file: formData.file,
                 selectedCategory,
                 selectedSubcategory,
-                userId,
+
             };
 
             if (
@@ -192,9 +192,7 @@ export function Modal({
                 !selectedSubcategory ||
                 Number(payload.fiyat) < 100
             ) {
-                alert(
-                    "Tüm alanları doldurun ve fiyat en az 100 TL olmalıdır!"
-                );
+                toast.error(                    "Tüm alanları doldurun ve fiyat en az 100 TL olmalıdır!");
 
                 return;
             }
@@ -253,7 +251,7 @@ export function Modal({
                 selectedCategory,
                 selectedSubcategory,
                 fiyat: toplamFiyat,
-                userId,
+
                 kullaniciAd: firstName,
             };
 
@@ -268,9 +266,8 @@ export function Modal({
                 !selectedSubcategory ||
                 Number(payload.fiyat) < 100
             ) {
-                alert(
-                    "Tüm alanları doldurun ve fiyat en az 100 TL olmalıdır!"
-                );
+                toast.error(    "Tüm alanları doldurun ve fiyat en az 100 TL olmalıdır!");
+     
 
                 return;
             }

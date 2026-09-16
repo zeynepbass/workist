@@ -3,35 +3,38 @@ import mongoose from 'mongoose';
 
 
 
-const getPosts=async (req,res)=>{
-    const { userId } = req.params;
+const getPosts = async (req, res) => {
     try {
+        const userId = req.user.id;
+
         const posts = await Portfolyo.find({ userId });
-        res.status(200).json(posts)
-     
+
+        return res.status(200).json(posts);
     } catch (error) {
-        res.status(404).json({message:error.message})
+        return res.status(404).json({
+            message: error.message,
+        });
     }
-}
-
-
+};
 const CreatePost = async (req, res) => {
-  try {
-      const post = {
-          ...req.body,
-          userId: req.user._id,
-      };
+    try {
+        const post = {
+            ...req.body,
+            userId: req.user.id,
+        };
 
-      const newPost = new Portfolyo(post);
+        const newPost = new Portfolyo(post);
 
-      await newPost.save();
+        await newPost.save();
 
-      res.status(201).json(newPost);
-  } catch (error) {
-      res.status(409).json({
-          message: error.message,
-      });
-  }
+        return res.status(201).json(newPost);
+    } catch (error) {
+        console.error("CREATE POST ERROR:", error);
+
+        return res.status(409).json({
+            message: error.message,
+        });
+    }
 };
 
 const Delete = async (req, res) => {

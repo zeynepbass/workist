@@ -2,8 +2,8 @@
 import apiClient from "@/shared/api";
 
 export const adsApi = {
-  getAds(userId) {
-    return apiClient.get(`/ilanlarim/${userId}`);
+  getAds() {
+    return apiClient.get("/ilanlarim");
   },
 
   getAllDetail(id) {

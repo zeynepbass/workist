@@ -46,14 +46,17 @@ const getPost = async (req, res) => {
   }
 };
 
-
 const getPosts = async (req, res) => {
-  const { userId } = req.params;
   try {
-    const posts = await Ilanlarim.find({ userId });
-    res.status(200).json(posts);
+      const userId = req.user.id;
+
+      const posts = await Ilanlarim.find({ userId });
+
+      return res.status(200).json(posts);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+      return res.status(404).json({
+          message: error.message,
+      });
   }
 };
 

@@ -5,7 +5,7 @@ import { usePortfolio } from "@/features/portfolio/hooks/usePortfolio";
 
 import PortfolioList from "../components/PortfolioList";
 import PortfolioFilters from "../components/PortfolioFilters";
-
+import { useDetails } from "@/features/auth/hooks/useDetails";
 import {
     StatusMessage,
     TopHeader,
@@ -45,7 +45,7 @@ export default function Portfolio() {
         isUpdatingStatus,
 
     } = usePortfolio(userId);
-
+const {portfolyoCreate} = useDetails();
     const handleEditClick = (id) => {
         navigate(`/portfolyom/${id}`);
     };
@@ -61,35 +61,35 @@ export default function Portfolio() {
         }
     };
 
-    const filtrelenmisPortfolyolar = useMemo(() => {
-        if (!userPortfolios) return [];
+    // const filtrelenmisPortfolyolar = useMemo(() => {
+    //     if (!userPortfolios) return [];
 
-        return userPortfolios.filter((portfolio) => {
-            if (filtreDurum === "yayinda") {
-                return portfolio.durum === "yayinda";
-            }
+    //     return userPortfolios.filter((portfolio) => {
+    //         if (filtreDurum === "yayinda") {
+    //             return portfolio.durum === "yayinda";
+    //         }
 
-            return portfolio.durum !== "yayinda";
-        });
-    }, [userPortfolios, filtreDurum]);
+    //         return portfolio.durum !== "yayinda";
+    //     });
+    // }, [userPortfolios, filtreDurum]);
 
-    if (isUserPortfoliosLoading) {
-        return (
-            <StatusMessage
-                type="loading"
-                message="Portfolyolar yükleniyor..."
-            />
-        );
-    }
+    // if (isUserPortfoliosLoading) {
+    //     return (
+    //         <StatusMessage
+    //             type="loading"
+    //             message="Portfolyolar yükleniyor..."
+    //         />
+    //     );
+    // }
 
-    if (isUserPortfoliosError) {
-        return (
-            <StatusMessage
-                type="error"
-                message="Portfolyolar yüklenirken bir hata oluştu."
-            />
-        );
-    }
+    // if (isUserPortfoliosError) {
+    //     return (
+    //         <StatusMessage
+    //             type="error"
+    //             message="Portfolyolar yüklenirken bir hata oluştu."
+    //         />
+    //     );
+    // }
 
     return (
         <div className="p-4 h-[100vh]">
@@ -99,10 +99,7 @@ export default function Portfolio() {
             />
 
             <Suspense fallback={<div>Yükleniyor...</div>}>
-                <Modal
-                    type="portfolio"
-                    userId={userId}
-                />
+            <Modal type="portfolio" createWorkPost={portfolyoCreate} />
             </Suspense>
 
             <PortfolioFilters
@@ -113,7 +110,7 @@ export default function Portfolio() {
             />
 
             <PortfolioList
-                portfolios={filtrelenmisPortfolyolar}
+                portfolios={userPortfolios}
                 firstName={firstName}
                 unvan={unvan}
                 userId={userId}

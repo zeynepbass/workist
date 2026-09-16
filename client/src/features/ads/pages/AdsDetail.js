@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
-
+import toast from "react-hot-toast";
 import { useAds } from "../hooks/useAds";
 import { Button,Input,Select,Textarea } from "@/shared/components/atoms";
 import AdsInfo  from "../components/AdsInfo";
@@ -111,9 +111,13 @@ export default function AdsDetail (){
             form.description === "" ||
             Number(form.fiyat) < 100
         ) {
-            alert(
-                "Tüm alanları doldurun ve fiyat en az 100 TL olmalıdır!"
-            );
+            
+
+toast.error(
+    "Tüm alanları doldurun ve fiyat en az 100 TL olmalıdır!"
+);
+
+
 
             return;
         }

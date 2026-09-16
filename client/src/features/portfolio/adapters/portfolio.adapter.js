@@ -1,7 +1,5 @@
 export default function portfoliAdapter (item){
     return{
-
-
     id: item._id,
     description: item.description,
     title: item.title,
