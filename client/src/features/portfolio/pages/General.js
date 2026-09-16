@@ -14,7 +14,7 @@ export default function General() {
         posts,
         isLoading,
         isError,
-    } = usePortfolio(    searchQuery = "",
+    } = usePortfolio(searchQuery = "",
         userId,
         portfolioId);
 
