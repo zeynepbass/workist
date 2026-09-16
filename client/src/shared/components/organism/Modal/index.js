@@ -12,6 +12,7 @@ export function Modal({
     type,
     createWorkPost,
 
+    userId,
     firstName,
 }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -200,10 +201,11 @@ export function Modal({
             try {
                 await createWorkPost(payload);
                 resetForm();
+                toast.success("Portfolyo başarıyla oluşturuldu.");
             } catch (error) {
-                console.error(
-                    "Portfolyo oluşturma hatası:",
-                    error
+                toast.error(
+                    error?.response?.data?.message ||
+                        "Portfolyo oluşturulurken bir hata oluştu."
                 );
             }
 
@@ -252,6 +254,7 @@ export function Modal({
                 selectedSubcategory,
                 fiyat: toplamFiyat,
 
+                userId,
                 kullaniciAd: firstName,
             };
 
@@ -275,10 +278,11 @@ export function Modal({
             try {
                 await createWorkPost(payload);
                 resetForm();
+                toast.success("İlan başarıyla oluşturuldu.");
             } catch (error) {
-                console.error(
-                    "İlan oluşturma hatası:",
-                    error
+                toast.error(
+                    error?.response?.data?.message ||
+                        "İlan oluşturulurken bir hata oluştu."
                 );
             }
         }

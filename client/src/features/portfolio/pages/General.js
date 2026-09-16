@@ -2,6 +2,7 @@
 import { useLocation } from "react-router-dom";
 
 import { usePortfolio } from "@/features/portfolio/hooks/usePortfolio";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import PortfolioList from "@/features/portfolio/components/PortfolioList";
 import { StatusMessage } from "@/shared/components/molecules";
 
@@ -15,13 +16,7 @@ export default function General() {
     const searchQuery =
         searchParams.get("search") || "";
 
-    const login = JSON.parse(
-        localStorage.getItem("login") || "null"
-    );
-
-    const firstName =
-        login?.result?.firstName ||
-        login?.firstName;
+    const { firstName } = useCurrentUser();
 
     const {
         posts,

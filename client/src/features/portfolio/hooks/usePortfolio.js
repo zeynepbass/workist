@@ -4,9 +4,10 @@ import {
     useMutation,
     useQueryClient,
 } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 import * as portfolioRepository from "../repositories/portfolio.repository";
-import * as authRepository from "@/features/auth/repositories/auth.repository";
+
 export function usePortfolio(
     searchQuery = "",
     portfolioId
@@ -38,30 +39,6 @@ export function usePortfolio(
         enabled: !!portfolioId,
     });
 
-    const createMutation = useMutation({
-        mutationFn: (formData) =>
-            authRepository.portfolyoCreate(
-                formData
-            ),
-
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["portfolio", "user"],
-            });
-
-            queryClient.invalidateQueries({
-                queryKey: ["portfolio"],
-            });
-        },
-
-        onError: (error) => {
-            console.error(
-                "Portfolyo ekleme hatası:",
-                error
-            );
-        },
-    });
-
     const updateStatusMutation = useMutation({
         mutationFn: ({ id, durum }) =>
             portfolioRepository.updatePortfolioStatus(
@@ -71,18 +48,16 @@ export function usePortfolio(
 
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["portfolio", "user"],
-            });
-
-            queryClient.invalidateQueries({
                 queryKey: ["portfolio"],
             });
+
+            toast.success("Portfolyo durumu güncellendi.");
         },
 
         onError: (error) => {
-            console.error(
-                "Portfolyo durumu güncelleme hatası:",
-                error
+            toast.error(
+                error?.response?.data?.message ||
+                    "Portfolyo durumu güncellenirken bir hata oluştu."
             );
         },
     });
@@ -93,18 +68,16 @@ export function usePortfolio(
 
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["portfolio", "user"],
-            });
-
-            queryClient.invalidateQueries({
                 queryKey: ["portfolio"],
             });
+
+            toast.success("Portfolyo silindi.");
         },
 
         onError: (error) => {
-            console.error(
-                "Portfolyo silme hatası:",
-                error
+            toast.error(
+                error?.response?.data?.message ||
+                    "Portfolyo silinirken bir hata oluştu."
             );
         },
     });
@@ -117,10 +90,6 @@ export function usePortfolio(
             ),
 
         onSuccess: (updatedPortfolio) => {
-            queryClient.invalidateQueries({
-                queryKey: ["portfolio", "user"],
-            });
-
             queryClient.invalidateQueries({
                 queryKey: ["portfolio"],
             });
@@ -135,12 +104,14 @@ export function usePortfolio(
                     updatedPortfolio
                 );
             }
+
+            toast.success("Portfolyo güncellendi.");
         },
 
         onError: (error) => {
-            console.error(
-                "Portfolyo güncelleme hatası:",
-                error
+            toast.error(
+                error?.response?.data?.message ||
+                    "Portfolyo güncellenirken bir hata oluştu."
             );
         },
     });
@@ -173,12 +144,6 @@ export function usePortfolio(
 
         detailError:
             detailQuery.error,
-
-        createPortfolio:
-            createMutation.mutateAsync,
-
-        isCreating:
-            createMutation.isPending,
 
         deletePortfolio:
             deleteMutation.mutateAsync,

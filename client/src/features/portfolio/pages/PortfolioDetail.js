@@ -3,13 +3,14 @@ import { FaArrowLeft } from "react-icons/fa";
 
 import { Button } from "@/shared/components/atoms";
 import { usePortfolio } from "../hooks/usePortfolio";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import PortfolioForm from "../components/PortfolioForm";
 
 export default function PortfolioDetail  () {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const userId = localStorage.getItem("userId");
+    const { userId } = useCurrentUser();
 
     const {
         detail,
@@ -17,7 +18,7 @@ export default function PortfolioDetail  () {
         isDetailError,
         updatePortfolio,
         isUpdating,
-    } = usePortfolio("", userId, id);
+    } = usePortfolio("", id);
 
     const handleBack = () => {
         navigate(-1);

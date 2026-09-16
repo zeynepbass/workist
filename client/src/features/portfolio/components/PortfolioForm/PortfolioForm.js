@@ -86,12 +86,7 @@ export default function PortfolioForm({
         try {
             await onSubmit(formData);
         } catch (error) {
-            console.error(
-                "Portfolyo güncellenirken hata oluştu:",
-                error
-            );
-            toast.error(  "Portfolyo güncellenirken bir hata oluştu.");
-         
+            // hata toast'u zaten mutation onError'da gösteriliyor
         }
     };
 

@@ -1,6 +1,10 @@
 import apiClient from "@/shared/api";
 
 export const authApi = {
+  me() {
+    return apiClient.get("/me");
+  },
+
   login(data) {
     return apiClient.post("/signin", data);
   },
@@ -13,30 +17,11 @@ export const authApi = {
     return apiClient.get(`/users/${email}`);
   },
 
-  details(email) {
+  getDetails(email) {
     return apiClient.get(`/duzenle/${email}`);
-  },
-
-  getMessages(userId) {
-    return apiClient.get(`/konusmalar/${userId}`);
-  },
-
-  getUsers() {
-    return apiClient.get("/users");
-  },
-
-  getMessageData(currentId, targetId) {
-    return apiClient.get(`/${currentId}/${targetId}`);
   },
 
   updateDetails(email, formData) {
     return apiClient.put(`/duzenle/${email}`, formData);
-  },
-
-  portfolyoCreate(data) {
-    return apiClient.post("/portfolyo", data);
-},
-  getDetails(email) {
-    return apiClient.get(`/duzenle/${email}`);
   },
 };

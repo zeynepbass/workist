@@ -1,68 +1,38 @@
 import userAdapter from "../adapters/auth.adapter";
-import authProvider from "@/providers/auth.provider";
+import { authApi } from "../api/auth.api";
+
+export async function getCurrentUser() {
+  const response = await authApi.me();
+
+  return userAdapter(response.data);
+}
 
 export async function login(data) {
-  const response = await authProvider.login(data);
-  
-    return response.data;
-}
-export async function portfolyoCreate(data) {
-  const response =
-      await authProvider.portfolyoCreate(data);
+  const response = await authApi.login(data);
 
   return response.data;
 }
+
 export async function register(data) {
-  const response = await authProvider.register(data);
-  
-  return response.data;
+  const response = await authApi.register(data);
 
+  return response.data;
 }
 
 export async function account(email) {
-    const response = await authProvider.account(email);
-    return response.map(userAdapter);
-}
+    const response = await authApi.account(email);
 
-export async function details(email) {
-    const response = await authProvider.details(email);
-    return response.map(userAdapter);
-}
-
-export async function getMessages(userId) {
-  const response = await authProvider.getMessages(userId);
-  
-  return response.data;
-}
-
-export async function getUsers(data) {
-
-    const response = await authProvider.getUsers(data);
-  
-    return response.data;
-}
-
-export async function getMessageData(currentId, targetId) {
-
-    const response = await authProvider.getMessageData(currentId,
-      targetId);
-  
-    return response.data;
-}
-
-export async function updateDetails(email, formData) {
-
-  const response = await authProvider.updateDetails(
-    email,
-    formData
-);
-  return response.data;
-
+    return userAdapter(response.data);
 }
 
 export async function getDetails(email) {
-  const response = await authProvider.getDetails(
-    email
-);
-return response.data;
+    const response = await authApi.getDetails(email);
+
+    return userAdapter(response.data);
+}
+
+export async function updateDetails(email, formData) {
+    const response = await authApi.updateDetails(email, formData);
+
+    return userAdapter(response.data);
 }

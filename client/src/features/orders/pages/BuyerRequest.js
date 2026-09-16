@@ -4,22 +4,20 @@ import { useNavigate } from "react-router-dom";
 import { useMemo, useState } from "react";
 import Message from "@/features/messages/pages/Message";
 import { useOrders } from "@/features/orders/hooks/useOrders";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import {StatusMessage} from "@/shared/components/molecules";
 import BuyerRequestCard from "@/features/orders/components/BuyerRequestCard";
-import BuyerRequestList from "@/features/orders/components/BuyerRequestList";
 import BuyerHeader from "@/features/orders/components/BuyerHeader";
 
 export default function BuyerRequest() {
     const [selectedAliciId, setSelectedAliciId] = useState(null);
     const [selectedItem, setSelectedItem] = useState(null);
     const [expandedItems, setExpandedItems] = useState({});
-    const [istek, setIstek] = useState(false);
     const [open, setOpen] = useState(false);
 
     const navigate = useNavigate();
 
-    const userid = JSON.parse(localStorage.getItem("login"));
-    const userId = userid?._id || userid?.result?._id;
+    const { user, userId } = useCurrentUser();
 
     const {
         userPosts,
@@ -91,10 +89,10 @@ export default function BuyerRequest() {
 
             <div className="flex justify-left pl-2 items-center">
 
-                {userid?.result?.file && (
+                {user?.file && (
                     <img
                         className="rounded-full p-3 h-40 w-40"
-                        src={userid.result.file}
+                        src={user.file}
                         alt="Profil"
                     />
                 )}
@@ -107,7 +105,7 @@ export default function BuyerRequest() {
                     >
                         Merhaba{" "}
                         <strong>
-                            {userid?.result?.firstName} 👋
+                            {user?.firstName} 👋
                         </strong>
                     </li>
 
@@ -130,32 +128,17 @@ export default function BuyerRequest() {
             <br />
 
 
-            {!istek ? (
-
-                <>
-                    {lastItem ? (
-                        <BuyerRequestCard
-                            item={lastItem}
-                            expanded={expandedItems[lastItem.id]}
-                            onToggleText={toggleText}
-                            onMessage={handleMessage}
-                        />
-                    ) : (
-                        <p className="text-gray-400">
-                            Son veri bulunamadı.
-                        </p>
-                    )}
-                </>
-
-            ) : (
-
-                <BuyerRequestList
-                    items={filteredData}
-                    expandedItems={expandedItems}
+            {lastItem ? (
+                <BuyerRequestCard
+                    item={lastItem}
+                    expanded={expandedItems[lastItem.id]}
                     onToggleText={toggleText}
                     onMessage={handleMessage}
                 />
-
+            ) : (
+                <p className="text-gray-400">
+                    Son veri bulunamadı.
+                </p>
             )}
 
   

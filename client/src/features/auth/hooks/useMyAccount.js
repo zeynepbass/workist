@@ -1,66 +1,50 @@
 import {
     useMutation,
-    useQuery,
     useQueryClient,
-  } from "@tanstack/react-query";
-  
-  import * as authRepository from "../repositories/auth.repository";
-  
-  export function useMyAccount() {
-    const currentUser = JSON.parse(
-        localStorage.getItem("login") || "null"
-    );
+} from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
-    const email = currentUser?.result?.email || currentUser?.email;
-    console.log(email)
+import * as authRepository from "../repositories/auth.repository";
+import { useCurrentUser } from "./useCurrentUser";
+
+export function useMyAccount() {
+    const { user, isLoading, isError, error } = useCurrentUser();
     const queryClient = useQueryClient();
-  
-    const {
-      data: userDetails,
-      isLoading,
-      isError,
-      error,
-    } = useQuery({
-      queryKey: ["userDetails", email],
-      queryFn: () => authRepository.getDetails(email),
-      enabled: !!email,
-    });
-  
+
     const updateMutation = useMutation({
-      mutationFn: (formData) =>
-        authRepository.updateDetails(email, formData),
-  
-      onSuccess: (data) => {
-        queryClient.setQueryData(
-          ["userDetails", email],
-          data
-        );
-  
-        localStorage.setItem(
-          "login",
-          JSON.stringify({
-            result: data,
-          })
-        );
-      },
-  
-      onError: (error) => {
-        console.error(
-          "Profil güncelleme hatası:",
-          error
-        );
-      },
+        mutationFn: (formData) =>
+            authRepository.updateDetails(user?.email, formData),
+
+        onSuccess: (data) => {
+            queryClient.setQueryData(["currentUser"], data);
+
+            localStorage.setItem(
+                "login",
+                JSON.stringify({
+                    result: data,
+                })
+            );
+
+            toast.success("Profil başarıyla güncellendi.");
+        },
+
+        onError: (error) => {
+            toast.error(
+                error?.response?.data?.message ||
+                    "Profil güncellenirken bir hata oluştu."
+            );
+        },
     });
-  
+
     return {
-      userDetails,
-  
-      isLoading,
-      isError,
-      error,
-  
-      updateDetails: updateMutation.mutate,
-      isUpdating: updateMutation.isPending,
-      updateError: updateMutation.error,
+        userDetails: user,
+
+        isLoading,
+        isError,
+        error,
+
+        updateDetails: updateMutation.mutate,
+        isUpdating: updateMutation.isPending,
+        updateError: updateMutation.error,
     };
-  }
+}

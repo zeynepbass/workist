@@ -1,8 +1,10 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 import MessagingUI from "@/features/messages/pages/Message";
 import { Button } from "@/shared/components/atoms";
 import { useMessages } from "@/features/messages/hooks/useMessages";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 
 import ConversationTable from "../components/ConversationTable";
 
@@ -14,13 +16,7 @@ export default function Todos() {
     const [selectedForDelete, setSelectedForDelete] =
         useState([]);
 
-    const currentUser = JSON.parse(
-        localStorage.getItem("login")
-    );
-
-    const userId = currentUser?.result?._id || currentUser?._id;
-    const currentFirstName =
-        currentUser?.result?.firstName || currentUser?.firstName;
+    const { userId, firstName: currentFirstName } = useCurrentUser();
 
     const {
         konusmalar,
@@ -35,6 +31,8 @@ export default function Todos() {
     };
 
     const handleDeleteMessages = async () => {
+        let hasError = false;
+
         for (const targetId of selectedForDelete) {
             try {
                 await deleteMessages(
@@ -42,11 +40,14 @@ export default function Todos() {
                     targetId
                 );
             } catch (error) {
-                console.error(
-                    "Silme hatası:",
-                    error
-                );
+                hasError = true;
             }
+        }
+
+        if (hasError) {
+            toast.error("Bazı konuşmalar silinemedi.");
+        } else {
+            toast.success("Seçilen konuşmalar silindi.");
         }
 
         setSelectedForDelete([]);
@@ -104,7 +105,8 @@ export default function Todos() {
                             onClick={
                                 handleDeleteMessages
                             }
-                            className="rounded bg-red-600 px-4 py-2 text-white transition hover:bg-red-700"
+                            variant="danger"
+                            className="px-4 py-2"
                         >
                             Seçilenleri Sil
                         </Button>

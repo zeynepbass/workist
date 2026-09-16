@@ -4,22 +4,22 @@ import {jwtDecode} from 'jwt-decode';
 
 export default function PrivateRoute({ children }){
   const userData = JSON.parse(localStorage.getItem("login"));
-  const token = userData?.token;
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
         const now = Date.now() / 1000;
-        
+
         if (decodedToken.exp < now) {
           localStorage.removeItem("login");
+          localStorage.removeItem("token");
           window.location.href = "/";
-          
         }
       } catch (err) {
-        console.error("Geçersiz token", err);
         localStorage.removeItem("login");
+        localStorage.removeItem("token");
         window.location.href = "/";
       }
     }

@@ -26,17 +26,6 @@ export function useMessages(gonderenId, aliciId) {
         ),
     });
 
-    const userListQuery = useQuery({
-        queryKey: ["user", gonderenId],
-
-        queryFn: () =>
-            messageRepository.getUser(
-                gonderenId
-            ),
-
-        enabled: Boolean(gonderenId),
-    });
-
     const usersQuery = useQuery({
         queryKey: ["users"],
 
@@ -76,38 +65,29 @@ export function useMessages(gonderenId, aliciId) {
         currentId,
         targetId
     ) => {
-        try {
-            const response =
-                await messageRepository.getMessageData(
-                    currentId,
-                    targetId
-                );
-
-            queryClient.setQueryData(
-                [
-                    "messages",
-                    currentId,
-                    targetId,
-                ],
-                []
+        const response =
+            await messageRepository.getMessageData(
+                currentId,
+                targetId
             );
 
-            await queryClient.invalidateQueries({
-                queryKey: [
-                    "conversations",
-                    currentId,
-                ],
-            });
+        queryClient.setQueryData(
+            [
+                "messages",
+                currentId,
+                targetId,
+            ],
+            []
+        );
 
-            return response;
-        } catch (error) {
-            console.error(
-                "Mesaj silme hatası:",
-                error
-            );
+        await queryClient.invalidateQueries({
+            queryKey: [
+                "conversations",
+                currentId,
+            ],
+        });
 
-            throw error;
-        }
+        return response;
     };
 
     return {
@@ -115,7 +95,7 @@ export function useMessages(gonderenId, aliciId) {
             messagesQuery.data ?? [],
 
         userList:
-            userListQuery.data ?? [],
+            usersQuery.data ?? [],
 
         users:
             usersQuery.data ?? [],
@@ -127,7 +107,7 @@ export function useMessages(gonderenId, aliciId) {
             messagesQuery.isLoading,
 
         isUsersLoading:
-            userListQuery.isLoading,
+            usersQuery.isLoading,
 
         isAllUsersLoading:
             usersQuery.isLoading,

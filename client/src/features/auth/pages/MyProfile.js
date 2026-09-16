@@ -25,6 +25,7 @@ export default function MyProfile() {
           <div className="flex justify-between items-center">
             <img
               src={email?.file}
+              alt="Profil fotoğrafı"
               width="100"
               height="100"
               className="rounded-full shadow-lg shadow-indigo-500/50 "
@@ -234,6 +235,7 @@ export default function MyProfile() {
             <div className="flex justify-between items-center bg-white p-5">
               <img
                 src=""
+                alt=""
                 width="150"
                 height="150"
                 className="rounded-full shadow-lg shadow-indigo-500/50 "
