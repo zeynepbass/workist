@@ -50,7 +50,6 @@ export default function Portfolio() {
         try {
             await deletePortfolio(id);
         } catch (error) {
-            // silme başarısız oldu, liste değişmeden kalır
         }
     };
 

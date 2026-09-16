@@ -29,8 +29,6 @@ const CreatePost = async (req, res) => {
 
         return res.status(201).json(newPost);
     } catch (error) {
-        console.error("CREATE POST ERROR:", error);
-
         return res.status(409).json({
             message: error.message,
         });
@@ -53,7 +51,6 @@ const Delete = async (req, res) => {
   
       res.status(200).json({ message: 'Post başarıyla silindi' });
     } catch (error) {
-      console.error('Silme hatası:', error);
       res.status(500).json({ message: 'Sunucu hatası', error });
     }
   };

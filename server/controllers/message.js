@@ -33,7 +33,7 @@ export const deleteMessagesBetweenUsers = async (req, res) => {
 export const getConversations = async (req, res) => {
   const { userId } = req.params;
   try {
-    const objectUserId = new mongoose.Types.ObjectId(userId); // burada new var
+    const objectUserId = new mongoose.Types.ObjectId(userId);
 
     const messages = await Message.find({
       $or: [

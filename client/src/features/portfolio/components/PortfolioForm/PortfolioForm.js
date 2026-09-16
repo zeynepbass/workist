@@ -89,7 +89,6 @@ export default function PortfolioForm({
         try {
             await onSubmit(formData);
         } catch (error) {
-            console.error(error);
         }
     };
 
