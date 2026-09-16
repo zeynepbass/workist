@@ -6,7 +6,7 @@ import {
     Input,
     Select,
 } from "@/shared/components/atoms";
-
+import toast from "react-hot-toast";
 import PortfolioImageUpload from "../PortfolioImageUpload";
 
 export default function PortfolioForm({
@@ -78,10 +78,8 @@ export default function PortfolioForm({
             formData.file === "" ||
             Number(formData.fiyat) < 100
         ) {
-            alert(
-                "Tüm alanları doldurun ve fiyat en az 100 TL olmalıdır!"
-            );
-
+            toast.error(  "Tüm alanları doldurun ve fiyat en az 100 TL olmalıdır!");
+   
             return;
         }
 
@@ -92,10 +90,8 @@ export default function PortfolioForm({
                 "Portfolyo güncellenirken hata oluştu:",
                 error
             );
-
-            alert(
-                "Portfolyo güncellenirken bir hata oluştu."
-            );
+            toast.error(  "Portfolyo güncellenirken bir hata oluştu.");
+         
         }
     };
 

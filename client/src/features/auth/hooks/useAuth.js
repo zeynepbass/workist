@@ -99,12 +99,13 @@ export function useAuth() {
             !lastName ||
             !confirmPassword
         ) {
-            alert("Lütfen tüm alanları doldurun.");
+            toast.error("Lütfen tüm alanları doldurun.");
             return;
         }
 
         if (password !== confirmPassword) {
-            alert("Şifreler uyuşmuyor.");
+            toast.error("Şifreler uyuşmuyor.");
+     
             return;
         }
 

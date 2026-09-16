@@ -2,8 +2,8 @@
 import adsAdapter from "../adapters/ads.adapters";
 import adsProvider from "@/providers/ads.provider";
 
-export async function getAds(userId) {
-    const response = await adsProvider.getAllAds(userId);
+export async function getAds() {
+    const response = await adsProvider.getAllAds();
 
     return response.map(adsAdapter);
 }

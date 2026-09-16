@@ -13,23 +13,15 @@ export function useAds(id) {
         localStorage.getItem("login") || "null"
     );
 
-    const userId = login?._id;
-    const firstName = login?.result?.firstName || login?.firstName;
+    const userId = login?._id || login?.result?._id;
+    const firstName =
+        login?.result?.firstName || login?.firstName;
 
-    const adsRepositoryInstance =
-        adsRepository.getAds();
-
-    const detailRepository =
-        adsRepository.getDetailAds();
-
-    const createRepository =
-        adsRepository.createWorkPost();
-
-    const deleteRepository =
-        adsRepository.deletedAds();
-
-    const updateRepository =
-        adsRepository.updateAds();
+    const adsRepositoryInstance = adsRepository.getAds();
+    const detailRepository = adsRepository.getDetailAds();
+    const createRepository = adsRepository.createWorkPost();
+    const deleteRepository = adsRepository.deletedAds();
+    const updateRepository = adsRepository.updateAds();
 
     const {
         data: posts = [],
@@ -37,10 +29,9 @@ export function useAds(id) {
         isError,
         error,
     } = useQuery({
-        queryKey: ["ads", userId],
+        queryKey: ["ads"],
         queryFn: () =>
-            adsRepositoryInstance.getAds(userId),
-        enabled: !!userId,
+            adsRepositoryInstance.getAds()
     });
 
     const {
@@ -59,15 +50,7 @@ export function useAds(id) {
         mutationFn: (post) =>
             createRepository.createWorkPost(post),
 
-        onSuccess: (newPost) => {
-            queryClient.setQueryData(
-                ["ads", userId],
-                (oldPosts = []) => [
-                    ...oldPosts,
-                    newPost,
-                ]
-            );
-
+        onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["ads", userId],
             });
@@ -90,7 +73,7 @@ export function useAds(id) {
                 ["ads", userId],
                 (oldPosts = []) =>
                     oldPosts.filter(
-                        (item) => item.id !== deletedId
+                        (item) => item._id !== deletedId
                     )
             );
 
@@ -125,7 +108,7 @@ export function useAds(id) {
                 ["ads", userId],
                 (oldPosts = []) =>
                     oldPosts.map((item) =>
-                        item.id === variables.id
+                        item._id === variables.id
                             ? updatedPost
                             : item
                     )

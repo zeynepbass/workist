@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 import { siparislerOrnek } from "@/shared/mocks/orders";
-
+import toast from "react-hot-toast";
 import OrderList from "../components/OrderList";
 import OrderDetailsModal from "../components/OrderDetailsModal";
 import OrderFilters from "../components/OrderFilters";
@@ -52,13 +52,13 @@ export default function Orders() {
     }, [durumFilter, sortType, arama]);
 
     const handleDelete = (id) => {
-        alert(
-            `Sipariş ${id} silindi! (Burada gerçek silme işlemi yapılmalı.)`
-        );
+        toast.error(   `Sipariş ${id} silindi! (Burada gerçek silme işlemi yapılmalı.)`);
+
     };
 
     const handleMessage = (alici) => {
-        alert(`${alici} için mesaj gönderme işlemi!`);
+        toast.info(`${alici} için mesaj gönderme işlemi!`);
+
     };
 
     return (

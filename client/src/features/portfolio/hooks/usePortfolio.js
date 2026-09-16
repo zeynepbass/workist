@@ -1,3 +1,4 @@
+
 import {
     useQuery,
     useMutation,
@@ -5,63 +6,62 @@ import {
 } from "@tanstack/react-query";
 
 import * as portfolioRepository from "../repositories/portfolio.repository";
-
+import * as authRepository from "@/features/auth/repositories/auth.repository";
 export function usePortfolio(
     searchQuery = "",
-    userId,
     portfolioId
 ) {
     const queryClient = useQueryClient();
 
-    // -------------------------
-    // Tüm portfolyolar
-    // -------------------------
     const postsQuery = useQuery({
         queryKey: ["portfolio", searchQuery],
-
         queryFn: () =>
             portfolioRepository.searchPosts(searchQuery),
     });
 
-    // -------------------------
-    // Kullanıcının portfolyoları
-    // -------------------------
     const userPortfoliosQuery = useQuery({
-        queryKey: [
-            "portfolio",
-            "user",
-            userId,
-        ],
-
+        queryKey: ["portfolio"],
         queryFn: () =>
-            portfolioRepository.getUserPortfolios(
-                userId
-            ),
-
-        enabled: !!userId,
+            portfolioRepository.getUserPortfolios(),
     });
 
-    // -------------------------
-    // Portfolio detay
-    // -------------------------
     const detailQuery = useQuery({
         queryKey: [
             "portfolio",
             "detail",
             portfolioId,
         ],
-
         queryFn: () =>
             portfolioRepository.getPortfolioDetail(
                 portfolioId
             ),
-
         enabled: !!portfolioId,
     });
 
-    // -------------------------
-    // Durum güncelle
-    // -------------------------
+    const createMutation = useMutation({
+        mutationFn: (formData) =>
+            authRepository.portfolyoCreate(
+                formData
+            ),
+
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["portfolio", "user"],
+            });
+
+            queryClient.invalidateQueries({
+                queryKey: ["portfolio"],
+            });
+        },
+
+        onError: (error) => {
+            console.error(
+                "Portfolyo ekleme hatası:",
+                error
+            );
+        },
+    });
+
     const updateStatusMutation = useMutation({
         mutationFn: ({ id, durum }) =>
             portfolioRepository.updatePortfolioStatus(
@@ -69,25 +69,10 @@ export function usePortfolio(
                 durum
             ),
 
-        onSuccess: (_, variables) => {
-            const { id, durum } = variables;
-
-            queryClient.setQueryData(
-                [
-                    "portfolio",
-                    "user",
-                    userId,
-                ],
-                (oldPosts = []) =>
-                    oldPosts.map((item) =>
-                        item.id === id
-                            ? {
-                                  ...item,
-                                  durum,
-                              }
-                            : item
-                    )
-            );
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["portfolio", "user"],
+            });
 
             queryClient.invalidateQueries({
                 queryKey: ["portfolio"],
@@ -102,20 +87,13 @@ export function usePortfolio(
         },
     });
 
-    // -------------------------
-    // Sil
-    // -------------------------
     const deleteMutation = useMutation({
         mutationFn: (id) =>
             portfolioRepository.deletePortfolio(id),
 
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: [
-                    "portfolio",
-                    "user",
-                    userId,
-                ],
+                queryKey: ["portfolio", "user"],
             });
 
             queryClient.invalidateQueries({
@@ -131,9 +109,6 @@ export function usePortfolio(
         },
     });
 
-    // -------------------------
-    // Güncelle
-    // -------------------------
     const updateMutation = useMutation({
         mutationFn: ({ id, formData }) =>
             portfolioRepository.updatePortfolio(
@@ -143,11 +118,7 @@ export function usePortfolio(
 
         onSuccess: (updatedPortfolio) => {
             queryClient.invalidateQueries({
-                queryKey: [
-                    "portfolio",
-                    "user",
-                    userId,
-                ],
+                queryKey: ["portfolio", "user"],
             });
 
             queryClient.invalidateQueries({
@@ -175,13 +146,11 @@ export function usePortfolio(
     });
 
     return {
-        // Tüm portfolyolar
         posts: postsQuery.data ?? [],
         isLoading: postsQuery.isLoading,
         isError: postsQuery.isError,
         error: postsQuery.error,
 
-        // Kullanıcı portfolyoları
         userPortfolios:
             userPortfoliosQuery.data ?? [],
 
@@ -194,7 +163,6 @@ export function usePortfolio(
         userPortfoliosError:
             userPortfoliosQuery.error,
 
-        // Detay
         detail: detailQuery.data ?? null,
 
         isDetailLoading:
@@ -206,21 +174,24 @@ export function usePortfolio(
         detailError:
             detailQuery.error,
 
-        // Sil
+        createPortfolio:
+            createMutation.mutateAsync,
+
+        isCreating:
+            createMutation.isPending,
+
         deletePortfolio:
             deleteMutation.mutateAsync,
 
         isDeleting:
             deleteMutation.isPending,
 
-        // Durum
         toggleDurum:
             updateStatusMutation.mutateAsync,
 
         isUpdatingStatus:
             updateStatusMutation.isPending,
 
-        // Güncelle
         updatePortfolio:
             updateMutation.mutateAsync,
 
