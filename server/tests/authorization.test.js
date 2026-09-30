@@ -104,10 +104,7 @@ describe("portfolio ownership", () => {
       .get(`/api/portfolios/${portfolio.id}`)
       .set(authed(intruder.token))
       .expect(404);
-    await request(app)
-      .get(`/api/portfolios/${portfolio.id}`)
-      .set(authed(owner.token))
-      .expect(200);
+    await request(app).get(`/api/portfolios/${portfolio.id}`).set(authed(owner.token)).expect(200);
   });
 });
 

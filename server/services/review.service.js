@@ -32,10 +32,17 @@ export async function createReview(orderId, userId, { rating, comment }) {
   }
 
   if (order.status !== "completed") {
-    throw new AppError(409, "ORDER_NOT_COMPLETED", "Yalnızca tamamlanan siparişler değerlendirilebilir.");
+    throw new AppError(
+      409,
+      "ORDER_NOT_COMPLETED",
+      "Yalnızca tamamlanan siparişler değerlendirilebilir.",
+    );
   }
 
-  const claimed = await Order.updateOne({ _id: order._id, reviewed: false }, { $set: { reviewed: true } });
+  const claimed = await Order.updateOne(
+    { _id: order._id, reviewed: false },
+    { $set: { reviewed: true } },
+  );
 
   if (claimed.modifiedCount === 0) {
     throw new AppError(409, "ALREADY_REVIEWED", "Bu sipariş zaten değerlendirildi.");

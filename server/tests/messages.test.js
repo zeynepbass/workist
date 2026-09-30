@@ -126,7 +126,10 @@ describe("conversation endpoints", () => {
     const eve = await createSession(app);
     await Message.create({ sender: alice.user.id, recipient: bob.user.id, text: "Selam" });
 
-    const aliceView = await request(app).get("/api/conversations").set(authed(alice.token)).expect(200);
+    const aliceView = await request(app)
+      .get("/api/conversations")
+      .set(authed(alice.token))
+      .expect(200);
     const eveView = await request(app).get("/api/conversations").set(authed(eve.token)).expect(200);
     const eveReadsAlice = await request(app)
       .get(`/api/conversations/${alice.user.id}/messages`)
@@ -144,10 +147,16 @@ describe("conversation endpoints", () => {
     const eve = await createSession(app);
     await Message.create({ sender: alice.user.id, recipient: bob.user.id, text: "Selam" });
 
-    await request(app).delete(`/api/conversations/${bob.user.id}`).set(authed(eve.token)).expect(204);
+    await request(app)
+      .delete(`/api/conversations/${bob.user.id}`)
+      .set(authed(eve.token))
+      .expect(204);
     expect(await Message.countDocuments()).toBe(1);
 
-    await request(app).delete(`/api/conversations/${bob.user.id}`).set(authed(alice.token)).expect(204);
+    await request(app)
+      .delete(`/api/conversations/${bob.user.id}`)
+      .set(authed(alice.token))
+      .expect(204);
     expect(await Message.countDocuments()).toBe(0);
   });
 });

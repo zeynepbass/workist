@@ -49,10 +49,10 @@ export const createAdBody = adFields.refine(belongsToCategory, categoryMatchMess
 
 export const updateAdBody = adFields
   .partial()
-  .refine(
-    (value) => (value.category === undefined) === (value.subcategory === undefined),
-    { path: ["subcategory"], message: "Kategori ve alt kategori birlikte gönderilmeli." },
-  )
+  .refine((value) => (value.category === undefined) === (value.subcategory === undefined), {
+    path: ["subcategory"],
+    message: "Kategori ve alt kategori birlikte gönderilmeli.",
+  })
   .refine((value) => !value.category || belongsToCategory(value), categoryMatchMessage);
 
 export const listAdsQuery = paginationQuery.extend({

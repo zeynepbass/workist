@@ -62,7 +62,9 @@ function operation({ summary, tag, params, query, body, multipart, auth = true, 
       ? {
           requestBody: {
             required: true,
-            content: { [multipart ? "multipart/form-data" : "application/json"]: { schema: bodySchema } },
+            content: {
+              [multipart ? "multipart/form-data" : "application/json"]: { schema: bodySchema },
+            },
           },
         }
       : {}),
@@ -114,7 +116,13 @@ export function buildOpenApiDocument() {
       "/health": { get: operation({ summary: "Sağlık kontrolü", tag: "Meta", auth: false }) },
       "/api/categories": { get: operation({ summary: "Kategoriler", tag: "Meta", auth: false }) },
       "/api/auth/register": {
-        post: operation({ summary: "Kayıt", tag: "Auth", body: registerBody, auth: false, success: 201 }),
+        post: operation({
+          summary: "Kayıt",
+          tag: "Auth",
+          body: registerBody,
+          auth: false,
+          success: 201,
+        }),
       },
       "/api/auth/login": {
         post: operation({ summary: "Giriş", tag: "Auth", body: loginBody, auth: false }),
@@ -128,47 +136,110 @@ export function buildOpenApiDocument() {
       "/api/users/me": {
         get: operation({ summary: "Oturumdaki kullanıcı", tag: "Users" }),
         patch: operation({ summary: "Profil güncelle", tag: "Users", body: updateProfileBody }),
-        delete: operation({ summary: "Hesabı sil", tag: "Users", body: deleteAccountBody, success: 204 }),
+        delete: operation({
+          summary: "Hesabı sil",
+          tag: "Users",
+          body: deleteAccountBody,
+          success: 204,
+        }),
       },
       "/api/users/me/avatar": {
-        put: operation({ summary: "Profil fotoğrafı", tag: "Users", body: z.object({}), multipart: "avatar" }),
+        put: operation({
+          summary: "Profil fotoğrafı",
+          tag: "Users",
+          body: z.object({}),
+          multipart: "avatar",
+        }),
       },
       "/api/users/me/password": {
-        patch: operation({ summary: "Parola değiştir", tag: "Users", body: changePasswordBody, success: 204 }),
+        patch: operation({
+          summary: "Parola değiştir",
+          tag: "Users",
+          body: changePasswordBody,
+          success: 204,
+        }),
       },
       "/api/users/{id}": {
         get: operation({ summary: "Herkese açık profil", tag: "Users", params: idParams }),
       },
       "/api/ads": {
         get: operation({ summary: "İlan listesi", tag: "Ads", query: listAdsQuery }),
-        post: operation({ summary: "İlan oluştur", tag: "Ads", body: createAdBody, multipart: "image", success: 201 }),
+        post: operation({
+          summary: "İlan oluştur",
+          tag: "Ads",
+          body: createAdBody,
+          multipart: "image",
+          success: 201,
+        }),
       },
       "/api/ads/{id}": {
         get: operation({ summary: "İlan detayı", tag: "Ads", params: idParams }),
-        patch: operation({ summary: "İlan güncelle", tag: "Ads", params: idParams, body: updateAdBody, multipart: "image" }),
+        patch: operation({
+          summary: "İlan güncelle",
+          tag: "Ads",
+          params: idParams,
+          body: updateAdBody,
+          multipart: "image",
+        }),
         delete: operation({ summary: "İlan sil", tag: "Ads", params: idParams, success: 204 }),
       },
       "/api/portfolios": {
-        get: operation({ summary: "Portfolyo listesi", tag: "Portfolios", query: listPortfoliosQuery }),
-        post: operation({ summary: "Portfolyo oluştur", tag: "Portfolios", body: createPortfolioBody, multipart: "image", success: 201 }),
+        get: operation({
+          summary: "Portfolyo listesi",
+          tag: "Portfolios",
+          query: listPortfoliosQuery,
+        }),
+        post: operation({
+          summary: "Portfolyo oluştur",
+          tag: "Portfolios",
+          body: createPortfolioBody,
+          multipart: "image",
+          success: 201,
+        }),
       },
       "/api/portfolios/{id}": {
         get: operation({ summary: "Portfolyo detayı", tag: "Portfolios", params: idParams }),
-        patch: operation({ summary: "Portfolyo güncelle", tag: "Portfolios", params: idParams, body: updatePortfolioBody, multipart: "image" }),
-        delete: operation({ summary: "Portfolyo sil", tag: "Portfolios", params: idParams, success: 204 }),
+        patch: operation({
+          summary: "Portfolyo güncelle",
+          tag: "Portfolios",
+          params: idParams,
+          body: updatePortfolioBody,
+          multipart: "image",
+        }),
+        delete: operation({
+          summary: "Portfolyo sil",
+          tag: "Portfolios",
+          params: idParams,
+          success: 204,
+        }),
       },
       "/api/conversations": {
         get: operation({ summary: "Konuşmalar", tag: "Messages" }),
       },
       "/api/conversations/{partnerId}": {
-        delete: operation({ summary: "Konuşmayı sil", tag: "Messages", params: partnerParams, success: 204 }),
+        delete: operation({
+          summary: "Konuşmayı sil",
+          tag: "Messages",
+          params: partnerParams,
+          success: 204,
+        }),
       },
       "/api/conversations/{partnerId}/messages": {
-        get: operation({ summary: "Mesajlar", tag: "Messages", params: partnerParams, query: listMessagesQuery }),
+        get: operation({
+          summary: "Mesajlar",
+          tag: "Messages",
+          params: partnerParams,
+          query: listMessagesQuery,
+        }),
       },
       "/api/orders": {
         get: operation({ summary: "Siparişler", tag: "Orders", query: listOrdersQuery }),
-        post: operation({ summary: "Sipariş talebi oluştur", tag: "Orders", body: createOrderBody, success: 201 }),
+        post: operation({
+          summary: "Sipariş talebi oluştur",
+          tag: "Orders",
+          body: createOrderBody,
+          success: 201,
+        }),
       },
       "/api/orders/{id}": {
         get: operation({ summary: "Sipariş detayı", tag: "Orders", params: idParams }),
@@ -176,16 +247,32 @@ export function buildOpenApiDocument() {
       "/api/orders/{id}/offer": orderAction("offer", offerBody),
       "/api/orders/{id}/accept": orderAction("accept"),
       "/api/orders/{id}/deliver": {
-        post: operation({ summary: "Sipariş: deliver", tag: "Orders", params: idParams, body: deliverBody, multipart: "files" }),
+        post: operation({
+          summary: "Sipariş: deliver",
+          tag: "Orders",
+          params: idParams,
+          body: deliverBody,
+          multipart: "files",
+        }),
       },
       "/api/orders/{id}/request-revision": orderAction("request_revision"),
       "/api/orders/{id}/complete": orderAction("complete"),
       "/api/orders/{id}/cancel": orderAction("cancel"),
       "/api/orders/{id}/files/{fileId}": {
-        get: operation({ summary: "Teslimat dosyası indir", tag: "Orders", params: orderFileParams }),
+        get: operation({
+          summary: "Teslimat dosyası indir",
+          tag: "Orders",
+          params: orderFileParams,
+        }),
       },
       "/api/orders/{id}/review": {
-        post: operation({ summary: "Siparişi değerlendir", tag: "Orders", params: idParams, body: reviewBody, success: 201 }),
+        post: operation({
+          summary: "Siparişi değerlendir",
+          tag: "Orders",
+          params: idParams,
+          body: reviewBody,
+          success: 201,
+        }),
       },
       "/api/reviews": {
         get: operation({ summary: "Değerlendirmeler", tag: "Reviews", query: listReviewsQuery }),

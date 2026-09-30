@@ -30,7 +30,8 @@ const REQUEST_ID_PATTERN = /^[\w-]{1,64}$/;
 
 function requestId(req, res) {
   const incoming = req.headers["x-request-id"];
-  const id = typeof incoming === "string" && REQUEST_ID_PATTERN.test(incoming) ? incoming : randomUUID();
+  const id =
+    typeof incoming === "string" && REQUEST_ID_PATTERN.test(incoming) ? incoming : randomUUID();
   res.setHeader("X-Request-Id", id);
   return id;
 }
@@ -42,7 +43,13 @@ export function createApp({ authLimits } = {}) {
   app.set("trust proxy", env.TRUST_PROXY);
   app.disable("x-powered-by");
 
-  app.use(pinoHttp({ logger, genReqId: requestId, autoLogging: { ignore: (req) => req.url === "/health" } }));
+  app.use(
+    pinoHttp({
+      logger,
+      genReqId: requestId,
+      autoLogging: { ignore: (req) => req.url === "/health" },
+    }),
+  );
   app.use(helmet({ crossOriginResourcePolicy: { policy: "same-site" } }));
   app.use(cors(corsOptions));
   app.use(express.json({ limit: JSON_BODY_LIMIT }));

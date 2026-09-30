@@ -117,12 +117,18 @@ describe("ownership and file key migrations", () => {
 
   it("renames ownership fields and moves base64 images into storage", async () => {
     const ownerId = new mongoose.Types.ObjectId();
-    await db().collection("ads").insertMany([
-      { userId: ownerId, image: PNG_DATA_URI, ownerName: "Ada" },
-      { userId: ownerId, image: "data:image/png;base64,bm90IGFuIGltYWdl" },
-    ]);
-    await db().collection("users").insertOne({ _id: ownerId, email: "a@b.co", avatar: PNG_DATA_URI });
-    await db().collection("messages").insertOne({ senderId: ownerId, recipientId: ownerId, text: "x" });
+    await db()
+      .collection("ads")
+      .insertMany([
+        { userId: ownerId, image: PNG_DATA_URI, ownerName: "Ada" },
+        { userId: ownerId, image: "data:image/png;base64,bm90IGFuIGltYWdl" },
+      ]);
+    await db()
+      .collection("users")
+      .insertOne({ _id: ownerId, email: "a@b.co", avatar: PNG_DATA_URI });
+    await db()
+      .collection("messages")
+      .insertOne({ senderId: ownerId, recipientId: ownerId, text: "x" });
 
     await ownershipAndFileKeys.up(db());
     await moveBase64Files.up(db());

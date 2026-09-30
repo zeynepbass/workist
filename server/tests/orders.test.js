@@ -15,8 +15,7 @@ async function setup({ revisionCount = "1" } = {}) {
   return { app, seller, buyer, stranger, ad };
 }
 
-const post = (app, token, path, body = {}) =>
-  request(app).post(path).set(authed(token)).send(body);
+const post = (app, token, path, body = {}) => request(app).post(path).set(authed(token)).send(body);
 
 async function placeOrder({ app, buyer, ad }) {
   const response = await post(app, buyer.token, "/api/orders", {
@@ -43,7 +42,11 @@ describe("order lifecycle", () => {
     const { app, seller, buyer, ad } = context;
     const order = await placeOrder(context);
 
-    expect(order).toMatchObject({ status: "requested", viewerRole: "buyer", availableActions: ["cancel"] });
+    expect(order).toMatchObject({
+      status: "requested",
+      viewerRole: "buyer",
+      availableActions: ["cancel"],
+    });
 
     const offered = await post(app, seller.token, `/api/orders/${order.id}/offer`, {
       price: 400,
@@ -67,7 +70,9 @@ describe("order lifecycle", () => {
       contentType: "application/pdf",
     });
 
-    await post(app, buyer.token, `/api/orders/${order.id}/request-revision`, { note: "Renk" }).expect(200);
+    await post(app, buyer.token, `/api/orders/${order.id}/request-revision`, {
+      note: "Renk",
+    }).expect(200);
     await request(app)
       .post(`/api/orders/${order.id}/deliver`)
       .set(authed(seller.token))
@@ -87,7 +92,10 @@ describe("order lifecycle", () => {
       "complete",
     ]);
 
-    await post(app, buyer.token, `/api/orders/${order.id}/review`, { rating: 4, comment: "İyi" }).expect(201);
+    await post(app, buyer.token, `/api/orders/${order.id}/review`, {
+      rating: 4,
+      comment: "İyi",
+    }).expect(201);
     await post(app, buyer.token, `/api/orders/${order.id}/review`, { rating: 5 }).expect(409);
 
     const storedAd = await Ad.findById(ad.id);
@@ -119,10 +127,15 @@ describe("order authorization", () => {
     const context = await setup();
     const order = await placeOrder(context);
 
-    const buyerOffers = await post(context.app, context.buyer.token, `/api/orders/${order.id}/offer`, {
-      price: 150,
-      deliveryDays: 1,
-    }).expect(403);
+    const buyerOffers = await post(
+      context.app,
+      context.buyer.token,
+      `/api/orders/${order.id}/offer`,
+      {
+        price: 150,
+        deliveryDays: 1,
+      },
+    ).expect(403);
     expect(buyerOffers.body.error.code).toBe("FORBIDDEN");
 
     await post(context.app, context.seller.token, `/api/orders/${order.id}/accept`).expect(409);
@@ -140,8 +153,12 @@ describe("order authorization", () => {
     const context = await setup();
     const order = await activeOrder(context);
 
-    await post(context.app, context.buyer.token, `/api/orders/${order.id}/review`, { rating: 5 }).expect(409);
-    await post(context.app, context.seller.token, `/api/orders/${order.id}/review`, { rating: 5 }).expect(403);
+    await post(context.app, context.buyer.token, `/api/orders/${order.id}/review`, {
+      rating: 5,
+    }).expect(409);
+    await post(context.app, context.seller.token, `/api/orders/${order.id}/review`, {
+      rating: 5,
+    }).expect(403);
   });
 
   it("serves delivery files to participants only", async () => {
@@ -158,7 +175,10 @@ describe("order authorization", () => {
     expect(file.name).toBe("passwd.pdf");
     const path = `/api/orders/${order.id}/files/${file.id}`;
 
-    const download = await request(context.app).get(path).set(authed(context.buyer.token)).expect(200);
+    const download = await request(context.app)
+      .get(path)
+      .set(authed(context.buyer.token))
+      .expect(200);
     expect(download.headers["content-disposition"]).toMatch(/attachment/);
     await request(context.app).get(path).set(authed(context.stranger.token)).expect(404);
   });

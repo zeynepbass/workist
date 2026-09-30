@@ -115,7 +115,13 @@ export async function transition(orderId, userId, action, payload = {}, { files 
 
   const fromStatus = order.status;
   order.status = result.status;
-  order.events.push({ action, actor: userId, fromStatus, toStatus: result.status, note: payload.note ?? "" });
+  order.events.push({
+    action,
+    actor: userId,
+    fromStatus,
+    toStatus: result.status,
+    note: payload.note ?? "",
+  });
   await order.save();
 
   announce(order, action);
@@ -124,7 +130,9 @@ export async function transition(orderId, userId, action, payload = {}, { files 
 
 export async function getOrderFileDownload(orderId, fileId, userId) {
   const order = await findParticipantOrder(orderId, userId);
-  const file = order.deliveries.flatMap((delivery) => delivery.files).find((item) => String(item._id) === String(fileId));
+  const file = order.deliveries
+    .flatMap((delivery) => delivery.files)
+    .find((item) => String(item._id) === String(fileId));
 
   if (!file) {
     throw notFound("Dosya bulunamadı.");

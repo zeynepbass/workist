@@ -41,7 +41,9 @@ describe("order state machine", () => {
   });
 
   it("enforces the revision limit", () => {
-    expect(nextStatus(order("delivered", { revisionsUsed: 1 }), "request_revision", "buyer")).toEqual({
+    expect(
+      nextStatus(order("delivered", { revisionsUsed: 1 }), "request_revision", "buyer"),
+    ).toEqual({
       allowed: false,
       reason: "REVISION_LIMIT_REACHED",
     });

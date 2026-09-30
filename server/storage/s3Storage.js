@@ -52,7 +52,9 @@ export function createS3Storage({
           : {}),
       });
 
-      return { redirectUrl: await getSignedUrl(client, command, { expiresIn: SIGNED_URL_TTL_SECONDS }) };
+      return {
+        redirectUrl: await getSignedUrl(client, command, { expiresIn: SIGNED_URL_TTL_SECONDS }),
+      };
     },
   };
 }

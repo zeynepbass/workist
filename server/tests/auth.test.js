@@ -46,7 +46,13 @@ describe("registration", () => {
   it("validates password length and confirmation", async () => {
     const response = await request(buildApp())
       .post("/api/auth/register")
-      .send({ email: "a@b.co", password: "short", confirmPassword: "other", firstName: "A", lastName: "B" })
+      .send({
+        email: "a@b.co",
+        password: "short",
+        confirmPassword: "other",
+        firstName: "A",
+        lastName: "B",
+      })
       .expect(400);
 
     const paths = response.body.error.details.map((detail) => detail.path);
@@ -110,7 +116,9 @@ describe("refresh token rotation", () => {
     const session = await loginUser(app, await registerUser(app));
 
     const rotated = await refresh(app, session.cookie).expect(200);
-    const newCookie = rotated.headers["set-cookie"].find((value) => value.startsWith("workist_rt="));
+    const newCookie = rotated.headers["set-cookie"].find((value) =>
+      value.startsWith("workist_rt="),
+    );
 
     expect(rotated.body.data.accessToken).toEqual(expect.any(String));
     expect(newCookie).not.toBe(session.cookie);
@@ -122,7 +130,9 @@ describe("refresh token rotation", () => {
     const session = await loginUser(app, await registerUser(app));
 
     const rotated = await refresh(app, session.cookie).expect(200);
-    const newCookie = rotated.headers["set-cookie"].find((value) => value.startsWith("workist_rt="));
+    const newCookie = rotated.headers["set-cookie"].find((value) =>
+      value.startsWith("workist_rt="),
+    );
 
     await refresh(app, session.cookie).expect(401);
     await refresh(app, newCookie).expect(401);

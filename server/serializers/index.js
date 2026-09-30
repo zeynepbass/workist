@@ -115,7 +115,11 @@ export function toOrder(order, { viewerRole, actions }) {
     requirements: order.requirements,
     offer:
       order.offer?.price != null
-        ? { price: order.offer.price, deliveryDays: order.offer.deliveryDays, note: order.offer.note ?? "" }
+        ? {
+            price: order.offer.price,
+            deliveryDays: order.offer.deliveryDays,
+            note: order.offer.note ?? "",
+          }
         : null,
     dueAt: order.dueAt ?? null,
     revisionLimit: order.revisionLimit,

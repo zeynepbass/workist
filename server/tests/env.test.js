@@ -36,7 +36,9 @@ describe("parseEnv", () => {
   });
 
   it("rejects a short jwt secret", () => {
-    expect(() => parseEnv({ ...validEnv, JWT_ACCESS_SECRET: "short" })).toThrowError(/JWT_ACCESS_SECRET/);
+    expect(() => parseEnv({ ...validEnv, JWT_ACCESS_SECRET: "short" })).toThrowError(
+      /JWT_ACCESS_SECRET/,
+    );
   });
 });
 

@@ -74,10 +74,10 @@ export function withFields(builder, fields) {
 }
 
 export async function createAd(app, token, overrides = {}) {
-  const response = await withFields(
-    request(app).post("/api/ads").set(authed(token)),
-    { ...AD_FIELDS, ...overrides },
-  )
+  const response = await withFields(request(app).post("/api/ads").set(authed(token)), {
+    ...AD_FIELDS,
+    ...overrides,
+  })
     .attach("image", PNG_BYTES, "ad.png")
     .expect(201);
 
@@ -93,10 +93,10 @@ export const PORTFOLIO_FIELDS = Object.freeze({
 });
 
 export async function createPortfolio(app, token, overrides = {}) {
-  const response = await withFields(
-    request(app).post("/api/portfolios").set(authed(token)),
-    { ...PORTFOLIO_FIELDS, ...overrides },
-  )
+  const response = await withFields(request(app).post("/api/portfolios").set(authed(token)), {
+    ...PORTFOLIO_FIELDS,
+    ...overrides,
+  })
     .attach("image", PNG_BYTES, "portfolio.png")
     .expect(201);
 

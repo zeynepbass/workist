@@ -15,7 +15,11 @@ const router = express.Router();
 router.get("/me", userController.getMe);
 router.patch("/me", validate({ body: updateProfileBody }), userController.updateMe);
 router.put("/me/avatar", uploadImage("avatar"), userController.updateMyAvatar);
-router.patch("/me/password", validate({ body: changePasswordBody }), userController.changeMyPassword);
+router.patch(
+  "/me/password",
+  validate({ body: changePasswordBody }),
+  userController.changeMyPassword,
+);
 router.delete("/me", validate({ body: deleteAccountBody }), userController.deleteMe);
 router.get("/:id", validate({ params: idParams }), userController.getUser);
 

@@ -69,7 +69,11 @@ export async function deleteAccount(userId, { password }, { log } = {}) {
   ]);
   await User.deleteOne({ _id: user._id });
 
-  const keys = [user.avatarKey, ...ads.map((ad) => ad.imageKey), ...portfolios.map((p) => p.imageKey)];
+  const keys = [
+    user.avatarKey,
+    ...ads.map((ad) => ad.imageKey),
+    ...portfolios.map((p) => p.imageKey),
+  ];
   await Promise.all(keys.map((key) => removeQuietly(key, log)));
 }
 

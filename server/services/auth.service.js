@@ -82,7 +82,10 @@ export async function refresh(presentedToken, { log } = {}) {
 
   if (stored.revokedAt) {
     await revokeFamily(stored.familyId);
-    log?.warn({ userId: String(stored.user), familyId: stored.familyId }, "Refresh token reuse detected");
+    log?.warn(
+      { userId: String(stored.user), familyId: stored.familyId },
+      "Refresh token reuse detected",
+    );
     throw unauthorized();
   }
 

@@ -6,12 +6,12 @@ export const PASSWORD_MAX_BYTES = 72;
 export const password = z
   .string()
   .min(PASSWORD_MIN_LENGTH, `Parola en az ${PASSWORD_MIN_LENGTH} karakter olmalı.`)
-  .refine(
-    (value) => Buffer.byteLength(value, "utf8") <= PASSWORD_MAX_BYTES,
-    "Parola çok uzun.",
-  );
+  .refine((value) => Buffer.byteLength(value, "utf8") <= PASSWORD_MAX_BYTES, "Parola çok uzun.");
 
-const email = z.email("Geçerli bir e-posta girin.").max(254).transform((value) => value.toLowerCase());
+const email = z
+  .email("Geçerli bir e-posta girin.")
+  .max(254)
+  .transform((value) => value.toLowerCase());
 const name = z.string().trim().min(1, "Bu alan zorunlu.").max(50);
 
 export const registerBody = z

@@ -30,10 +30,10 @@ export const createPortfolioBody = portfolioFields.refine(belongsToCategory, cat
 export const updatePortfolioBody = portfolioFields
   .extend({ status: status })
   .partial()
-  .refine(
-    (value) => (value.category === undefined) === (value.subcategory === undefined),
-    { path: ["subcategory"], message: "Kategori ve alt kategori birlikte gönderilmeli." },
-  )
+  .refine((value) => (value.category === undefined) === (value.subcategory === undefined), {
+    path: ["subcategory"],
+    message: "Kategori ve alt kategori birlikte gönderilmeli.",
+  })
   .refine((value) => !value.category || belongsToCategory(value), categoryMatchMessage);
 
 export const updatePortfolioStatusBody = z.strictObject({ status });

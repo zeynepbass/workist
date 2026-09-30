@@ -30,15 +30,24 @@ describe("ad creation", () => {
     expect(ad.owner.id).toBe(session.user.id);
     expect(existsSync(storedPath(ad.imageUrl))).toBe(true);
 
-    await request(app).get(ad.imageUrl).expect(200).expect("Content-Type", /image\/png/);
+    await request(app)
+      .get(ad.imageUrl)
+      .expect(200)
+      .expect("Content-Type", /image\/png/);
   });
 
   it("rejects files whose content is not an allowed image", async () => {
     const app = buildApp();
     const session = await createSession(app);
 
-    const response = await withFields(request(app).post("/api/ads").set(authed(session.token)), AD_FIELDS)
-      .attach("image", Buffer.from("MZ fake executable"), { filename: "virus.png", contentType: "image/png" })
+    const response = await withFields(
+      request(app).post("/api/ads").set(authed(session.token)),
+      AD_FIELDS,
+    )
+      .attach("image", Buffer.from("MZ fake executable"), {
+        filename: "virus.png",
+        contentType: "image/png",
+      })
       .expect(415);
 
     expect(response.body.error.code).toBe("UNSUPPORTED_MEDIA_TYPE");
@@ -58,7 +67,9 @@ describe("ad creation", () => {
     const app = buildApp();
     const session = await createSession(app);
 
-    await withFields(request(app).post("/api/ads").set(authed(session.token)), AD_FIELDS).expect(400);
+    await withFields(request(app).post("/api/ads").set(authed(session.token)), AD_FIELDS).expect(
+      400,
+    );
   });
 
   it("rejects a subcategory from another category", async () => {
@@ -126,7 +137,10 @@ describe("ad listing", () => {
     const session = await createSession(app);
     await createAd(app, session.token);
 
-    const response = await request(app).get("/api/ads?search=.*").set(authed(session.token)).expect(200);
+    const response = await request(app)
+      .get("/api/ads?search=.*")
+      .set(authed(session.token))
+      .expect(200);
     expect(response.body.data).toHaveLength(0);
   });
 
