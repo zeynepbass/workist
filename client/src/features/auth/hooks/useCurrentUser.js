@@ -1,27 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
+
+import { queryKeys } from "@/shared/api";
+import { SESSION_STATUS, useSessionStore } from "@/shared/session/sessionStore";
 import * as authRepository from "../repositories/auth.repository";
 
 export function useCurrentUser() {
-  const token = localStorage.getItem("token");
+  const isAuthenticated = useSessionStore((state) => state.status === SESSION_STATUS.authenticated);
 
-  const {
-    data: user,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["currentUser"],
-    queryFn: () => authRepository.getCurrentUser(),
-    enabled: !!token,
+  const { data: user = null, isLoading, isError } = useQuery({
+    queryKey: queryKeys.me,
+    queryFn: authRepository.getCurrentUser,
+    enabled: isAuthenticated,
     staleTime: 5 * 60 * 1000,
   });
 
-  return {
-    user: user ?? null,
-    userId: user?.id ?? null,
-    firstName: user?.firstName ?? "",
-    isLoading,
-    isError,
-    error,
-  };
+  return { user, userId: user?.id ?? null, firstName: user?.firstName ?? "", isLoading, isError };
 }

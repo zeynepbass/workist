@@ -1,12 +1,17 @@
+import { Link } from "react-router-dom";
+
 export default function AccountDeactivated() {
   return (
-    <div className="bg-gray-200 min-h-screen flex flex-col justify-center items-center p-4">
-      <p className="text-center text-gray-500 text-lg">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-4 bg-gray-200 p-4">
+      <p className="text-center text-lg text-gray-500">
         Aramızdan ayrıldığınız için üzgünüz{" "}
         <span role="img" aria-label="üzgün">
           😔
         </span>
       </p>
-    </div>
+      <Link to="/" className="text-purple-600 hover:text-purple-800">
+        Giriş sayfasına dön
+      </Link>
+    </main>
   );
 }

@@ -1,32 +1,44 @@
-import userAdapter from "../adapters/auth.adapter";
+import { privateUserAdapter, publicUserAdapter } from "../adapters/user.adapter";
 import { authApi } from "../api/auth.api";
 
-export async function getCurrentUser() {
-  const response = await authApi.me();
-
-  return userAdapter(response.data);
-}
-
 export async function login(credentials) {
-  const response = await authApi.login(credentials);
-
-  return response.data;
+  const { data } = await authApi.login(credentials);
+  return { accessToken: data.data.accessToken, user: privateUserAdapter(data.data.user) };
 }
 
 export async function register(registration) {
-  const response = await authApi.register(registration);
-
-  return response.data;
+  const { data } = await authApi.register(registration);
+  return privateUserAdapter(data.data.user);
 }
 
-export async function deleteAccount(email) {
-  const response = await authApi.deleteAccount(email);
-
-  return response.data;
+export async function logout() {
+  await authApi.logout();
 }
 
-export async function updateProfile(email, profile) {
-  const response = await authApi.updateProfile(email, profile);
+export async function getCurrentUser() {
+  const { data } = await authApi.me();
+  return privateUserAdapter(data.data);
+}
 
-  return userAdapter(response.data);
+export async function getUser(id) {
+  const { data } = await authApi.getUser(id);
+  return publicUserAdapter(data.data);
+}
+
+export async function updateProfile(changes) {
+  const { data } = await authApi.updateProfile(changes);
+  return privateUserAdapter(data.data);
+}
+
+export async function updateAvatar(file) {
+  const { data } = await authApi.updateAvatar(file);
+  return privateUserAdapter(data.data);
+}
+
+export async function changePassword(passwords) {
+  await authApi.changePassword(passwords);
+}
+
+export async function deleteAccount(password) {
+  await authApi.deleteAccount(password);
 }
