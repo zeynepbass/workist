@@ -1,18 +1,22 @@
-import jwt from "jsonwebtoken";
+import { unauthorized } from "../utils/AppError.js";
+import { verifyAccessToken } from "../utils/tokens.js";
 
-import env from "../config/env.js";
+export function readBearerToken(header) {
+  const [scheme, token] = String(header ?? "").split(" ");
+  return scheme === "Bearer" && token ? token : null;
+}
 
-export default function authenticate(req, res, next) {
-  const authHeader = req.headers.authorization;
+export default function requireAuth(req, res, next) {
+  const token = readBearerToken(req.headers.authorization);
 
-  if (!authHeader) {
-    return res.status(401).json({ message: "Yetkilendirme tokenı bulunamadı." });
+  if (!token) {
+    return next(unauthorized());
   }
 
   try {
-    req.user = jwt.verify(authHeader.split(" ")[1], env.JWT_SECRET);
+    req.user = { id: verifyAccessToken(token).userId };
     return next();
   } catch {
-    return res.status(401).json({ message: "Geçersiz veya süresi dolmuş token." });
+    return next(unauthorized("Oturumun süresi doldu, lütfen tekrar giriş yapın."));
   }
 }
