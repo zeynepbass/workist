@@ -1,25 +1,18 @@
 import OrderCard from "../OrderCard";
 
-export default function OrderList  ({
-  orders,
-  onDelete,
-  onMessage,
-  onDetails,
-}) {
+export default function OrderList({ orders, onDelete, onMessage, onDetails }) {
   if (orders.length === 0) {
     return (
-      <p className="text-center p-4 text-gray-500 italic">
-        Kriterlere uyan sipariş bulunamadı.
-      </p>
+      <p className="text-center p-4 text-gray-500 italic">Kriterlere uyan sipariş bulunamadı.</p>
     );
   }
 
   return (
     <>
-      {orders.map((siparis) => (
+      {orders.map((order) => (
         <OrderCard
-          key={siparis.id}
-          siparis={siparis}
+          key={order.id}
+          order={order}
           onDelete={onDelete}
           onMessage={onMessage}
           onDetails={onDetails}
@@ -27,5 +20,4 @@ export default function OrderList  ({
       ))}
     </>
   );
-};
-
+}

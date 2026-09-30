@@ -1,174 +1,104 @@
-
-import {
-    useQuery,
-    useMutation,
-    useQueryClient,
-} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 import * as portfolioRepository from "../repositories/portfolio.repository";
 
-export function usePortfolio(
-    searchQuery = "",
-    portfolioId
-) {
-    const queryClient = useQueryClient();
+const MY_PORTFOLIOS_KEY = ["portfolio"];
 
-    const postsQuery = useQuery({
-        queryKey: ["portfolio", searchQuery],
-        queryFn: () =>
-            portfolioRepository.searchPosts(searchQuery),
-    });
+const errorMessage = (error, fallback) => error?.response?.data?.message || fallback;
 
-    const userPortfoliosQuery = useQuery({
-        queryKey: ["portfolio"],
-        queryFn: () =>
-            portfolioRepository.getUserPortfolios(),
-    });
+export function usePortfolio(portfolioId) {
+  const queryClient = useQueryClient();
 
-    const detailQuery = useQuery({
-        queryKey: [
-            "portfolio",
-            "detail",
-            portfolioId,
-        ],
-        queryFn: () =>
-            portfolioRepository.getPortfolioDetail(
-                portfolioId
-            ),
-        enabled: !!portfolioId,
-    });
+  const myPortfoliosQuery = useQuery({
+    queryKey: MY_PORTFOLIOS_KEY,
+    queryFn: () => portfolioRepository.getMyPortfolios(),
+  });
 
-    const updateStatusMutation = useMutation({
-        mutationFn: ({ id, durum }) =>
-            portfolioRepository.updatePortfolioStatus(
-                id,
-                durum
-            ),
+  const detailQuery = useQuery({
+    queryKey: ["portfolio", "detail", portfolioId],
+    queryFn: () => portfolioRepository.getPortfolio(portfolioId),
+    enabled: !!portfolioId,
+  });
 
-        onSuccess: (_, variables) => {
-            queryClient.setQueryData(
-                ["portfolio"],
-                (old = []) =>
-                    old.map((item) =>
-                        item.id === variables.id
-                            ? { ...item, durum: variables.durum }
-                            : item
-                    )
-            );
+  const createMutation = useMutation({
+    mutationFn: (portfolio) => portfolioRepository.createPortfolio(portfolio),
 
-            toast.success("Portfolyo durumu güncellendi.");
-        },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: MY_PORTFOLIOS_KEY });
+    },
+  });
 
-        onError: (error) => {
-            toast.error(
-                error?.response?.data?.message ||
-                    "Portfolyo durumu güncellenirken bir hata oluştu."
-            );
-        },
-    });
+  const updateStatusMutation = useMutation({
+    mutationFn: ({ id, status }) => portfolioRepository.updatePortfolioStatus(id, status),
 
-    const deleteMutation = useMutation({
-        mutationFn: (id) =>
-            portfolioRepository.deletePortfolio(id),
+    onSuccess: (_, variables) => {
+      queryClient.setQueryData(MY_PORTFOLIOS_KEY, (previous = []) =>
+        previous.map((item) =>
+          item.id === variables.id ? { ...item, status: variables.status } : item,
+        ),
+      );
 
-        onSuccess: (_, deletedId) => {
-            queryClient.setQueryData(
-                ["portfolio"],
-                (old = []) =>
-                    old.filter((item) => item.id !== deletedId)
-            );
+      toast.success("Portfolyo durumu güncellendi.");
+    },
 
-            toast.success("Portfolyo silindi.");
-        },
+    onError: (error) => {
+      toast.error(errorMessage(error, "Portfolyo durumu güncellenirken bir hata oluştu."));
+    },
+  });
 
-        onError: (error) => {
-            toast.error(
-                error?.response?.data?.message ||
-                    "Portfolyo silinirken bir hata oluştu."
-            );
-        },
-    });
+  const deleteMutation = useMutation({
+    mutationFn: (id) => portfolioRepository.deletePortfolio(id),
 
-    const updateMutation = useMutation({
-        mutationFn: ({ id, formData }) =>
-            portfolioRepository.updatePortfolio(
-                id,
-                formData
-            ),
+    onSuccess: (_, deletedId) => {
+      queryClient.setQueryData(MY_PORTFOLIOS_KEY, (previous = []) =>
+        previous.filter((item) => item.id !== deletedId),
+      );
 
-        onSuccess: (updatedPortfolio) => {
-            queryClient.invalidateQueries({
-                queryKey: ["portfolio"],
-            });
+      toast.success("Portfolyo silindi.");
+    },
 
-            if (portfolioId) {
-                queryClient.setQueryData(
-                    [
-                        "portfolio",
-                        "detail",
-                        portfolioId,
-                    ],
-                    updatedPortfolio
-                );
-            }
+    onError: (error) => {
+      toast.error(errorMessage(error, "Portfolyo silinirken bir hata oluştu."));
+    },
+  });
 
-            toast.success("Portfolyo güncellendi.");
-        },
+  const updateMutation = useMutation({
+    mutationFn: ({ id, portfolio }) => portfolioRepository.updatePortfolio(id, portfolio),
 
-        onError: (error) => {
-            toast.error(
-                error?.response?.data?.message ||
-                    "Portfolyo güncellenirken bir hata oluştu."
-            );
-        },
-    });
+    onSuccess: (updatedPortfolio) => {
+      queryClient.invalidateQueries({ queryKey: MY_PORTFOLIOS_KEY });
 
-    return {
-        posts: postsQuery.data ?? [],
-        isLoading: postsQuery.isLoading,
-        isError: postsQuery.isError,
-        error: postsQuery.error,
+      if (portfolioId) {
+        queryClient.setQueryData(["portfolio", "detail", portfolioId], updatedPortfolio);
+      }
 
-        userPortfolios:
-            userPortfoliosQuery.data ?? [],
+      toast.success("Portfolyo güncellendi.");
+    },
 
-        isUserPortfoliosLoading:
-            userPortfoliosQuery.isLoading,
+    onError: (error) => {
+      toast.error(errorMessage(error, "Portfolyo güncellenirken bir hata oluştu."));
+    },
+  });
 
-        isUserPortfoliosError:
-            userPortfoliosQuery.isError,
+  return {
+    portfolios: myPortfoliosQuery.data ?? [],
+    isPortfoliosLoading: myPortfoliosQuery.isLoading,
+    isPortfoliosError: myPortfoliosQuery.isError,
 
-        userPortfoliosError:
-            userPortfoliosQuery.error,
+    detail: detailQuery.data ?? null,
+    isDetailLoading: detailQuery.isLoading,
+    isDetailError: detailQuery.isError,
 
-        detail: detailQuery.data ?? null,
+    createPortfolio: createMutation.mutateAsync,
 
-        isDetailLoading:
-            detailQuery.isLoading,
+    deletePortfolio: deleteMutation.mutate,
+    isDeleting: deleteMutation.isPending,
 
-        isDetailError:
-            detailQuery.isError,
+    updatePortfolioStatus: updateStatusMutation.mutate,
+    isUpdatingStatus: updateStatusMutation.isPending,
 
-        detailError:
-            detailQuery.error,
-
-        deletePortfolio:
-            deleteMutation.mutateAsync,
-
-        isDeleting:
-            deleteMutation.isPending,
-
-        toggleDurum:
-            updateStatusMutation.mutateAsync,
-
-        isUpdatingStatus:
-            updateStatusMutation.isPending,
-
-        updatePortfolio:
-            updateMutation.mutateAsync,
-
-        isUpdating:
-            updateMutation.isPending,
-    };
+    updatePortfolio: updateMutation.mutateAsync,
+    isUpdating: updateMutation.isPending,
+  };
 }

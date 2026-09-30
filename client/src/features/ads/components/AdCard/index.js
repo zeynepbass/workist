@@ -1,1 +1,1 @@
-export {default} from "./AdCard"
+export { default } from "./AdCard";

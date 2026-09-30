@@ -3,17 +3,20 @@ import { lazy, Suspense } from "react";
 import { StatusMessage } from "@/shared/components/molecules";
 import { Button } from "@/shared/components/atoms";
 import { useDetails } from "../hooks/useDetails";
+import { usePortfolio } from "@/features/portfolio/hooks/usePortfolio";
 const Modal = lazy(() =>
-  import("@/shared/components/organism").then((module) => ({
+  import("@/shared/components/organisms").then((module) => ({
     default: module.Modal,
-  }))
+  })),
 );
 export default function MyProfile() {
-  const { email, hesabiDondur, isLoading, portfolyoCreate } = useDetails();
-  const Navigate = useNavigate();
-  const Delete = () => {
-    hesabiDondur();
-    Navigate("/hesap-donduruldu");
+  const { user, deleteAccount, isLoading } = useDetails();
+  const { createPortfolio } = usePortfolio();
+  const navigate = useNavigate();
+
+  const handleDeactivate = async () => {
+    await deleteAccount();
+    navigate("/hesap-donduruldu");
   };
   if (isLoading) {
     return <StatusMessage type="loading" message="Yükleniyor..." />;
@@ -24,7 +27,7 @@ export default function MyProfile() {
         <div className="bg-white p-4 rounded-[10px] shadow ">
           <div className="flex justify-between items-center">
             <img
-              src={email?.file}
+              src={user?.avatar}
               alt="Profil fotoğrafı"
               width="100"
               height="100"
@@ -42,9 +45,9 @@ export default function MyProfile() {
           </div>
           <br />
           <p>
-            {email?.firstName} {email?.lastName}
+            {user?.firstName} {user?.lastName}
           </p>
-          <p className="text-gray-400 italic">{email?.unvan}</p>
+          <p className="text-gray-400 italic">{user?.title}</p>
           <br />
           <p className="mt-2 flex text-orange-300">
             {" "}
@@ -54,12 +57,10 @@ export default function MyProfile() {
               height="20"
               viewBox="0 0 24 24"
               className="star-rating"
-              data-inject-url="https://gcdn.bionluk.com/site/cicons/ic-star.svg"
-              data-v-00099300=""
             >
               <path
                 fill="currentColor"
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M11.818.4l-3.57 7.85-7.825.713a.2.2 0 0 0-.124.34l5.927 5.977-1.638 8.273a.2.2 0 0 0 .3.21l7.086-4.32 7.082 4.322a.2.2 0 0 0 .3-.209l-1.59-8.281L23.7 9.303a.2.2 0 0 0-.123-.34l-7.829-.713L12.182.4a.2.2 0 0 0-.364 0z"
               ></path>
             </svg>{" "}
@@ -77,14 +78,12 @@ export default function MyProfile() {
               <span className="text-purple-600">Düzenle</span>
             </Link>
           </div>
-          <p className="text-sm mt-2 text-gray-400">{email?.hakkimda}</p>
+          <p className="text-sm mt-2 text-gray-400">{user?.about}</p>
         </div>
 
         <div className="bg-white p-4 rounded-[10px] shadow">
           <div className="flex justify-between items-center">
-            <h6 className="text-center text-gray-600">
-              Uzmanı Olduğu Alanlar & Araçlar
-            </h6>
+            <h6 className="text-center text-gray-600">Uzmanı Olduğu Alanlar & Araçlar</h6>
             <br />
             <Link to="/hesabim">
               <span className="text-purple-600">Düzenle</span>
@@ -95,12 +94,9 @@ export default function MyProfile() {
 
           <div className="bg-white p-1 rounded-[10px] relative ">
             <ul className="pl-2 list-none flex flex-wrap">
-              {email?.uzmanlik?.map((yetenek, index) => (
-                <li
-                  key={index}
-                  className="p-2 border border-gray-300 rounded m-1"
-                >
-                  {yetenek}
+              {user?.skills?.map((skill) => (
+                <li key={skill} className="p-2 border border-gray-300 rounded m-1">
+                  {skill}
                 </li>
               ))}
             </ul>
@@ -114,7 +110,7 @@ export default function MyProfile() {
           <span className=" float-right mt-2">
             <Button
               className="bg-purple-800 text-white px-3 py-2 rounded float-right "
-              onClick={Delete}
+              onClick={handleDeactivate}
             >
               Hesabını Dondur
             </Button>
@@ -129,23 +125,17 @@ export default function MyProfile() {
           <div className="bg-[#F6F8FB] p-4 rounded">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
-                <img
-                  src="/assets/network.png"
-                  width="50"
-                  height="50"
-                  alt="Presentation"
-                />
+                <img src="/assets/network.png" width="50" height="50" alt="Presentation" />
                 <h6 className="font-bold text-gray-700 pt-2">
                   Gösterilecek bir portfolyon yok 😞
                   <p className="text-sm mt-1 text-gray-500">
-                    Neler yapabildiğini alıcılara göstermek için etkileyici bir
-                    portfolyo oluştur.
+                    Neler yapabildiğini alıcılara göstermek için etkileyici bir portfolyo oluştur.
                   </p>
                 </h6>
               </div>
 
               <Suspense fallback={<div>Yükleniyor...</div>}>
-                <Modal type="portfolio" createWorkPost={portfolyoCreate} />
+                <Modal type="portfolio" onCreate={createPortfolio} />
               </Suspense>
             </div>
           </div>
@@ -163,7 +153,7 @@ export default function MyProfile() {
           <div className="mt-4 justify-center flex">
             <Button
               className="bg-purple-800 text-white px-4 py-2 rounded "
-              onClick={() => Navigate("/ilanlarim")}
+              onClick={() => navigate("/ilanlarim")}
             >
               İlanlarıma Git
             </Button>
@@ -249,9 +239,8 @@ export default function MyProfile() {
                   <br />
                   <br />
                   <span className="text-gray-400">
-                    İlk calismamizdi,daha isi almadan tasarimlarini gosterip
-                    fikrimizi aldi,sonuc harikaydi,cok tesekkurler elinize
-                    emeginize saglik.
+                    İlk calismamizdi,daha isi almadan tasarimlarini gosterip fikrimizi aldi,sonuc
+                    harikaydi,cok tesekkurler elinize emeginize saglik.
                   </span>
                 </Link>
               </div>

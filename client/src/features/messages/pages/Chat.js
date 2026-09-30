@@ -1,171 +1,80 @@
-import { useEffect, useMemo, useState } from "react";
-import io from "socket.io-client";
+import { useMemo, useState } from "react";
 
 import { useMessages } from "../hooks/useMessages";
-import  messageAdapter  from "../adapters/message.adapter";
+import { useChatSocket } from "../hooks/useChatSocket";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 
 import ChatUserList from "../components/ChatUserList";
 import ChatMessageList from "../components/ChatMessageList";
 import ChatInput from "../components/ChatInput";
 
-const socket = io(process.env.REACT_APP_BASE_URL);
+function partnerIdOf(message, userId) {
+  return message.senderId === userId ? message.recipientId : message.senderId;
+}
 
 export default function Chat() {
-    const { userId: gonderenId } = useCurrentUser();
+  const { userId } = useCurrentUser();
 
-    const [aliciId, setAliciId] = useState(null);
-    const [newMessage, setNewMessage] = useState("");
+  const [partnerId, setPartnerId] = useState(null);
+  const [newMessage, setNewMessage] = useState("");
 
-    const {
-        messages,
-        userList,
-        konusmalar,
-        addMessageToCache,
-        isMessagesLoading,
-        isUsersLoading,
-    } = useMessages(gonderenId, aliciId);
+  const { messages, users, conversations, addMessageToCache, isMessagesLoading, isUsersLoading } =
+    useMessages(userId, partnerId);
 
-    const findUserPhotoById = (id) => {
-        const user = userList.find(
-            (user) => user._id === id
-        );
+  const { sendMessage } = useChatSocket({ userId, partnerId, onMessage: addMessageToCache });
 
-        return (
-            user?.file ||
-            "https://via.placeholder.com/40"
-        );
-    };
+  const conversationPartners = useMemo(() => {
+    const partnerIds = new Set(conversations.map((message) => partnerIdOf(message, userId)));
 
-    const filteredUsers = useMemo(() => {
-        if (!userList.length || !konusmalar.length) {
-            return [];
-        }
+    return users.filter((user) => partnerIds.has(user.id));
+  }, [users, conversations, userId]);
 
-        const partnerIds = new Set(
-            konusmalar.map((item) =>
-                item.gonderenId === gonderenId
-                    ? item.aliciId
-                    : item.gonderenId
-            )
-        );
+  const handleSend = (e) => {
+    e.preventDefault();
 
-        return userList.filter((user) =>
-            partnerIds.has(user._id)
-        );
-    }, [userList, konusmalar, gonderenId]);
+    const text = newMessage.trim();
 
-    useEffect(() => {
-        const handleReceiveMessage = (msg) => {
-            if (
-                (
-                    msg.gonderenId === gonderenId &&
-                    msg.aliciId === aliciId
-                ) ||
-                (
-                    msg.gonderenId === aliciId &&
-                    msg.aliciId === gonderenId
-                )
-            ) {
-                addMessageToCache(
-                    messageAdapter(msg)
-                );
-            }
-        };
+    if (!text || !partnerId || !userId) {
+      return;
+    }
 
-        socket.on(
-            "receiveMessage",
-            handleReceiveMessage
-        );
+    sendMessage(text);
+    setNewMessage("");
+  };
 
-        return () => {
-            socket.off(
-                "receiveMessage",
-                handleReceiveMessage
-            );
-        };
-    }, [
-        gonderenId,
-        aliciId,
-        addMessageToCache,
-    ]);
+  return (
+    <div className="flex h-screen bg-gray-100 font-sans">
+      <div className="w-1/3 border-r bg-white p-4">
+        <h2 className="mb-4 text-xl font-semibold">Gelen Kutusu</h2>
 
-    const handleSend = (e) => {
-        e.preventDefault();
+        <ChatUserList
+          users={conversationPartners}
+          selectedUserId={partnerId}
+          onSelect={setPartnerId}
+          isLoading={isUsersLoading}
+        />
+      </div>
 
-        if (
-            !newMessage.trim() ||
-            !aliciId ||
-            !gonderenId
-        ) {
-            return;
-        }
+      <div className="flex flex-1 flex-col bg-gray-50 p-6">
+        <h3 className="mb-4 text-lg font-semibold">Mesajlar</h3>
 
-        const msgData = {
-            gonderenId,
-            aliciId,
-            text: newMessage.trim(),
-        };
+        {partnerId ? (
+          <ChatMessageList
+            messages={messages}
+            currentUserId={userId}
+            isLoading={isMessagesLoading}
+          />
+        ) : (
+          <p className="italic text-gray-500">Mesajlaşmak için bir kullanıcı seçin.</p>
+        )}
 
-        socket.emit(
-            "sendMessage",
-            msgData
-        );
-
-        setNewMessage("");
-    };
-
-    return (
-        <div className="flex h-screen bg-gray-100 font-sans">
-
-    
-            <div className="w-1/3 border-r bg-white p-4">
-
-                <h2 className="mb-4 text-xl font-semibold">
-                    Gelen Kutusu
-                </h2>
-
-                <ChatUserList
-                    users={filteredUsers}
-                    selectedUserId={aliciId}
-                    onSelect={setAliciId}
-                    isLoading={isUsersLoading}
-                />
-
-            </div>
-
-
-            <div className="flex flex-1 flex-col bg-gray-50 p-6">
-
-                <h3 className="mb-4 text-lg font-semibold">
-                    Mesajlar
-                </h3>
-
-                {!aliciId ? (
-                    <p className="italic text-gray-500">
-                        Mesajlaşmak için bir kullanıcı seçin.
-                    </p>
-                ) : (
-                    <ChatMessageList
-                        messages={messages}
-                        currentUserId={gonderenId}
-                        isLoading={isMessagesLoading}
-                        findUserPhotoById={
-                            findUserPhotoById
-                        }
-                    />
-                )}
-
-                <ChatInput
-                    value={newMessage}
-                    onChange={(e) =>
-                        setNewMessage(e.target.value)
-                    }
-                    onSubmit={handleSend}
-                    disabled={!aliciId}
-                />
-
-            </div>
-        </div>
-    );
+        <ChatInput
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          onSubmit={handleSend}
+          disabled={!partnerId}
+        />
+      </div>
+    </div>
+  );
 }

@@ -1,1 +1,1 @@
-export {default} from "./EditableSkills"
+export { default } from "./EditableSkills";

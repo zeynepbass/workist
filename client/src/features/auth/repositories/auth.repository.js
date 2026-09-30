@@ -7,32 +7,26 @@ export async function getCurrentUser() {
   return userAdapter(response.data);
 }
 
-export async function login(data) {
-  const response = await authApi.login(data);
+export async function login(credentials) {
+  const response = await authApi.login(credentials);
 
   return response.data;
 }
 
-export async function register(data) {
-  const response = await authApi.register(data);
+export async function register(registration) {
+  const response = await authApi.register(registration);
 
   return response.data;
 }
 
-export async function account(email) {
-    const response = await authApi.account(email);
+export async function deleteAccount(email) {
+  const response = await authApi.deleteAccount(email);
 
-    return userAdapter(response.data);
+  return response.data;
 }
 
-export async function getDetails(email) {
-    const response = await authApi.getDetails(email);
+export async function updateProfile(email, profile) {
+  const response = await authApi.updateProfile(email, profile);
 
-    return userAdapter(response.data);
-}
-
-export async function updateDetails(email, formData) {
-    const response = await authApi.updateDetails(email, formData);
-
-    return userAdapter(response.data);
+  return userAdapter(response.data);
 }

@@ -1,34 +1,26 @@
 import AdCard from "../AdCard";
-export default function AdList  ({
-    posts,
-    userId,
-    firstName,
-    onEdit,
-    onDelete,
-    isDeleting,
-})  {
-    if (!posts || posts.length === 0) {
-        return (
-            <p className="text-center p-4 text-gray-500 italic w-full">
-                Seçilen duruma göre ilan bulunamadı.
-            </p>
-        );
-    }
 
+export default function AdList({ ads, userId, onEdit, onDelete, isDeleting }) {
+  if (!ads || ads.length === 0) {
     return (
-        <div className="flex flex-wrap gap-4 justify-start">
-            {posts.map((post) => (
-                <AdCard
-                    key={post.id}
-                    post={post}
-                    userId={userId}
-                    firstName={firstName}
-                    onEdit={onEdit}
-                    onDelete={onDelete}
-                    isDeleting={isDeleting}
-                />
-            ))}
-        </div>
+      <p className="text-center p-4 text-gray-500 italic w-full">
+        Seçilen duruma göre ilan bulunamadı.
+      </p>
     );
-};
+  }
 
+  return (
+    <div className="flex flex-wrap gap-4 justify-start">
+      {ads.map((ad) => (
+        <AdCard
+          key={ad.id}
+          ad={ad}
+          userId={userId}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          isDeleting={isDeleting}
+        />
+      ))}
+    </div>
+  );
+}

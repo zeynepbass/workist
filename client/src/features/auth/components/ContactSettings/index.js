@@ -1,1 +1,1 @@
-export {default} from "./ContactSettings"
+export { default } from "./ContactSettings";

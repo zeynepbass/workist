@@ -1,3 +1,0 @@
-
-
-export {Modal} from "./Modal"

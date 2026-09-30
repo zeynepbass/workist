@@ -1,32 +1,43 @@
 import { adsApi } from "../api/ads.api";
-import adsAdapter from "../adapters/ads.adapters";
+import adAdapter from "../adapters/ad.adapter";
 
-export async function getAds() {
-    const response = await adsApi.getAds();
+export async function searchAds({ search, subcategory } = {}) {
+  const params = {};
 
-    return response.data.map(adsAdapter);
+  if (search) params.search = search;
+  if (subcategory) params.subcategory = subcategory;
+
+  const response = await adsApi.searchAds(params);
+
+  return response.data.map(adAdapter);
 }
 
-export async function getDetailAds(id) {
-    const response = await adsApi.getAllDetail(id);
+export async function getMyAds() {
+  const response = await adsApi.getMyAds();
 
-    return adsAdapter(response.data);
+  return response.data.map(adAdapter);
 }
 
-export async function deletedAds(id) {
-    const response = await adsApi.deletedAds(id);
+export async function getAd(id) {
+  const response = await adsApi.getAd(id);
 
-    return response.data;
+  return adAdapter(response.data);
 }
 
-export async function updateAds(id, post) {
-    const response = await adsApi.updateAds(id, post);
+export async function deleteAd(id) {
+  const response = await adsApi.deleteAd(id);
 
-    return adsAdapter(response.data);
+  return response.data;
 }
 
-export async function createWorkPost(post) {
-    const response = await adsApi.createWorkPost(post);
+export async function updateAd(id, ad) {
+  const response = await adsApi.updateAd(id, ad);
 
-    return adsAdapter(response.data);
+  return adAdapter(response.data);
+}
+
+export async function createAd(ad) {
+  const response = await adsApi.createAd(ad);
+
+  return adAdapter(response.data);
 }

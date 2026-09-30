@@ -1,1 +1,1 @@
-export {default} from "./PortfolioImageUpload"
+export { default } from "./PortfolioImageUpload";

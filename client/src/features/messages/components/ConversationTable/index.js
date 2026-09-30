@@ -1,1 +1,1 @@
-export {default} from "./ConversationTable"
+export { default } from "./ConversationTable";

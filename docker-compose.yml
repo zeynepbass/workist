@@ -1,0 +1,61 @@
+services:
+  mongo:
+    image: mongo:8
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mongo-test:
+    image: mongo:8
+    profiles: ["test"]
+    ports:
+      - "27018:27017"
+    tmpfs:
+      - /data/db
+
+  server:
+    build:
+      context: ./server
+      target: development
+    env_file:
+      - path: ./server/.env
+        required: false
+    environment:
+      NODE_ENV: development
+      PORT: 4000
+      MONGO_URI: mongodb://mongo:27017/workist
+      JWT_SECRET: ${JWT_SECRET:-local-development-secret-change-me-please}
+      CLIENT_URL: http://localhost:3000
+    command: sh -c "npx migrate-mongo up && npm run dev"
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  client:
+    build:
+      context: ./client
+    environment:
+      API_PROXY_TARGET: http://server:4000
+      WATCHPACK_POLLING: "true"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    depends_on:
+      - server
+
+volumes:
+  mongo-data:

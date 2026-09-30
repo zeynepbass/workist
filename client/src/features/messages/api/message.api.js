@@ -1,8 +1,8 @@
 import apiClient from "@/shared/api";
 
 export const messageApi = {
-  getMessages(gonderenId, aliciId) {
-    return apiClient.get(`/mesajlar/${gonderenId}/${aliciId}`);
+  getMessages(userId, partnerId) {
+    return apiClient.get(`/mesajlar/${userId}/${partnerId}`);
   },
 
   getUsers() {
@@ -13,7 +13,7 @@ export const messageApi = {
     return apiClient.get(`/konusmalar/${userId}`);
   },
 
-  deleteConversation(currentId, targetId) {
-    return apiClient.delete(`/${currentId}/${targetId}`);
+  deleteConversation(userId, partnerId) {
+    return apiClient.delete(`/${userId}/${partnerId}`);
   },
 };

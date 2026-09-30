@@ -1,1 +1,1 @@
-export {default} from "./OrderDetailsModal"
+export { default } from "./OrderDetailsModal";

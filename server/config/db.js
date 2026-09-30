@@ -1,13 +1,12 @@
+import mongoose from "mongoose";
 
-import mongoose from 'mongoose'
-const Baglan = async () => {
-    try {
-        await mongoose.connect(process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-    } catch (error) {
-    }
-};
+import logger from "./logger.js";
 
-export default Baglan;
+export async function connectDatabase(uri) {
+  mongoose.connection.on("disconnected", () => logger.warn("MongoDB disconnected"));
+  mongoose.connection.on("reconnected", () => logger.info("MongoDB reconnected"));
+  mongoose.connection.on("error", (error) => logger.error({ err: error }, "MongoDB error"));
+
+  await mongoose.connect(uri);
+  logger.info("MongoDB connected");
+}

@@ -1,14 +1,17 @@
-export default function portfoliAdapter (item){
-    return{
-    id: item._id,
-    description: item.description,
-    title: item.title,
-    durum: item.durum,
-    fiyat: item.fiyat,
-    file: item.file,
-    selectedCategory: item.selectedCategory,
-    selectedSubcategory: item.selectedSubcategory,
-    userId: item.userId,
-    createdAt: item.createdAt,
-    updatedAt: item.updatedAt,
-}    }
+export default function portfolioAdapter(portfolio) {
+  if (!portfolio) return null;
+
+  return {
+    id: portfolio._id,
+    title: portfolio.title,
+    description: portfolio.description,
+    status: portfolio.status,
+    price: portfolio.price,
+    image: portfolio.image,
+    category: portfolio.category,
+    subcategory: portfolio.subcategory,
+    userId: portfolio.userId?.toString?.() ?? portfolio.userId,
+    createdAt: portfolio.createdAt,
+    updatedAt: portfolio.updatedAt,
+  };
+}

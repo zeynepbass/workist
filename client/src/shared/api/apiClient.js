@@ -1,33 +1,19 @@
 import axios from "axios";
 
+const AUTH_ENDPOINTS = ["/signin", "/uye-ol"];
+
 const apiClient = axios.create({
-    baseURL: process.env.REACT_APP_BASE_URL || "http://localhost:4562",
+  baseURL: process.env.REACT_APP_API_URL || "",
 });
 
-apiClient.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem("token");
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
 
-        const isAuthRequest =
-            config.url === "/signin" ||
-            config.url === "/uye-ol";
+  if (token && !AUTH_ENDPOINTS.includes(config.url)) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
 
-        if (token && !isAuthRequest) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
-    }
-);
-
-apiClient.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        return Promise.reject(error);
-    }
-);
+  return config;
+});
 
 export default apiClient;

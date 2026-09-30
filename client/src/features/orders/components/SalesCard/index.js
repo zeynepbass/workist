@@ -1,1 +1,1 @@
-export {default} from "./SalesCard"
+export { default } from "./SalesCard";

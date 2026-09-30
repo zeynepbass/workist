@@ -1,151 +1,99 @@
-
-import {
-    useQuery,
-    useMutation,
-    useQueryClient,
-} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 import * as adsRepository from "../repositories/ads.repository";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 
 export function useAds(id) {
-    const queryClient = useQueryClient();
-    const { userId, firstName } = useCurrentUser();
+  const queryClient = useQueryClient();
+  const { userId, firstName } = useCurrentUser();
 
-    const {
-        data: posts = [],
-        isLoading,
-        isError,
-        error,
-    } = useQuery({
-        queryKey: ["ads"],
-        queryFn: () =>
-            adsRepository.getAds(),
-    });
+  const {
+    data: ads = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["ads"],
+    queryFn: () => adsRepository.getMyAds(),
+  });
 
-    const {
-        data: details = null,
-        isLoading: isDetailsLoading,
-        isError: isDetailsError,
-        error: detailsError,
-    } = useQuery({
-        queryKey: ["ad", id],
-        queryFn: () =>
-            adsRepository.getDetailAds(id),
-        enabled: !!id,
-    });
+  const {
+    data: details = null,
+    isLoading: isDetailsLoading,
+    isError: isDetailsError,
+    error: detailsError,
+  } = useQuery({
+    queryKey: ["ad", id],
+    queryFn: () => adsRepository.getAd(id),
+    enabled: !!id,
+  });
 
-    const createMutation = useMutation({
-        mutationFn: (post) =>
-            adsRepository.createWorkPost(post),
+  const createMutation = useMutation({
+    mutationFn: (ad) => adsRepository.createAd(ad),
 
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["ads"],
-            });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["ads"] });
+    },
+  });
 
-            toast.success("İlan başarıyla oluşturuldu.");
-        },
+  const deleteMutation = useMutation({
+    mutationFn: (adId) => adsRepository.deleteAd(adId),
 
-        onError: (error) => {
-            toast.error(
-                error?.response?.data?.message ||
-                    "İlan oluşturulurken bir hata oluştu."
-            );
-        },
-    });
+    onSuccess: (_, deletedId) => {
+      queryClient.setQueryData(["ads"], (previous = []) =>
+        previous.filter((item) => item.id !== deletedId),
+      );
 
-    const deleteMutation = useMutation({
-        mutationFn: (id) =>
-            adsRepository.deletedAds(id),
+      queryClient.removeQueries({ queryKey: ["ad", deletedId] });
 
-        onSuccess: (_, deletedId) => {
-            queryClient.setQueryData(
-                ["ads"],
-                (oldPosts = []) =>
-                    oldPosts.filter(
-                        (item) =>
-                            item.id !== deletedId
-                    )
-            );
+      toast.success("İlan silindi.");
+    },
 
-            queryClient.removeQueries({
-                queryKey: ["ad", deletedId],
-            });
+    onError: (mutationError) => {
+      toast.error(mutationError?.response?.data?.message || "İlan silinirken bir hata oluştu.");
+    },
+  });
 
-            toast.success("İlan silindi.");
-        },
+  const updateMutation = useMutation({
+    mutationFn: ({ id: adId, ad }) => adsRepository.updateAd(adId, ad),
 
-        onError: (error) => {
-            toast.error(
-                error?.response?.data?.message ||
-                    "İlan silinirken bir hata oluştu."
-            );
-        },
-    });
+    onSuccess: (updatedAd, variables) => {
+      queryClient.setQueryData(["ad", variables.id], updatedAd);
 
-    const updateMutation = useMutation({
-        mutationFn: ({ id, post }) =>
-            adsRepository.updateAds(id, post),
+      queryClient.setQueryData(["ads"], (previous = []) =>
+        previous.map((item) => (item.id === variables.id ? updatedAd : item)),
+      );
 
-        onSuccess: (updatedPost, variables) => {
-            queryClient.setQueryData(
-                ["ad", variables.id],
-                updatedPost
-            );
+      toast.success("İlan güncellendi.");
+    },
 
-            queryClient.setQueryData(
-                ["ads"],
-                (oldPosts = []) =>
-                    oldPosts.map((item) =>
-                        item.id === variables.id
-                            ? updatedPost
-                            : item
-                    )
-            );
+    onError: (mutationError) => {
+      toast.error(mutationError?.response?.data?.message || "İlan güncellenirken bir hata oluştu.");
+    },
+  });
 
-            toast.success("İlan güncellendi.");
-        },
+  return {
+    userId,
+    firstName,
 
-        onError: (error) => {
-            toast.error(
-                error?.response?.data?.message ||
-                    "İlan güncellenirken bir hata oluştu."
-            );
-        },
-    });
+    ads,
+    isLoading,
+    isError,
+    error,
 
-    return {
-        userId,
-        firstName,
+    details,
+    isDetailsLoading,
+    isDetailsError,
+    detailsError,
 
-        posts,
-        isLoading,
-        isError,
-        error,
+    createAd: createMutation.mutateAsync,
+    isCreating: createMutation.isPending,
 
-        details,
-        isDetailsLoading,
-        isDetailsError,
-        detailsError,
+    deleteAd: deleteMutation.mutate,
+    isDeleting: deleteMutation.isPending,
 
-        createWorkPost:
-            createMutation.mutateAsync,
-
-        isCreating:
-            createMutation.isPending,
-
-        deleteClickPost:
-            deleteMutation.mutate,
-
-        isDeleting:
-            deleteMutation.isPending,
-
-        updatePost:
-            updateMutation.mutate,
-
-        isUpdating:
-            updateMutation.isPending,
-    };
+    updateAd: updateMutation.mutate,
+    isUpdating: updateMutation.isPending,
+  };
 }
