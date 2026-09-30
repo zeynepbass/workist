@@ -1,55 +1,45 @@
-import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBook,
-  faComment,
-  faMagnifyingGlass,
-} from '@fortawesome/free-solid-svg-icons';
-import { Link, useNavigate } from 'react-router-dom';
-import Profile from '@/features/auth/pages/Profile';
-import { Button,Input } from '@/shared/components/atoms';
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBook, faComment, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { Link, useNavigate } from "react-router-dom";
+
+import ProfileMenu from "@/features/auth/components/ProfileMenu";
+import { useCategories } from "@/features/categories/hooks/useCategories";
+import { Button, Input } from "@/shared/components/atoms";
 
 export default function Header() {
+  const navigate = useNavigate();
+  const { categories } = useCategories();
 
   const [search, setSearch] = useState("");
-  const Navigate = useNavigate()
-  const subcategories = [
-    {
-      category: 'Grafik & Tasarım',
-      items: ['Logo Tasarımı', 'Afiş Tasarımı', 'Sosyal Medya Postu'],
-    },
-    {
-      category: 'Yazı & Çeviri',
-      items: ['Makale', 'Blog Yazısı', 'Kitap Çevirisi'],
-    },
-    {
-      category: 'Yazılım & Teknoloji',
-      items: ['Web Uygulaması', 'Mobil Uygulama', 'API Geliştirme'],
-    }
-  ];
+  const [openCategory, setOpenCategory] = useState(null);
+
   const handleSearch = () => {
-    if (search.trim()) {
-      Navigate(`/ilanlar?search=${encodeURIComponent(search.trim())}`);
+    const term = search.trim();
+
+    if (term) {
+      navigate(`/ilanlar?search=${encodeURIComponent(term)}`);
     }
   };
-  
 
-  const [categories, setCategories] = useState(false)
+  const handleSubcategoryClick = (slug) => {
+    setOpenCategory(null);
+    navigate(`/ilanlar?subcategory=${encodeURIComponent(slug)}`);
+  };
+
   return (
     <div className="border-b-2 ">
       <div className="flex flex-wrap items-center gap-4 p-4 md:p-2">
-
         <div className="order-1">
           <Button
-          onClick={() => Navigate("/workist")}
-          className="text-purple-950 font-bold uppercase cursor-pointer hover:text-gray-500"
-           >workist</Button>
-
+            onClick={() => navigate("/workist")}
+            className="text-purple-950 font-bold uppercase cursor-pointer hover:text-gray-500"
+          >
+            workist
+          </Button>
         </div>
 
-
         <div className="order-3 md:order-2 w-full md:w-auto md:flex-1 flex flex-col sm:flex-row items-center justify-center gap-2">
-
           <div className="relative w-full max-w-lg">
             <FontAwesomeIcon
               icon={faMagnifyingGlass}
@@ -64,46 +54,52 @@ export default function Header() {
                 }
               }}
               type="text"
+              aria-label="İlan ara"
               placeholder="Arama yap..."
               className="pl-10 w-full border-b-2 border-gray-300 rounded-md py-2 outline-none  focus:ring-2 focus:ring-purple-950"
             />
-
           </div>
           <div className="flex justify-center gap-6 text-md text-purple-950 py-2 sm:p-5">
-            <Link to="/yapilacaklar">
+            <Link to="/konusmalar" aria-label="Konuşmalar">
               <FontAwesomeIcon icon={faBook} className="hover:text-purple-600 " />
             </Link>
 
-            <FontAwesomeIcon icon={faComment} className="hover:text-purple-600 cursor-pointer" onClick={()=>Navigate("/sohbet")} />
+            <Link to="/sohbet" aria-label="Sohbet">
+              <FontAwesomeIcon icon={faComment} className="hover:text-purple-600" />
+            </Link>
           </div>
-
-
         </div>
 
-
         <div className="order-2 md:order-3 ml-auto md:ml-0 flex justify-end">
-          <Profile />
+          <ProfileMenu />
         </div>
       </div>
       <hr />
-      <ul className='flex flex-wrap justify-around items-center gap-x-4 gap-y-2 text-gray-400 capitalize p-3 md:p-5'>
-        {subcategories && subcategories.map((item) => (
-          <li key={item.category} className="relative z-10">
-            <div
+      <ul className="flex flex-wrap justify-around items-center gap-x-4 gap-y-2 text-gray-400 capitalize p-3 md:p-5">
+        {categories.map((category) => (
+          <li key={category.slug} className="relative z-10">
+            <button
+              type="button"
+              aria-expanded={openCategory === category.slug}
               className="cursor-pointer"
-              onClick={() => setCategories(prev => prev === item.category ? false : item.category)}
+              onClick={() =>
+                setOpenCategory((previous) => (previous === category.slug ? null : category.slug))
+              }
             >
-              {item.category}
-            </div>
+              {category.label}
+            </button>
 
-
-            {categories === item.category && (
+            {openCategory === category.slug && (
               <ul className="absolute top-full left-0 bg-white shadow-md rounded mt-2   min-w-[200px]  text-gray-400">
-                {item.items.map((subItem, idx) => ( 
-
-  
-                  <li key={idx} className="p-5 hover:bg-gray-200 cursor-pointer" onClick={()=>   Navigate(`/ilanlar?search=${encodeURIComponent(subItem)}`)}>
-                    {subItem}
+                {category.subcategories.map((subcategory) => (
+                  <li key={subcategory.slug}>
+                    <button
+                      type="button"
+                      className="w-full p-5 text-left hover:bg-gray-200 cursor-pointer"
+                      onClick={() => handleSubcategoryClick(subcategory.slug)}
+                    >
+                      {subcategory.label}
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -111,9 +107,6 @@ export default function Header() {
           </li>
         ))}
       </ul>
-
     </div>
   );
-};
-
-
+}

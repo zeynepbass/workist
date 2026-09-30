@@ -1,1 +1,1 @@
-export {default} from "./BuyerRequestCard"
+export { default } from "./BuyerRequestCard";

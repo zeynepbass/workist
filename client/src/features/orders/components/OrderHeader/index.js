@@ -1,1 +1,1 @@
-export {default} from "./OrderHeader"
+export { default } from "./OrderHeader";

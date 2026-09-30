@@ -1,44 +1,38 @@
 import { portfolioApi } from "../api/portfolio.api";
 import portfolioAdapter from "../adapters/portfolio.adapter";
 
-export async function searchPosts(searchQuery) {
-    const response = await portfolioApi.searchPosts(searchQuery);
+export async function getMyPortfolios() {
+  const response = await portfolioApi.getMyPortfolios();
 
-    return response.data.map(portfolioAdapter);
+  return response.data.map(portfolioAdapter);
 }
 
-export async function getUserPortfolios() {
-    const response = await portfolioApi.getUserPortfolios();
+export async function createPortfolio(portfolio) {
+  const response = await portfolioApi.createPortfolio(portfolio);
 
-    return response.data.map(portfolioAdapter);
-}
-
-export async function createPortfolio(data) {
-    const response = await portfolioApi.createPortfolio(data);
-
-    return portfolioAdapter(response.data);
+  return portfolioAdapter(response.data);
 }
 
 export async function deletePortfolio(id) {
-    const response = await portfolioApi.deletePortfolio(id);
+  const response = await portfolioApi.deletePortfolio(id);
 
-    return response.data;
+  return response.data;
 }
 
-export async function getPortfolioDetail(id) {
-    const response = await portfolioApi.getPortfolioDetail(id);
+export async function getPortfolio(id) {
+  const response = await portfolioApi.getPortfolio(id);
 
-    return portfolioAdapter(response.data);
+  return portfolioAdapter(response.data);
 }
 
-export async function updatePortfolio(id, formData) {
-    const response = await portfolioApi.updatePortfolio(id, formData);
+export async function updatePortfolio(id, portfolio) {
+  const response = await portfolioApi.updatePortfolio(id, portfolio);
 
-    return portfolioAdapter(response.data);
+  return portfolioAdapter(response.data);
 }
 
-export async function updatePortfolioStatus(id, durum) {
-    const response = await portfolioApi.updatePortfolioStatus(id, durum);
+export async function updatePortfolioStatus(id, status) {
+  const response = await portfolioApi.updatePortfolioStatus(id, status);
 
-    return response.data;
+  return portfolioAdapter(response.data);
 }

@@ -1,1 +1,1 @@
-export {default} from "./PortfolioFilters"
+export { default } from "./PortfolioFilters";

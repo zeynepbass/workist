@@ -13,15 +13,11 @@ export const authApi = {
     return apiClient.post("/uye-ol", data);
   },
 
-  account(email) {
-    return apiClient.get(`/users/${email}`);
+  deleteAccount(email) {
+    return apiClient.delete(`/users/${encodeURIComponent(email)}`);
   },
 
-  getDetails(email) {
-    return apiClient.get(`/duzenle/${email}`);
-  },
-
-  updateDetails(email, formData) {
-    return apiClient.put(`/duzenle/${email}`, formData);
+  updateProfile(email, profile) {
+    return apiClient.put(`/duzenle/${encodeURIComponent(email)}`, profile);
   },
 };

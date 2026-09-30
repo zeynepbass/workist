@@ -1,5 +1,5 @@
 {
-  "name": "workist",
+  "name": "workist-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -8,12 +8,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@tanstack/react-query": "^5.102.8",
-    "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^13.5.0",
     "axios": "^1.18.0",
-    "jwt-decode": "^4.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hot-toast": "^2.6.0",
@@ -27,14 +22,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "test": "craco test"
   },
   "browserslist": {
     "production": [
@@ -49,6 +37,11 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "http-proxy-middleware": "^2.0.10",
     "tailwindcss": "^3.4.17"
   }
 }

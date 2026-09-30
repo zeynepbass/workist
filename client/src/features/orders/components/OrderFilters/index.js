@@ -1,1 +1,1 @@
-export {default} from "./OrderFilters"
+export { default } from "./OrderFilters";

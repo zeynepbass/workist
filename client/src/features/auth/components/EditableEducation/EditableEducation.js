@@ -1,40 +1,38 @@
 import { useState, useEffect } from "react";
-import { Button,Input } from "@/shared/components/atoms";
+import { Button, Input } from "@/shared/components/atoms";
 
-export default function EditableEducation({
-  userDetails,
-  updateDetails,
-  isUpdating,
-}) {
+export default function EditableEducation({ userDetails, updateProfile, isUpdating }) {
   const [editMode, setEditMode] = useState(false);
-  const [sertifikalar, setSertifikalar] = useState([]);
+  const [certificates, setCertificates] = useState([]);
   const [newValue, setNewValue] = useState("");
 
   useEffect(() => {
-    if (userDetails?.sertifika) {
-      setSertifikalar(userDetails.sertifika);
+    if (userDetails?.certificates) {
+      setCertificates(userDetails.certificates);
     }
   }, [userDetails]);
 
   const handleAdd = () => {
-    if (newValue.trim() !== "" && sertifikalar.length < 5) {
-      const updatedList = [...sertifikalar, newValue.trim()];
+    const value = newValue.trim();
 
-      setSertifikalar(updatedList);
+    if (value !== "" && !certificates.includes(value) && certificates.length < 5) {
+      const updatedList = [...certificates, value];
+
+      setCertificates(updatedList);
       setNewValue("");
     }
   };
 
   const handleDelete = (index) => {
-    const updatedList = sertifikalar.filter((_, i) => i !== index);
+    const updatedList = certificates.filter((_, i) => i !== index);
 
-    setSertifikalar(updatedList);
+    setCertificates(updatedList);
   };
 
   const handleSave = () => {
-    updateDetails({
+    updateProfile({
       ...userDetails,
-      sertifika: sertifikalar,
+      certificates,
     });
 
     setEditMode(false);
@@ -57,12 +55,7 @@ export default function EditableEducation({
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 4v16m8-8H4"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
 
           {editMode ? "İptal" : "Düzenle"}
@@ -81,7 +74,7 @@ export default function EditableEducation({
 
           <Button
             onClick={handleAdd}
-            disabled={sertifikalar.length >= 5}
+            disabled={certificates.length >= 5}
             className="bg-purple-600 text-white px-3 py-1 rounded text-sm"
           >
             Ekle
@@ -90,9 +83,9 @@ export default function EditableEducation({
       )}
 
       <ul>
-        {sertifikalar?.map((item, index) => (
+        {certificates?.map((item, index) => (
           <li
-            key={index}
+            key={item}
             className="m-1 flex justify-between items-center border border-gray-300 rounded px-3 py-1 mb-2"
           >
             <span>{item}</span>

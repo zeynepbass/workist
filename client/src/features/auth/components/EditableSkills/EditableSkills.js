@@ -1,18 +1,14 @@
 import { useState, useEffect } from "react";
-import { Button,Input } from "@/shared/components/atoms";
+import { Button, Input } from "@/shared/components/atoms";
 
-export default function EditableSkills({
-  userDetails,
-  updateDetails,
-  isUpdating,
-}) {
+export default function EditableSkills({ userDetails, updateProfile, isUpdating }) {
   const [editMode, setEditMode] = useState(false);
   const [skills, setSkills] = useState([]);
   const [newSkill, setNewSkill] = useState("");
 
   useEffect(() => {
-    if (userDetails?.uzmanlik) {
-      setSkills(userDetails.uzmanlik);
+    if (userDetails?.skills) {
+      setSkills(userDetails.skills);
     }
   }, [userDetails]);
 
@@ -36,9 +32,9 @@ export default function EditableSkills({
   };
 
   const handleSave = () => {
-    updateDetails({
+    updateProfile({
       ...userDetails,
-      uzmanlik: skills,
+      skills: skills,
     });
 
     setEditMode(false);
@@ -51,10 +47,7 @@ export default function EditableSkills({
           Uzmanı Olduğu Alanlar & <strong>Araçlar</strong>
         </h6>
 
-        <Button
-          onClick={() => setEditMode(!editMode)}
-          className="text-purple-600"
-        >
+        <Button onClick={() => setEditMode(!editMode)} className="text-purple-600">
           {editMode ? "İptal" : "Düzenle"}
         </Button>
       </div>
@@ -76,10 +69,7 @@ export default function EditableSkills({
                   onChange={(e) => handleSkillChange(index, e.target.value)}
                 />
 
-                <Button
-                  onClick={() => handleRemoveSkill(index)}
-                  className="ml-1 text-red-500"
-                >
+                <Button onClick={() => handleRemoveSkill(index)} className="ml-1 text-red-500">
                   ×
                 </Button>
               </div>
@@ -103,9 +93,7 @@ export default function EditableSkills({
               Ekle
             </Button>
 
-            <span className="text-xs text-gray-400 italic">
-              {skills.length}/6 yetenek eklendi
-            </span>
+            <span className="text-xs text-gray-400 italic">{skills.length}/6 yetenek eklendi</span>
           </div>
 
           <Button
@@ -119,10 +107,7 @@ export default function EditableSkills({
       ) : (
         <ul className="pl-2 list-none flex flex-wrap pt-2">
           {skills.map((skill, index) => (
-            <li
-              key={index}
-              className="p-2 border border-purple-300 rounded m-1 text-purple-700"
-            >
+            <li key={index} className="p-2 border border-purple-300 rounded m-1 text-purple-700">
               {skill}
             </li>
           ))}

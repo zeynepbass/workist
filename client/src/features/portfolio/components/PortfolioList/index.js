@@ -1,1 +1,1 @@
-export {default} from "./PortfolioList"
+export { default } from "./PortfolioList";

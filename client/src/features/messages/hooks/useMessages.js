@@ -1,121 +1,57 @@
-import {
-    useQuery,
-    useQueryClient,
-} from "@tanstack/react-query";
+import { useCallback } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import * as messageRepository from "../repositories/message.repository";
 
-export function useMessages(gonderenId, aliciId) {
-    const queryClient = useQueryClient();
+export function useMessages(userId, partnerId) {
+  const queryClient = useQueryClient();
 
-    const messagesQuery = useQuery({
-        queryKey: [
-            "messages",
-            gonderenId,
-            aliciId,
-        ],
+  const messagesQuery = useQuery({
+    queryKey: ["messages", userId, partnerId],
+    queryFn: () => messageRepository.getMessages(userId, partnerId),
+    enabled: Boolean(userId && partnerId),
+  });
 
-        queryFn: () =>
-            messageRepository.getMessages(
-                gonderenId,
-                aliciId
-            ),
+  const usersQuery = useQuery({
+    queryKey: ["users"],
+    queryFn: () => messageRepository.getUsers(),
+  });
 
-        enabled: Boolean(
-            gonderenId && aliciId
-        ),
-    });
+  const conversationsQuery = useQuery({
+    queryKey: ["conversations", userId],
+    queryFn: () => messageRepository.getConversations(userId),
+    enabled: Boolean(userId),
+  });
 
-    const usersQuery = useQuery({
-        queryKey: ["users"],
+  const addMessageToCache = useCallback(
+    (message) => {
+      queryClient.setQueryData(["messages", userId, partnerId], (previous = []) => [
+        ...previous,
+        message,
+      ]);
+    },
+    [queryClient, userId, partnerId],
+  );
 
-        queryFn: () =>
-            messageRepository.getUsers(),
-    });
+  const deleteConversation = async (targetId) => {
+    const response = await messageRepository.deleteConversation(userId, targetId);
 
-    const conversationsQuery = useQuery({
-        queryKey: [
-            "conversations",
-            gonderenId,
-        ],
+    queryClient.setQueryData(["messages", userId, targetId], []);
+    await queryClient.invalidateQueries({ queryKey: ["conversations", userId] });
 
-        queryFn: () =>
-            messageRepository.getConversations(
-                gonderenId
-            ),
+    return response;
+  };
 
-        enabled: Boolean(gonderenId),
-    });
+  return {
+    messages: messagesQuery.data ?? [],
+    users: usersQuery.data ?? [],
+    conversations: conversationsQuery.data ?? [],
 
-    const addMessageToCache = (message) => {
-        queryClient.setQueryData(
-            [
-                "messages",
-                gonderenId,
-                aliciId,
-            ],
-            (oldMessages = []) => [
-                ...oldMessages,
-                message,
-            ]
-        );
-    };
+    isMessagesLoading: messagesQuery.isLoading,
+    isUsersLoading: usersQuery.isLoading,
+    isConversationsLoading: conversationsQuery.isLoading,
 
-    const deleteMessages = async (
-        currentId,
-        targetId
-    ) => {
-        const response =
-            await messageRepository.deleteConversation(
-                currentId,
-                targetId
-            );
-
-        queryClient.setQueryData(
-            [
-                "messages",
-                currentId,
-                targetId,
-            ],
-            []
-        );
-
-        await queryClient.invalidateQueries({
-            queryKey: [
-                "conversations",
-                currentId,
-            ],
-        });
-
-        return response;
-    };
-
-    return {
-        messages:
-            messagesQuery.data ?? [],
-
-        userList:
-            usersQuery.data ?? [],
-
-        users:
-            usersQuery.data ?? [],
-
-        konusmalar:
-            conversationsQuery.data ?? [],
-
-        isMessagesLoading:
-            messagesQuery.isLoading,
-
-        isUsersLoading:
-            usersQuery.isLoading,
-
-        isAllUsersLoading:
-            usersQuery.isLoading,
-
-        isConversationsLoading:
-            conversationsQuery.isLoading,
-
-        addMessageToCache,
-        deleteMessages,
-    };
+    addMessageToCache,
+    deleteConversation,
+  };
 }

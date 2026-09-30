@@ -1,59 +1,35 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+
 import * as authRepository from "../repositories/auth.repository";
-import * as portfolioRepository from "@/features/portfolio/repositories/portfolio.repository";
 import { useCurrentUser } from "./useCurrentUser";
 
 export function useDetails() {
-    const { user, isLoading, isError, error } = useCurrentUser();
-    const queryClient = useQueryClient();
+  const { user, isLoading, isError, error } = useCurrentUser();
+  const queryClient = useQueryClient();
 
-    const portfolioMutation = useMutation({
-        mutationFn: (data) =>
-            portfolioRepository.createPortfolio(data),
+  const deleteAccountMutation = useMutation({
+    mutationFn: () => authRepository.deleteAccount(user?.email),
 
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["portfolio"],
-            });
-        },
-    });
+    onSuccess: () => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("login");
+      queryClient.clear();
+      toast.success("Hesap donduruldu.");
+    },
 
-    const portfolyoCreate = (data) =>
-        portfolioMutation.mutateAsync(data);
+    onError: (mutationError) => {
+      toast.error(mutationError?.response?.data?.message || "Hesap dondurulurken bir hata oluştu.");
+    },
+  });
 
-    const accountMutation = useMutation({
-        mutationFn: () =>
-            authRepository.account(user?.email),
+  return {
+    user,
+    isLoading,
+    isError,
+    error,
 
-        onSuccess: () => {
-            toast.success("Hesap donduruldu.");
-        },
-
-        onError: (error) => {
-            toast.error(
-                error?.response?.data?.message ||
-                    "Hesap dondurulurken bir hata oluştu."
-            );
-        },
-    });
-
-    const hesabiDondur = () => {
-        accountMutation.mutate();
-    };
-
-    return {
-        email: user,
-
-        isLoading,
-        isError,
-        error,
-        portfolyoCreate,
-        isCreating: portfolioMutation.isPending,
-        isCreateError: portfolioMutation.isError,
-        createError: portfolioMutation.error,
-
-        hesabiDondur,
-        isDeleting: accountMutation.isPending,
-    };
+    deleteAccount: deleteAccountMutation.mutateAsync,
+    isDeleting: deleteAccountMutation.isPending,
+  };
 }

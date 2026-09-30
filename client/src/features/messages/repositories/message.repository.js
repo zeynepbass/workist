@@ -1,32 +1,26 @@
 import { messageApi } from "../api/message.api";
-import messageAdapter from "../adapters/message.adapter";
+import messageAdapter, { chatUserAdapter } from "../adapters/message.adapter";
 
-export async function getMessages(gonderenId, aliciId) {
-    const response = await messageApi.getMessages(
-        gonderenId,
-        aliciId
-    );
+export async function getMessages(userId, partnerId) {
+  const response = await messageApi.getMessages(userId, partnerId);
 
-    return response.data.map(messageAdapter);
+  return response.data.map(messageAdapter);
 }
 
 export async function getUsers() {
-    const response = await messageApi.getUsers();
+  const response = await messageApi.getUsers();
 
-    return response.data;
+  return response.data.map(chatUserAdapter);
 }
 
 export async function getConversations(userId) {
-    const response = await messageApi.getConversations(userId);
+  const response = await messageApi.getConversations(userId);
 
-    return response.data;
+  return response.data.map(messageAdapter);
 }
 
-export async function deleteConversation(currentId, targetId) {
-    const response = await messageApi.deleteConversation(
-        currentId,
-        targetId
-    );
+export async function deleteConversation(userId, partnerId) {
+  const response = await messageApi.deleteConversation(userId, partnerId);
 
-    return response.data;
+  return response.data;
 }

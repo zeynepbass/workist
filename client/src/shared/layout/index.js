@@ -4,7 +4,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 
-export default function Layouts() {
+export default function Layout() {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="w-full">

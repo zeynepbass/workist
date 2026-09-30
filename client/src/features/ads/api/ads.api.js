@@ -1,25 +1,27 @@
-
 import apiClient from "@/shared/api";
 
 export const adsApi = {
-  getAds() {
+  searchAds(params) {
+    return apiClient.get("/ilanlar", { params });
+  },
+
+  getMyAds() {
     return apiClient.get("/ilanlarim");
   },
 
-  getAllDetail(id) {
+  getAd(id) {
     return apiClient.get(`/ilanlarim/${id}`);
   },
 
-  deletedAds(id) {
+  deleteAd(id) {
     return apiClient.delete(`/ilanlarim/${id}`);
   },
 
-  updateAds(id, post) {
-    return apiClient.put(`/ilanlarim/${id}`, post);
+  updateAd(id, ad) {
+    return apiClient.put(`/ilanlarim/${id}`, ad);
   },
 
-  createWorkPost(post) {
-    return apiClient.post("/ilanlarim", post);
+  createAd(ad) {
+    return apiClient.post("/ilanlarim", ad);
   },
 };
-

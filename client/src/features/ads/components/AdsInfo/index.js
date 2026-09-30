@@ -1,1 +1,1 @@
-export {default} from "./AdsInfo"
+export { default } from "./AdsInfo";

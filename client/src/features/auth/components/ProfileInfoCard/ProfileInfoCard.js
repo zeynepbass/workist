@@ -1,29 +1,25 @@
 import { useState, useEffect } from "react";
 import { Textarea, Button, Input } from "@/shared/components/atoms";
 
-export default function ProfileInfoCard({
-  userDetails,
-  updateDetails,
-  isUpdating,
-}) {
+export default function ProfileInfoCard({ userDetails, updateProfile, isUpdating }) {
   const [editMode, setEditMode] = useState(false);
 
   const [formData, setFormData] = useState({
-    file: "",
-    unvan: "",
+    avatar: "",
+    title: "",
     firstName: "",
     lastName: "",
-    hakkimda: "",
+    about: "",
   });
 
   useEffect(() => {
     if (userDetails) {
       setFormData({
-        file: userDetails.file || "",
+        avatar: userDetails.avatar || "",
         firstName: userDetails.firstName || "",
         lastName: userDetails.lastName || "",
-        unvan: userDetails.unvan || "",
-        hakkimda: userDetails.hakkimda || "",
+        title: userDetails.title || "",
+        about: userDetails.about || "",
       });
     }
   }, [userDetails]);
@@ -36,7 +32,7 @@ export default function ProfileInfoCard({
   };
 
   const handleSave = () => {
-    updateDetails({
+    updateProfile({
       ...userDetails,
       ...formData,
     });
@@ -54,7 +50,7 @@ export default function ProfileInfoCard({
     reader.onloadend = () => {
       setFormData((prev) => ({
         ...prev,
-        file: reader.result,
+        avatar: reader.result,
       }));
     };
 
@@ -64,10 +60,7 @@ export default function ProfileInfoCard({
   return (
     <div className="bg-white p-4 rounded-[10px] shadow">
       <div className="flex justify-end items-center">
-        <Button
-          onClick={() => setEditMode(!editMode)}
-          className="text-purple-600"
-        >
+        <Button onClick={() => setEditMode(!editMode)} className="text-purple-600">
           {editMode ? "İptal" : "Düzenle"}
         </Button>
       </div>
@@ -77,19 +70,14 @@ export default function ProfileInfoCard({
       {editMode ? (
         <>
           <img
-            src={formData.file}
+            src={formData.avatar}
             alt="Profil fotoğrafı"
             width="100"
             height="100"
             className="rounded-full shadow-lg"
           />
 
-          <Input
-            type="file"
-            className="m-5"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
+          <Input type="file" className="m-5" accept="image/*" onChange={handleFileChange} />
 
           <Input
             type="text"
@@ -111,17 +99,17 @@ export default function ProfileInfoCard({
             type="text"
             className="border p-2 w-full mb-2"
             placeholder="ünvanınızı girin"
-            name="unvan"
-            value={formData.unvan}
+            name="title"
+            value={formData.title}
             onChange={handleChange}
           />
 
           <Textarea
             className="border p-2 w-full mb-2"
             rows={4}
-            name="hakkimda"
+            name="about"
             placeholder="kendinizden bahsedin"
-            value={formData.hakkimda}
+            value={formData.about}
             onChange={handleChange}
           />
 
@@ -137,7 +125,7 @@ export default function ProfileInfoCard({
         <>
           <div>
             <img
-              src={userDetails?.file}
+              src={userDetails?.avatar}
               alt="Profil fotoğrafı"
               width="100"
               height="100"
@@ -151,15 +139,15 @@ export default function ProfileInfoCard({
             {userDetails?.firstName} {userDetails?.lastName}
           </p>
 
-          <p className="text-gray-400 italic">{userDetails?.unvan}</p>
+          <p className="text-gray-400 italic">{userDetails?.title}</p>
 
           <br />
 
           <h5 className="text-purple-700">
-            <strong>{userDetails?.unvan}</strong>
+            <strong>{userDetails?.title}</strong>
           </h5>
 
-          <p className="text-sm text-gray-400 pt-2">{userDetails?.hakkimda}</p>
+          <p className="text-sm text-gray-400 pt-2">{userDetails?.about}</p>
         </>
       )}
     </div>

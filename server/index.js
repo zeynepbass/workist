@@ -1,57 +1,28 @@
-import express from 'express';
-import http from 'http';
-import { Server } from 'socket.io';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import portfolyo from './routes/portfolyo.js';
-import ilanlarim from './routes/ilanlarim.js';
-import kullanici from './routes/kullanici.js';
-import message from './routes/message.js';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-import Mesaj from './models/message.js';
+import http from "node:http";
 
-dotenv.config();
+import { Server } from "socket.io";
 
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: 'http://localhost:3000', 
-    methods: ['GET', 'POST'],
-    credentials: true
-  },
-});
+import logger from "./config/logger.js";
 
-app.use(cors());
-app.use(bodyParser.json({ limit: '200mb' }));
-app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
+async function start() {
+  const { default: env } = await import("./config/env.js");
+  const { connectDatabase } = await import("./config/db.js");
+  const { createApp } = await import("./app.js");
+  const { registerChatHandlers } = await import("./sockets/chat.socket.js");
 
+  await connectDatabase(env.MONGO_URI);
 
-app.use('/', portfolyo);
-app.use('/', ilanlarim);
-app.use('/', kullanici);
-app.use('/', message);
-
-mongoose
-    .connect(process.env.MONGO_URI)
-    .then(() => {})
-    .catch((err) => {});
-
-io.on('connection', (socket) => {
-  socket.on('sendMessage', async (data) => {
-    try {
-      const yeniMesaj = new Mesaj(data);
-      await yeniMesaj.save();
-
-      io.emit('receiveMessage', yeniMesaj);
-    } catch (err) {
-    }
+  const server = http.createServer(createApp());
+  const io = new Server(server, {
+    cors: { origin: env.CLIENT_URL, methods: ["GET", "POST"], credentials: true },
   });
 
-  socket.on('disconnect', () => {
-  });
-});
+  registerChatHandlers(io);
 
-const PORT = process.env.PORT || 5430;
-server.listen(PORT, () => {});
+  server.listen(env.PORT, () => logger.info({ port: env.PORT }, "Server listening"));
+}
+
+start().catch((error) => {
+  logger.fatal({ err: error }, error.message);
+  process.exitCode = 1;
+});

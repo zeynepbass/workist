@@ -1,1 +1,1 @@
-export {default} from "./AdsFileUpload"
+export { default } from "./AdsFileUpload";

@@ -1,60 +1,50 @@
-export const orderDetail = {
-    id: "0",
-
-    alici: "Ali Veli",
-
-    siparisTarihi: "2023-08-01",
-
-    teslimTarihi: "2023-08-10",
-
-    durum: "devam",
-
-    ilan: "Web Tasarım Paketi",
-
-    paket: {
-        adet: 1,
-        sure: "5 gün",
-        tutar: 500,
+export const sampleOrderDetail = {
+  id: "0",
+  buyer: "Ali Veli",
+  orderedAt: "2023-08-01",
+  dueAt: "2023-08-10",
+  status: "in_progress",
+  adTitle: "Web Tasarım Paketi",
+  price: 500,
+  review: {
+    username: "ali_veli",
+    comment: "Hızlı ve kaliteli hizmet, teşekkürler!",
+  },
+  timeline: [
+    {
+      id: "completed",
+      type: "completed",
+      title: "Sipariş tamamlandı. 🥳",
+      description: "Ödemen Workist bakiyene aktarılacak.",
+      time: "23:42",
     },
-
-    degerlendirme: {
-        kullaniciAdi: "ali_veli",
-        aciklama: "Hızlı ve kaliteli hizmet, teşekkürler!",
+    {
+      id: "delivered",
+      type: "delivered",
+      title: "Sipariş teslim edildi. 👏",
+      description: "Alıcının siparişi inceleyip onay veya revize vermesi bekleniyor.",
+      time: "23:41",
     },
-
-    process: [
-        {
-            type: "completed",
-            title: "Sipariş tamamlandı. 🥳",
-            description: "Ödemen Bionluk Bakiyene aktarılacak.",
-            time: "23:42",
-        },
-        {
-            type: "delivered",
-            title: "Sipariş teslim edildi. 👏",
-            description:
-                "Alıcının siparişi inceleyip onay veya revize vermesi bekleniyor.",
-            time: "23:41",
-        },
-        {
-            type: "support",
-            title: "Çözüm Merkezi",
-            description:
-                'Bir sorun yaşarsan bize "Çözüm Merkezi" bölümünden yazabilirsin.',
-            time: "16:38",
-        },
-        {
-            type: "started",
-            title: "Sipariş başladı",
-            description:
-                "Sipariş süreci başladı. Şimdi freelancer’ın işi teslim etmesi bekleniyor.",
-            time: "16:38",
-        },
-        {
-            type: "new-order",
-            title: "Yeni bir sipariş aldın!",
-            description: "Ödeme şu an havuz hesabında.",
-            time: "16:38",
-        },
-    ],
+    {
+      id: "support",
+      type: "support",
+      title: "Çözüm Merkezi",
+      description: 'Bir sorun yaşarsan bize "Çözüm Merkezi" bölümünden yazabilirsin.',
+      time: "16:38",
+    },
+    {
+      id: "started",
+      type: "started",
+      title: "Sipariş başladı",
+      description: "Sipariş süreci başladı. Şimdi freelancer’ın işi teslim etmesi bekleniyor.",
+      time: "16:38",
+    },
+    {
+      id: "new-order",
+      type: "new-order",
+      title: "Yeni bir sipariş aldın!",
+      description: "Ödeme şu an havuz hesabında.",
+      time: "16:38",
+    },
+  ],
 };

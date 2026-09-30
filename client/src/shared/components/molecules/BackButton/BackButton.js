@@ -1,7 +1,7 @@
 import { FaArrowLeft } from "react-icons/fa";
 import { Button } from "../../atoms";
 
-export function BackButton  ({ onClick })  {
+export function BackButton({ onClick }) {
   return (
     <Button
       onClick={onClick}
@@ -11,5 +11,4 @@ export function BackButton  ({ onClick })  {
       Geri Dön
     </Button>
   );
-};
-
+}

@@ -1,30 +1,34 @@
-export const siparislerOrnek = [
-    {
-      id: 1,
-      alici: "Ali Veli",
-      siparisTarihi: "2023-08-01",
-      fiyat: 150,
-      aciklama: "Bu sipariş devam ediyor.",
-    },
-    {
-      id: 2,
-      alici: "Ayşe Yılmaz",
-      siparisTarihi: "2023-07-25",
-      fiyat: 300,
-      aciklama: "Sipariş başarıyla tamamlandı.",
-    },
-    {
-      id: 3,
-      alici: "Mehmet Demir",
-      siparisTarihi: "2023-07-30",
-      fiyat: 200,
-      aciklama: "Sipariş iptal edildi.",
-    },
-    {
-      id: 4,
-      alici: "Fatma Kaya",
-      siparisTarihi: "2023-08-02",
-      fiyat: 180,
-      aciklama: "Sipariş süreci devam ediyor.",
-    },
-  ];
+export const sampleOrders = [
+  {
+    id: 1,
+    buyer: "Ali Veli",
+    orderedAt: "2023-08-01",
+    price: 150,
+    status: "in_progress",
+    note: "Bu sipariş devam ediyor.",
+  },
+  {
+    id: 2,
+    buyer: "Ayşe Yılmaz",
+    orderedAt: "2023-07-25",
+    price: 300,
+    status: "completed",
+    note: "Sipariş başarıyla tamamlandı.",
+  },
+  {
+    id: 3,
+    buyer: "Mehmet Demir",
+    orderedAt: "2023-07-30",
+    price: 200,
+    status: "cancelled",
+    note: "Sipariş iptal edildi.",
+  },
+  {
+    id: 4,
+    buyer: "Fatma Kaya",
+    orderedAt: "2023-08-02",
+    price: 180,
+    status: "in_progress",
+    note: "Sipariş süreci devam ediyor.",
+  },
+];

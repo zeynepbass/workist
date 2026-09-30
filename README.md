@@ -7,25 +7,31 @@ WORKIST, kullanıcıların ihtiyaçlarına yönelik freelance hizmet ilanları o
 ## 🔍 Proje Özellikleri
 
 ### ✅ Kullanıcı Girişi
+
 - Kullanıcılar kayıt olabilir ve giriş yapabilir.
 - Güvenli bir şekilde oturum yönetimi sağlanır.
 
 ### ✅ İlan Paylaşımı & Yönetimi
+
 - Kullanıcılar kendi ilanlarını paylaşabilir, düzenleyebilir ve silebilir.
 - Kategorilere ve alt kategorilere göre filtreleme yapılabilir.
 
 ### ✅ Portfolyo Yönetimi
+
 - Kullanıcılar unvan, iletişim bilgileri, uzmanlık alanları, eğitim geçmişi ve sertifikalarını ekleyebilir veya güncelleyebilir.
 
 ### ✅ Arama & Filtreleme
+
 - İlanlar üzerinde anahtar kelime ile arama yapılabilir.
 - Kategoriye göre filtreleme uygulanabilir.
 
 ### ✅ Gerçek Zamanlı Mesajlaşma (Socket.io)
+
 - İlanlara özel kişisel mesajlaşma imkânı.
 - Kullanıcıya özel anlık bildirim sistemi.
 
 ### ✅ Kullanıcı Deneyimi & Doğrulama
+
 - Boş alan kontrolleri ve input validasyonları.
 - Kullanıcı odaklı geri bildirimler ile form deneyimi geliştirilmiştir.
 
@@ -44,9 +50,10 @@ WORKIST, kullanıcıların ihtiyaçlarına yönelik freelance hizmet ilanları o
 ---
 
 ## 💡 Projede Amaçladıklarım
-- Temiz ve sürdürülebilir kod yapısı kurmak  
-- Kullanıcı merkezli arayüzler geliştirmek  
-- Gerçek zamanlı etkileşimleri başarıyla entegre etmek  
+
+- Temiz ve sürdürülebilir kod yapısı kurmak
+- Kullanıcı merkezli arayüzler geliştirmek
+- Gerçek zamanlı etkileşimleri başarıyla entegre etmek
 - Full-stack yetkinliğimi geliştirmek ve sektöre katkı sağlamak
 
 ---
@@ -68,7 +75,6 @@ WORKIST, kullanıcıların ihtiyaçlarına yönelik freelance hizmet ilanları o
 <p align="center">
   <img src="./client/public/assets/screenshots/1752590136773.jpeg" alt="Dashboards" width="900">
 </p>
-
 
 <p align="center">
   <img src="./client/public/assets/screenshots/1752590136761.jpeg" alt="Dashboards" width="900">

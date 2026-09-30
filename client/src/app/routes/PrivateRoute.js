@@ -1,35 +1,27 @@
-import { useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
-import {jwtDecode} from 'jwt-decode';
+import { useEffect } from "react";
+import { Navigate } from "react-router-dom";
 
-export default function PrivateRoute({ children }){
-  const userData = JSON.parse(localStorage.getItem("login"));
+import isTokenExpired from "@/shared/utils/isTokenExpired";
+
+function clearSession() {
+  localStorage.removeItem("login");
+  localStorage.removeItem("token");
+}
+
+export default function PrivateRoute({ children }) {
+  const hasSession = Boolean(localStorage.getItem("login"));
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (token) {
-      try {
-        const decodedToken = jwtDecode(token);
-        const now = Date.now() / 1000;
-
-        if (decodedToken.exp < now) {
-          localStorage.removeItem("login");
-          localStorage.removeItem("token");
-          window.location.href = "/";
-        }
-      } catch (err) {
-        localStorage.removeItem("login");
-        localStorage.removeItem("token");
-        window.location.href = "/";
-      }
+    if (token && isTokenExpired(token)) {
+      clearSession();
+      window.location.href = "/";
     }
   }, [token]);
 
-  if (!userData) {
+  if (!hasSession) {
     return <Navigate to="/" replace />;
   }
 
   return children;
-};
-
-
+}

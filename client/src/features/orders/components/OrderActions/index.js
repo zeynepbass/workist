@@ -1,1 +1,1 @@
-export {default} from "./OrderActions"
+export { default } from "./OrderActions";

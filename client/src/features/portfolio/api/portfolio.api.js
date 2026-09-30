@@ -1,35 +1,27 @@
 import apiClient from "@/shared/api";
 
 export const portfolioApi = {
-  searchPosts(searchQuery) {
-    return apiClient.get("/ilanlar", {
-      params: searchQuery
-        ? { search: searchQuery }
-        : {},
-    });
-  },
-
-  getUserPortfolios() {
+  getMyPortfolios() {
     return apiClient.get("/portfolyo");
   },
 
-  createPortfolio(data) {
-    return apiClient.post("/portfolyo", data);
+  createPortfolio(portfolio) {
+    return apiClient.post("/portfolyo", portfolio);
   },
 
   deletePortfolio(id) {
     return apiClient.delete(`/portfolyo/${id}`);
   },
 
-  getPortfolioDetail(id) {
+  getPortfolio(id) {
     return apiClient.get(`/portfolyo/${id}`);
   },
 
-  updatePortfolio(id, formData) {
-    return apiClient.put(`/portfolyo/${id}`, formData);
+  updatePortfolio(id, portfolio) {
+    return apiClient.put(`/portfolyo/${id}`, portfolio);
   },
 
-  updatePortfolioStatus(id, durum) {
-    return apiClient.patch(`/portfolyo/${id}`, { durum });
+  updatePortfolioStatus(id, status) {
+    return apiClient.patch(`/portfolyo/${id}`, { status });
   },
 };

@@ -1,23 +1,19 @@
 import { useState, useEffect } from "react";
-import { Button,Input } from "@/shared/components/atoms";
+import { Button, Input } from "@/shared/components/atoms";
 
-export default function ContactSettings({
-  userDetails,
-  updateDetails,
-  isUpdating,
-}) {
+export default function ContactSettings({ userDetails, updateProfile, isUpdating }) {
   const [editMode, setEditMode] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
-    tel: "",
+    phone: "",
   });
 
   useEffect(() => {
     if (userDetails) {
       setFormData({
         email: userDetails.email || "",
-        tel: userDetails.tel || "",
+        phone: userDetails.phone || "",
       });
     }
   }, [userDetails]);
@@ -30,7 +26,7 @@ export default function ContactSettings({
   };
 
   const handleSave = () => {
-    updateDetails({
+    updateProfile({
       ...userDetails,
       ...formData,
     });
@@ -45,10 +41,7 @@ export default function ContactSettings({
           İletişim <strong>Ayarları</strong>
         </h6>
 
-        <Button
-          onClick={() => setEditMode(!editMode)}
-          className="text-purple-600"
-        >
+        <Button onClick={() => setEditMode(!editMode)} className="text-purple-600">
           {editMode ? "İptal" : "Düzenle"}
         </Button>
       </div>
@@ -57,9 +50,12 @@ export default function ContactSettings({
         {editMode ? (
           <>
             <div className="flex flex-col">
-              <label className="text-gray-400 text-sm">E-posta</label>
+              <label htmlFor="contact-email" className="text-gray-400 text-sm">
+                E-posta
+              </label>
 
               <Input
+                id="contact-email"
                 type="email"
                 className="border p-2 rounded"
                 name="email"
@@ -71,13 +67,16 @@ export default function ContactSettings({
             <hr />
 
             <div className="flex flex-col">
-              <label className="text-gray-400 text-sm">Cep Tel</label>
+              <label htmlFor="contact-phone" className="text-gray-400 text-sm">
+                Cep Tel
+              </label>
 
               <Input
+                id="contact-phone"
                 type="text"
                 className="border p-2 rounded"
-                name="tel"
-                value={formData.tel}
+                name="phone"
+                value={formData.phone}
                 onChange={handleChange}
               />
             </div>
@@ -103,7 +102,7 @@ export default function ContactSettings({
             <div>
               <span className="text-gray-400 text-lg">Cep Tel</span>
 
-              <span className="pl-5 text-lg">{userDetails?.tel}</span>
+              <span className="pl-5 text-lg">{userDetails?.phone}</span>
             </div>
           </>
         )}

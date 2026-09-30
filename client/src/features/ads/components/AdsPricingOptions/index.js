@@ -1,1 +1,1 @@
-export {default} from "./AdsPricingOptions"
+export { default } from "./AdsPricingOptions";

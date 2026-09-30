@@ -26,22 +26,20 @@ export default function AdsFileUpload({ value, onChange }) {
           />
         </div>
       )}
-<div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-purple-300 bg-gray-50 p-6">
-    <Input
-        type="file"
-        accept="image/*"
-        onChange={handleFileChange}
-        className="text-gray-800 file:mr-3 file:cursor-pointer file:rounded file:border-0 file:bg-purple-600 file:px-4 file:py-2 file:text-white"
-    />
+      <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-purple-300 bg-gray-50 p-6">
+        <Input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="text-gray-800 file:mr-3 file:cursor-pointer file:rounded file:border-0 file:bg-purple-600 file:px-4 file:py-2 file:text-white"
+        />
 
-    <div className="flex items-center justify-center py-3">
-        <span className="text-sm text-gray-500">
-            JPG, PNG dosyalarını yükleyebilirsin
-        </span>
+        <div className="flex items-center justify-center py-3">
+          <span className="text-sm text-gray-500">JPG, PNG dosyalarını yükleyebilirsin</span>
 
-        <FaFileImage className="pl-3 text-2xl text-gray-400" />
-    </div>
-</div>
+          <FaFileImage className="pl-3 text-2xl text-gray-400" />
+        </div>
+      </div>
     </div>
   );
 }

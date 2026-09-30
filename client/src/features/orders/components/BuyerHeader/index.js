@@ -1,1 +1,1 @@
-export {default} from "./BuyerHeader"
+export { default } from "./BuyerHeader";

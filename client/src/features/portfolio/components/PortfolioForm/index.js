@@ -1,1 +1,1 @@
-export {default} from "./PortfolioForm"
+export { default } from "./PortfolioForm";

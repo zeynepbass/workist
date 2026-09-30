@@ -1,1 +1,1 @@
-export {default} from "./AdsPriceField"
+export { default } from "./AdsPriceField";

@@ -1,1 +1,1 @@
-export {default} from "./EditableEducation"
+export { default } from "./EditableEducation";
