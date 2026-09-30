@@ -1,22 +1,22 @@
 import express from "express";
 
-import authenticate from "../middleware/authenticate.js";
-import {
-  createAd,
-  deleteAd,
-  getAd,
-  listAds,
-  listMyAds,
-  updateAd,
-} from "../controllers/ad.controller.js";
+import * as adController from "../controllers/ad.controller.js";
+import { uploadImage } from "../middleware/upload.js";
+import { validate } from "../middleware/validate.js";
+import { createAdBody, listAdsQuery, updateAdBody } from "../validators/ad.validators.js";
+import { idParams } from "../validators/common.js";
 
 const router = express.Router();
 
-router.get("/ilanlar", listAds);
-router.get("/ilanlarim", authenticate, listMyAds);
-router.post("/ilanlarim", createAd);
-router.delete("/ilanlarim/:id", deleteAd);
-router.get("/ilanlarim/:id", getAd);
-router.put("/ilanlarim/:id", updateAd);
+router.get("/", validate({ query: listAdsQuery }), adController.listAds);
+router.post("/", uploadImage("image"), validate({ body: createAdBody }), adController.createAd);
+router.get("/:id", validate({ params: idParams }), adController.getAd);
+router.patch(
+  "/:id",
+  uploadImage("image"),
+  validate({ params: idParams, body: updateAdBody }),
+  adController.updateAd,
+);
+router.delete("/:id", validate({ params: idParams }), adController.deleteAd);
 
 export default router;

@@ -1,29 +1,22 @@
-export default function adAdapter(ad) {
-  if (!ad) return null;
+import { publicUserAdapter } from "@/features/auth/adapters/user.adapter";
 
+export default function adAdapter(ad) {
   return {
-    id: ad._id,
+    id: ad.id,
+    ownerId: ad.ownerId,
+    owner: publicUserAdapter(ad.owner),
     serviceType: ad.serviceType,
     title: ad.title,
     description: ad.description,
     deliveryTime: ad.deliveryTime,
     revisionCount: ad.revisionCount,
     price: ad.price,
-    image: ad.image,
-    addons: {
-      logo: ad.addons?.logo ?? false,
-      sourceCode: ad.addons?.sourceCode ?? false,
-      backgroundMusic: ad.addons?.backgroundMusic ?? false,
-    },
-    extras: {
-      fastDelivery: ad.extras?.fastDelivery ?? false,
-      fullHd: ad.extras?.fullHd ?? false,
-    },
+    imageUrl: ad.imageUrl,
+    addons: ad.addons,
+    extras: ad.extras,
     category: ad.category,
     subcategory: ad.subcategory,
-    userId: ad.userId?.toString?.() ?? ad.userId,
-    ownerName: ad.ownerName,
+    rating: ad.rating ?? { average: 0, count: 0 },
     createdAt: ad.createdAt,
-    updatedAt: ad.updatedAt,
   };
 }

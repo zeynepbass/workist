@@ -1,91 +1,71 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, useNavigate } from "react-router-dom";
-import { faUser, faCog, faSignOutAlt, faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import toast from "react-hot-toast";
-import { useQueryClient } from "@tanstack/react-query";
+import { faChevronDown, faCog, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
 
-import { Button } from "@/shared/components/atoms";
-import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { Avatar } from "@/shared/components/atoms";
+import { useEscapeKey } from "@/shared/hooks/useEscapeKey";
+import { useLogout } from "../../hooks/useAuthActions";
+import { useCurrentUser } from "../../hooks/useCurrentUser";
 
-const MENU_ITEM_CLASS = "flex w-full items-center px-4 py-2 hover:bg-purple-100 text-gray-400";
+const ITEM_CLASS = "flex w-full items-center px-4 py-2 text-gray-500 hover:bg-purple-100";
 
 export default function ProfileMenu() {
   const { user } = useCurrentUser();
+  const logout = useLogout();
   const [open, setOpen] = useState(false);
-  const dropdownRef = useRef(null);
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  const containerRef = useRef(null);
+
+  useEscapeKey(() => setOpen(false), open);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setOpen(false);
-      }
+    const closeOnOutsideClick = (event) => {
+      if (!containerRef.current?.contains(event.target)) setOpen(false);
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", closeOnOutsideClick);
+    return () => document.removeEventListener("mousedown", closeOnOutsideClick);
   }, []);
 
-  const handleLogout = () => {
-    setOpen(false);
-    localStorage.removeItem("token");
-    localStorage.removeItem("login");
-    queryClient.clear();
-    toast.success("Çıkış yapıldı");
-    navigate("/");
-  };
-
   return (
-    <div className="w-full flex justify-center items-center pr-6 relative bg-transparent">
-      <div className="relative" ref={dropdownRef}>
-        <Button
-          onClick={() => setOpen(!open)}
-          aria-expanded={open}
-          className="flex items-center gap-4 px-4 py-2 bg-transparent focus:outline-none"
-        >
-          {user?.avatar && (
-            <img
-              className="h-12 w-12 rounded-full object-cover"
-              src={user.avatar}
-              alt="Kullanıcı Fotoğrafı"
-            />
-          )}
-          <div className="text-left">
-            <p className="text-base font-semibold text-gray-800">
-              {user?.firstName} {user?.lastName}
-            </p>
-            <p className="text-sm text-gray-500">{user?.title || "ünvan ekli değil."}</p>
-          </div>
-          <FontAwesomeIcon icon={faChevronDown} className="text-gray-500" size="sm" />
-        </Button>
+    <div className="relative" ref={containerRef}>
+      <button
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        onClick={() => setOpen((current) => !current)}
+        className="flex items-center gap-3 px-4 py-2"
+      >
+        <Avatar user={user} />
+        <span className="text-left">
+          <span className="block font-semibold text-gray-800">{user?.fullName}</span>
+          <span className="block text-sm text-gray-500">{user?.title || "Ünvan eklenmedi."}</span>
+        </span>
+        <FontAwesomeIcon icon={faChevronDown} className="text-gray-500" size="sm" />
+      </button>
 
-        {open && (
-          <div className="absolute left-0  w-60 bg-white rounded-md shadow-lg z-20">
-            <ul className="py-1">
-              <li>
-                <Link to="/profilim" className={MENU_ITEM_CLASS}>
-                  <FontAwesomeIcon icon={faUser} className="mr-3 text-purple-600" />
-                  Profilim
-                </Link>
-              </li>
-              <li>
-                <Link to="/hesabim" className={MENU_ITEM_CLASS}>
-                  <FontAwesomeIcon icon={faCog} className="mr-3 text-purple-600" />
-                  Hesabım
-                </Link>
-              </li>
-              <li>
-                <button type="button" onClick={handleLogout} className={MENU_ITEM_CLASS}>
-                  <FontAwesomeIcon icon={faSignOutAlt} className="mr-3 text-purple-600" />
-                  Çıkış Yap
-                </button>
-              </li>
-            </ul>
-          </div>
-        )}
-      </div>
+      {open && (
+        <ul role="menu" className="absolute right-0 z-20 w-60 rounded-md bg-white py-1 shadow-lg">
+          <li role="none">
+            <Link role="menuitem" to="/profilim" className={ITEM_CLASS} onClick={() => setOpen(false)}>
+              <FontAwesomeIcon icon={faUser} className="mr-3 text-purple-600" />
+              Profilim
+            </Link>
+          </li>
+          <li role="none">
+            <Link role="menuitem" to="/hesabim" className={ITEM_CLASS} onClick={() => setOpen(false)}>
+              <FontAwesomeIcon icon={faCog} className="mr-3 text-purple-600" />
+              Hesabım
+            </Link>
+          </li>
+          <li role="none">
+            <button role="menuitem" type="button" className={ITEM_CLASS} onClick={() => logout.mutate()}>
+              <FontAwesomeIcon icon={faSignOutAlt} className="mr-3 text-purple-600" />
+              Çıkış Yap
+            </button>
+          </li>
+        </ul>
+      )}
     </div>
   );
 }

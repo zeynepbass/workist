@@ -1,155 +1,71 @@
-import { useState, useEffect } from "react";
-import { Textarea, Button, Input } from "@/shared/components/atoms";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export default function ProfileInfoCard({ userDetails, updateProfile, isUpdating }) {
-  const [editMode, setEditMode] = useState(false);
+import { Button, Input, Textarea } from "@/shared/components/atoms";
+import { FormField } from "@/shared/components/molecules";
+import { useUpdateProfile } from "../../hooks/useProfile";
+import { profileSchema } from "../../schemas";
+import AvatarUploader from "./AvatarUploader";
 
-  const [formData, setFormData] = useState({
-    avatar: "",
-    title: "",
-    firstName: "",
-    lastName: "",
-    about: "",
-  });
+const INPUT_CLASS = "w-full rounded border p-2";
 
-  useEffect(() => {
-    if (userDetails) {
-      setFormData({
-        avatar: userDetails.avatar || "",
-        firstName: userDetails.firstName || "",
-        lastName: userDetails.lastName || "",
-        title: userDetails.title || "",
-        about: userDetails.about || "",
-      });
-    }
-  }, [userDetails]);
+const FIELDS = [
+  { name: "firstName", label: "Ad" },
+  { name: "lastName", label: "Soyad" },
+  { name: "title", label: "Ünvan" },
+];
 
-  const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+export default function ProfileInfoCard({ user }) {
+  const [editing, setEditing] = useState(false);
+  const updateProfile = useUpdateProfile();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({ resolver: zodResolver(profileSchema), values: user });
 
-  const handleSave = () => {
-    updateProfile({
-      ...userDetails,
-      ...formData,
-    });
-
-    setEditMode(false);
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-
-    if (!file) return;
-
-    const reader = new FileReader();
-
-    reader.onloadend = () => {
-      setFormData((prev) => ({
-        ...prev,
-        avatar: reader.result,
-      }));
-    };
-
-    reader.readAsDataURL(file);
-  };
+  const submit = handleSubmit((values) =>
+    updateProfile.mutate(values, { onSuccess: () => setEditing(false) }),
+  );
 
   return (
-    <div className="bg-white p-4 rounded-[10px] shadow">
-      <div className="flex justify-end items-center">
-        <Button onClick={() => setEditMode(!editMode)} className="text-purple-600">
-          {editMode ? "İptal" : "Düzenle"}
+    <section className="space-y-4 rounded-[10px] bg-white p-4 shadow" aria-label="Profil bilgileri">
+      <div className="flex items-center justify-between">
+        <AvatarUploader user={user} />
+        <Button
+          className="text-purple-600"
+          onClick={() => {
+            reset(user);
+            setEditing((current) => !current);
+          }}
+        >
+          {editing ? "İptal" : "Düzenle"}
         </Button>
       </div>
 
-      <br />
-
-      {editMode ? (
-        <>
-          <img
-            src={formData.avatar}
-            alt="Profil fotoğrafı"
-            width="100"
-            height="100"
-            className="rounded-full shadow-lg"
-          />
-
-          <Input type="file" className="m-5" accept="image/*" onChange={handleFileChange} />
-
-          <Input
-            type="text"
-            className="border p-2 w-full mb-2"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            placeholder="adınızı girin"
-          />
-          <Input
-            type="text"
-            className="border p-2 w-full mb-2"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            placeholder="soyadınızı girin"
-          />
-          <Input
-            type="text"
-            className="border p-2 w-full mb-2"
-            placeholder="ünvanınızı girin"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-          />
-
-          <Textarea
-            className="border p-2 w-full mb-2"
-            rows={4}
-            name="about"
-            placeholder="kendinizden bahsedin"
-            value={formData.about}
-            onChange={handleChange}
-          />
-
-          <Button
-            onClick={handleSave}
-            disabled={isUpdating}
-            className="bg-purple-600 text-white px-4 py-1 rounded"
-          >
-            {isUpdating ? "Kaydediliyor..." : "Kaydet"}
+      {editing ? (
+        <form onSubmit={submit} className="space-y-3" noValidate>
+          {FIELDS.map((field) => (
+            <FormField key={field.name} label={field.label} htmlFor={`profile-${field.name}`} error={errors[field.name]?.message}>
+              <Input id={`profile-${field.name}`} className={INPUT_CLASS} {...register(field.name)} />
+            </FormField>
+          ))}
+          <FormField label="Hakkımda" htmlFor="profile-about" error={errors.about?.message}>
+            <Textarea id="profile-about" rows={4} className={INPUT_CLASS} {...register("about")} />
+          </FormField>
+          <Button type="submit" variant="primary" className="px-4 py-1" disabled={updateProfile.isPending}>
+            {updateProfile.isPending ? "Kaydediliyor..." : "Kaydet"}
           </Button>
-        </>
+        </form>
       ) : (
-        <>
-          <div>
-            <img
-              src={userDetails?.avatar}
-              alt="Profil fotoğrafı"
-              width="100"
-              height="100"
-              className="rounded-full shadow-lg"
-            />
-          </div>
-
-          <br />
-
-          <p>
-            {userDetails?.firstName} {userDetails?.lastName}
-          </p>
-
-          <p className="text-gray-400 italic">{userDetails?.title}</p>
-
-          <br />
-
-          <h5 className="text-purple-700">
-            <strong>{userDetails?.title}</strong>
-          </h5>
-
-          <p className="text-sm text-gray-400 pt-2">{userDetails?.about}</p>
-        </>
+        <div>
+          <p className="font-medium">{user.fullName}</p>
+          <p className="italic text-gray-400">{user.title || "Ünvan eklenmedi."}</p>
+          <p className="pt-2 text-sm text-gray-500">{user.about}</p>
+        </div>
       )}
-    </div>
+    </section>
   );
 }

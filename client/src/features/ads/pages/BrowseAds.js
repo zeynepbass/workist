@@ -1,38 +1,27 @@
 import { useSearchParams } from "react-router-dom";
 
-import AdList from "../components/AdList";
-import { useAdSearch } from "../hooks/useAdSearch";
 import { useCategories } from "@/features/categories/hooks/useCategories";
-import { StatusMessage } from "@/shared/components/molecules";
+import AdList from "../components/AdList";
+import { useAdList } from "../hooks/useAds";
 
 export default function BrowseAds() {
   const [searchParams] = useSearchParams();
-  const search = searchParams.get("search") || "";
-  const subcategory = searchParams.get("subcategory") || "";
-
+  const search = searchParams.get("search") ?? "";
+  const subcategory = searchParams.get("subcategory") ?? "";
   const { getLabel } = useCategories();
-  const { ads, isLoading, isError } = useAdSearch({ search, subcategory });
+  const query = useAdList({ search, subcategory });
 
   const activeFilter = search || (subcategory && getLabel(subcategory));
 
-  if (isLoading) {
-    return <StatusMessage type="loading" message="İlanlar yükleniyor..." />;
-  }
-
-  if (isError) {
-    return <StatusMessage type="error" message="İlanlar yüklenirken bir hata oluştu." />;
-  }
-
   return (
-    <div className="h-[100vh]">
-      <p className="text-gray-700 text-2xl font-semibold mb-6 text-left">
-        Workist&apos;te Nelere <span className="text-purple-700">Yapıldı 🧙‍♂️</span>
-        <span className="text-xl text-gray-400 mb-5 ml-2">
-          {activeFilter ? `${activeFilter} için sonuçlar:` : "Tüm İlanlar"}
+    <div>
+      <h1 className="mb-6 text-left text-2xl font-semibold text-gray-700">
+        Workist&apos;te Neler <span className="text-purple-700">Yapılıyor 🧙‍♂️</span>
+        <span className="ml-2 text-xl text-gray-400">
+          {activeFilter ? `${activeFilter} için sonuçlar` : "Tüm İlanlar"}
         </span>
-      </p>
-
-      <AdList ads={ads} />
+      </h1>
+      <AdList query={query} emptyMessage="Aramana uygun ilan bulunamadı." />
     </div>
   );
 }

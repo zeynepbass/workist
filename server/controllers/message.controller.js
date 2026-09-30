@@ -1,62 +1,27 @@
-import mongoose from "mongoose";
+import { toMessage, toPublicUser } from "../serializers/index.js";
+import * as messageService from "../services/message.service.js";
 
-import Message from "../models/message.model.js";
+export async function listConversations(req, res) {
+  const conversations = await messageService.listConversations(req.user.id);
 
-function betweenUsers(firstUserId, secondUserId) {
-  return {
-    $or: [
-      { senderId: firstUserId, recipientId: secondUserId },
-      { senderId: secondUserId, recipientId: firstUserId },
-    ],
-  };
+  res.json({
+    data: conversations.map(({ partner, lastMessage }) => ({
+      partner: toPublicUser(partner),
+      lastMessage: toMessage(lastMessage),
+    })),
+  });
 }
 
-export const listMessagesBetweenUsers = async (req, res) => {
-  const { senderId, recipientId } = req.params;
+export async function listMessages(req, res) {
+  const { items, nextCursor } = await messageService.listMessages(
+    req.user.id,
+    req.validated.params.partnerId,
+    req.validated.query,
+  );
+  res.json({ data: items.map(toMessage), meta: { nextCursor } });
+}
 
-  try {
-    const messages = await Message.find(betweenUsers(senderId, recipientId)).sort({ sentAt: 1 });
-    res.json(messages);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-export const deleteMessagesBetweenUsers = async (req, res) => {
-  const { senderId, recipientId } = req.params;
-
-  try {
-    await Message.deleteMany(betweenUsers(senderId, recipientId));
-    res.status(200).json({ message: "Mesajlar başarıyla silindi" });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-export const listConversations = async (req, res) => {
-  const { userId } = req.params;
-
-  try {
-    const objectUserId = new mongoose.Types.ObjectId(userId);
-    const messages = await Message.find({
-      $or: [{ senderId: objectUserId }, { recipientId: objectUserId }],
-    }).sort({ sentAt: -1 });
-
-    const latestMessageByPartner = new Map();
-
-    for (const message of messages) {
-      const partnerId =
-        message.senderId.toString() === userId
-          ? message.recipientId.toString()
-          : message.senderId.toString();
-
-      if (!latestMessageByPartner.has(partnerId)) {
-        latestMessageByPartner.set(partnerId, message);
-      }
-    }
-
-    res.json([...latestMessageByPartner.values()]);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+export async function deleteConversation(req, res) {
+  await messageService.deleteConversation(req.user.id, req.validated.params.partnerId);
+  res.status(204).end();
+}

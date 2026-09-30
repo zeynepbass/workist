@@ -1,43 +1,30 @@
-import { adsApi } from "../api/ads.api";
+import { toFormData } from "@/shared/api";
+import { toPage } from "@/shared/api/pagination";
 import adAdapter from "../adapters/ad.adapter";
+import { adsApi } from "../api/ads.api";
 
-export async function searchAds({ search, subcategory } = {}) {
-  const params = {};
+const compact = (params) =>
+  Object.fromEntries(Object.entries(params).filter(([, value]) => value !== undefined && value !== ""));
 
-  if (search) params.search = search;
-  if (subcategory) params.subcategory = subcategory;
-
-  const response = await adsApi.searchAds(params);
-
-  return response.data.map(adAdapter);
-}
-
-export async function getMyAds() {
-  const response = await adsApi.getMyAds();
-
-  return response.data.map(adAdapter);
+export async function listAds(filters, cursor) {
+  return toPage(await adsApi.list(compact({ ...filters, cursor })), adAdapter);
 }
 
 export async function getAd(id) {
-  const response = await adsApi.getAd(id);
+  const { data } = await adsApi.get(id);
+  return adAdapter(data.data);
+}
 
-  return adAdapter(response.data);
+export async function createAd({ fields, image }) {
+  const { data } = await adsApi.create(toFormData(fields, { image }));
+  return adAdapter(data.data);
+}
+
+export async function updateAd(id, { fields, image }) {
+  const { data } = await adsApi.update(id, toFormData(fields, { image }));
+  return adAdapter(data.data);
 }
 
 export async function deleteAd(id) {
-  const response = await adsApi.deleteAd(id);
-
-  return response.data;
-}
-
-export async function updateAd(id, ad) {
-  const response = await adsApi.updateAd(id, ad);
-
-  return adAdapter(response.data);
-}
-
-export async function createAd(ad) {
-  const response = await adsApi.createAd(ad);
-
-  return adAdapter(response.data);
+  await adsApi.remove(id);
 }

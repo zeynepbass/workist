@@ -1,43 +1,44 @@
-import ProfileInfoCard from "../components/ProfileInfoCard";
+import { StatusMessage } from "@/shared/components/molecules";
+import ChangePasswordCard from "../components/ChangePasswordCard";
 import ContactSettings from "../components/ContactSettings";
-import EditableSkills from "../components/EditableSkills";
-import EditableEducation from "../components/EditableEducation";
-import { useMyAccount } from "../hooks/useMyAccount";
+import DeleteAccountCard from "../components/DeleteAccountCard";
+import ProfileInfoCard from "../components/ProfileInfoCard";
+import TagListEditor from "../components/TagListEditor";
+import { useCurrentUser } from "../hooks/useCurrentUser";
+import { useUpdateProfile } from "../hooks/useProfile";
+import { CERTIFICATE_LIMIT, SKILL_LIMIT } from "../schemas";
+
 export default function MyAccount() {
-  const { userDetails, updateProfile, isUpdating } = useMyAccount();
+  const { user, isLoading } = useCurrentUser();
+  const updateProfile = useUpdateProfile();
+
+  if (isLoading || !user) {
+    return <StatusMessage type="loading" message="Hesap bilgileri yükleniyor..." />;
+  }
+
   return (
-    <div className="flex flex-col md:flex-row gap-6 p-4">
-      <div className="w-full  space-y-4">
-        <ProfileInfoCard
-          userDetails={userDetails}
-          updateProfile={updateProfile}
-          isUpdating={isUpdating}
-        />
-
-        <div className="bg-white p-4 rounded-[10px] shadow">
-          <ContactSettings
-            userDetails={userDetails}
-            updateProfile={updateProfile}
-            isUpdating={isUpdating}
-          />
-        </div>
-
-        <div className="bg-white p-4 rounded-[10px] shadow">
-          <EditableSkills
-            userDetails={userDetails}
-            updateProfile={updateProfile}
-            isUpdating={isUpdating}
-          />
-        </div>
-
-        <div className="bg-white p-4 rounded-[10px] shadow">
-          <EditableEducation
-            userDetails={userDetails}
-            updateProfile={updateProfile}
-            isUpdating={isUpdating}
-          />
-        </div>
-      </div>
+    <div className="space-y-4 p-4">
+      <h1 className="text-xl text-gray-600">Hesabım</h1>
+      <ProfileInfoCard user={user} />
+      <ContactSettings user={user} />
+      <TagListEditor
+        title="Uzmanı Olduğu Alanlar & Araçlar"
+        values={user.skills}
+        limit={SKILL_LIMIT}
+        placeholder="Yeni alan ekle"
+        isSaving={updateProfile.isPending}
+        onSave={(skills) => updateProfile.mutate({ skills })}
+      />
+      <TagListEditor
+        title="Eğitim ve Sertifika Bilgileri"
+        values={user.certificates}
+        limit={CERTIFICATE_LIMIT}
+        placeholder="Yeni eğitim / sertifika"
+        isSaving={updateProfile.isPending}
+        onSave={(certificates) => updateProfile.mutate({ certificates })}
+      />
+      <ChangePasswordCard />
+      <DeleteAccountCard />
     </div>
   );
 }

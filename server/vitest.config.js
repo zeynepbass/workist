@@ -7,5 +7,13 @@ export default defineConfig({
     hookTimeout: 120000,
     testTimeout: 30000,
     fileParallelism: false,
+    coverage: {
+      provider: "v8",
+      include: ["services/**", "controllers/**", "middleware/**", "sockets/**", "utils/**"],
+      reporter: ["text-summary", "text"],
+      thresholds: {
+        "services/**": { lines: 80, functions: 80, branches: 70, statements: 80 },
+      },
+    },
   },
 });
