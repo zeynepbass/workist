@@ -1,9 +1,14 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
+
 import mongoose from "mongoose";
 import { describe, expect, it } from "vitest";
 
 import * as englishFieldNames from "../migrations/20260930120000-english-field-names.js";
 import * as categorySlugs from "../migrations/20260930120100-category-slugs.js";
 import * as uniqueUserEmail from "../migrations/20260930120200-unique-user-email.js";
+import * as ownershipAndFileKeys from "../migrations/20261001090000-ownership-and-file-keys.js";
+import * as moveBase64Files from "../migrations/20261001090100-move-base64-files-to-storage.js";
 
 const db = () => mongoose.connection.db;
 
@@ -103,5 +108,36 @@ describe("unique user email migration", () => {
       .insertMany([{ email: "ada@example.com" }, { email: "ADA@example.com" }]);
 
     await expect(uniqueUserEmail.up(db())).rejects.toThrow(/ada@example.com/);
+  });
+});
+
+describe("ownership and file key migrations", () => {
+  const PNG_DATA_URI =
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==";
+
+  it("renames ownership fields and moves base64 images into storage", async () => {
+    const ownerId = new mongoose.Types.ObjectId();
+    await db().collection("ads").insertMany([
+      { userId: ownerId, image: PNG_DATA_URI, ownerName: "Ada" },
+      { userId: ownerId, image: "data:image/png;base64,bm90IGFuIGltYWdl" },
+    ]);
+    await db().collection("users").insertOne({ _id: ownerId, email: "a@b.co", avatar: PNG_DATA_URI });
+    await db().collection("messages").insertOne({ senderId: ownerId, recipientId: ownerId, text: "x" });
+
+    await ownershipAndFileKeys.up(db());
+    await moveBase64Files.up(db());
+
+    const [valid, invalid] = await db().collection("ads").find().sort({ _id: 1 }).toArray();
+    expect(valid.owner).toEqual(ownerId);
+    expect(valid).not.toHaveProperty("ownerName");
+    expect(valid.imageKey).toMatch(new RegExp(`^public/ads/${ownerId}/[\\w-]+\\.png$`));
+    expect(existsSync(path.join(process.env.UPLOAD_DIR, valid.imageKey))).toBe(true);
+    expect(invalid.imageKey).toMatch(/^data:/);
+
+    const user = await db().collection("users").findOne();
+    expect(user.avatarKey).toMatch(/^public\/avatars\//);
+
+    const message = await db().collection("messages").findOne();
+    expect(message).toMatchObject({ sender: ownerId, recipient: ownerId });
   });
 });

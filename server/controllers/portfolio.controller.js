@@ -1,82 +1,40 @@
-import mongoose from "mongoose";
+import { toPortfolio } from "../serializers/index.js";
+import * as portfolioService from "../services/portfolio.service.js";
 
-import Portfolio from "../models/portfolio.model.js";
+export async function listPortfolios(req, res) {
+  const { items, nextCursor } = await portfolioService.listPortfolios(
+    req.validated.query,
+    req.user.id,
+  );
+  res.json({ data: items.map(toPortfolio), meta: { nextCursor } });
+}
 
-export const listMyPortfolios = async (req, res) => {
-  try {
-    const portfolios = await Portfolio.find({ userId: req.user._id });
-    return res.status(200).json(portfolios);
-  } catch (error) {
-    return res.status(404).json({ message: error.message });
-  }
-};
+export async function getPortfolio(req, res) {
+  const portfolio = await portfolioService.getPortfolio(req.validated.params.id, req.user.id);
+  res.json({ data: toPortfolio(portfolio) });
+}
 
-export const createPortfolio = async (req, res) => {
-  try {
-    const portfolio = await Portfolio.create({ ...req.body, userId: req.user._id });
-    return res.status(201).json(portfolio);
-  } catch (error) {
-    return res.status(409).json({ message: error.message });
-  }
-};
+export async function createPortfolio(req, res) {
+  const portfolio = await portfolioService.createPortfolio(
+    req.user.id,
+    req.validated.body,
+    req.file,
+  );
+  res.status(201).json({ data: toPortfolio(portfolio) });
+}
 
-export const deletePortfolio = async (req, res) => {
-  const { id } = req.params;
+export async function updatePortfolio(req, res) {
+  const portfolio = await portfolioService.updatePortfolio(
+    req.validated.params.id,
+    req.user.id,
+    req.validated.body,
+    req.file,
+    { log: req.log },
+  );
+  res.json({ data: toPortfolio(portfolio) });
+}
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).send("Geçersiz ID");
-  }
-
-  try {
-    const deletedPortfolio = await Portfolio.findByIdAndDelete(id);
-
-    if (!deletedPortfolio) {
-      return res.status(404).json({ message: "Portfolyo bulunamadı" });
-    }
-
-    return res.status(200).json({ message: "Portfolyo başarıyla silindi" });
-  } catch {
-    return res.status(500).json({ message: "Sunucu hatası" });
-  }
-};
-
-export const getPortfolio = async (req, res) => {
-  try {
-    const portfolio = await Portfolio.findById(req.params.id);
-    res.status(200).json(portfolio);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-};
-
-export const updatePortfolio = async (req, res) => {
-  const { id } = req.params;
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).send("Portfolyo bulunamadı");
-  }
-
-  const updatedPortfolio = await Portfolio.findByIdAndUpdate(id, req.body, { new: true });
-  return res.status(200).json(updatedPortfolio);
-};
-
-export const updatePortfolioStatus = async (req, res) => {
-  try {
-    const portfolio = await Portfolio.findByIdAndUpdate(
-      req.params.id,
-      { status: req.body.status },
-      { new: true, runValidators: true },
-    );
-
-    if (!portfolio) {
-      return res.status(404).json({ message: "Portfolyo bulunamadı." });
-    }
-
-    return res.status(200).json(portfolio);
-  } catch (error) {
-    return res.status(500).json({
-      message: "Portfolyo durumu güncellenemedi.",
-      error: error.message,
-    });
-  }
-};
+export async function deletePortfolio(req, res) {
+  await portfolioService.deletePortfolio(req.validated.params.id, req.user.id, { log: req.log });
+  res.status(204).end();
+}

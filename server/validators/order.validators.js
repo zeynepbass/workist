@@ -31,3 +31,10 @@ export const reviewBody = z.strictObject({
 });
 
 export const orderFileParams = z.object({ id: objectId, fileId: objectId });
+
+export const listReviewsQuery = paginationQuery
+  .extend({ sellerId: objectId.optional(), adId: objectId.optional() })
+  .refine((value) => value.sellerId || value.adId, {
+    path: ["sellerId"],
+    message: "sellerId veya adId gerekli.",
+  });

@@ -9,7 +9,9 @@
     "test:watch": "vitest",
     "migrate:up": "migrate-mongo up",
     "migrate:down": "migrate-mongo down",
-    "migrate:status": "migrate-mongo status"
+    "migrate:status": "migrate-mongo status",
+    "test:coverage": "vitest run --coverage",
+    "seed": "node scripts/seed.js"
   },
   "license": "MIT",
   "description": "Workist API",

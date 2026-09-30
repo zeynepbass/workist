@@ -31,8 +31,11 @@ export function buildStorageKey({ visibility, folder, ownerId, extension }) {
 
 export function sanitizeFileName(name) {
   const base = String(name ?? "dosya")
+    .split(/[\\/]/)
+    .pop()
     .normalize("NFKD")
     .replace(/[^\w.\- ]+/g, "")
+    .replace(/^\.+/, "")
     .trim()
     .slice(0, 100);
 

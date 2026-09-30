@@ -11,7 +11,7 @@ import {
   signAccessToken,
 } from "../utils/tokens.js";
 
-export const PASSWORD_SALT_ROUNDS = 12;
+export const PASSWORD_SALT_ROUNDS = env.NODE_ENV === "test" ? 4 : 12;
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
 const INVALID_CREDENTIALS = "E-posta veya parola hatalı.";
 const TIMING_SAFE_HASH = bcrypt.hashSync("timing-safe-placeholder", 4);

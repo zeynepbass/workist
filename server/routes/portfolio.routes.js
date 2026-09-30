@@ -1,22 +1,31 @@
 import express from "express";
 
-import authenticate from "../middleware/authenticate.js";
+import * as portfolioController from "../controllers/portfolio.controller.js";
+import { uploadImage } from "../middleware/upload.js";
+import { validate } from "../middleware/validate.js";
+import { idParams } from "../validators/common.js";
 import {
-  createPortfolio,
-  deletePortfolio,
-  getPortfolio,
-  listMyPortfolios,
-  updatePortfolio,
-  updatePortfolioStatus,
-} from "../controllers/portfolio.controller.js";
+  createPortfolioBody,
+  listPortfoliosQuery,
+  updatePortfolioBody,
+} from "../validators/portfolio.validators.js";
 
 const router = express.Router();
 
-router.get("/portfolyo", authenticate, listMyPortfolios);
-router.post("/portfolyo", authenticate, createPortfolio);
-router.delete("/portfolyo/:id", deletePortfolio);
-router.get("/portfolyo/:id", getPortfolio);
-router.put("/portfolyo/:id", updatePortfolio);
-router.patch("/portfolyo/:id", updatePortfolioStatus);
+router.get("/", validate({ query: listPortfoliosQuery }), portfolioController.listPortfolios);
+router.post(
+  "/",
+  uploadImage("image"),
+  validate({ body: createPortfolioBody }),
+  portfolioController.createPortfolio,
+);
+router.get("/:id", validate({ params: idParams }), portfolioController.getPortfolio);
+router.patch(
+  "/:id",
+  uploadImage("image"),
+  validate({ params: idParams, body: updatePortfolioBody }),
+  portfolioController.updatePortfolio,
+);
+router.delete("/:id", validate({ params: idParams }), portfolioController.deletePortfolio);
 
 export default router;

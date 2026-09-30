@@ -4,7 +4,7 @@ import { EnvValidationError, parseEnv } from "../config/env.js";
 
 const validEnv = {
   MONGO_URI: "mongodb://localhost:27017/workist",
-  JWT_SECRET: "a".repeat(32),
+  JWT_ACCESS_SECRET: "a".repeat(32),
   CLIENT_URL: "http://localhost:3000",
 };
 
@@ -30,12 +30,23 @@ describe("parseEnv", () => {
       parseEnv({});
     } catch (error) {
       expect(error.message).toContain("MONGO_URI");
-      expect(error.message).toContain("JWT_SECRET");
+      expect(error.message).toContain("JWT_ACCESS_SECRET");
       expect(error.message).toContain("CLIENT_URL");
     }
   });
 
   it("rejects a short jwt secret", () => {
-    expect(() => parseEnv({ ...validEnv, JWT_SECRET: "short" })).toThrowError(/JWT_SECRET/);
+    expect(() => parseEnv({ ...validEnv, JWT_ACCESS_SECRET: "short" })).toThrowError(/JWT_ACCESS_SECRET/);
+  });
+});
+
+describe("storage configuration", () => {
+  it("requires bucket settings for the s3 driver", () => {
+    expect(() => parseEnv({ ...validEnv, STORAGE_DRIVER: "s3" })).toThrowError(/S3_BUCKET/);
+  });
+
+  it("defaults secure cookies to production only", () => {
+    expect(parseEnv(validEnv).COOKIE_SECURE).toBe(false);
+    expect(parseEnv({ ...validEnv, NODE_ENV: "production" }).COOKIE_SECURE).toBe(true);
   });
 });
