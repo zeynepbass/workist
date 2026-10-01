@@ -61,7 +61,7 @@ jobs:
       - run: npm ci --prefix client
       - run: npm test --prefix client
       - run: npm run build --prefix client
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: client-build
           path: client/build
@@ -88,7 +88,7 @@ jobs:
       - run: npm ci --prefix client
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-report
