@@ -19,7 +19,11 @@ export default function EditAdForm({ ad, onSaved }) {
   );
 
   return (
-    <form onSubmit={submit} className="space-y-6 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm" noValidate>
+    <form
+      onSubmit={submit}
+      className="space-y-6 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
+      noValidate
+    >
       <AdFormFields form={form} idPrefix="edit-ad" />
       <ImageField
         id="edit-ad-image"
@@ -33,7 +37,12 @@ export default function EditAdForm({ ad, onSaved }) {
         }}
       />
       <div className="flex justify-center">
-        <Button type="submit" variant="primary" className="w-full px-10 py-3 sm:w-auto" disabled={updateAd.isPending || Boolean(imageError)}>
+        <Button
+          type="submit"
+          variant="primary"
+          className="w-full px-10 py-3 sm:w-auto"
+          disabled={updateAd.isPending || Boolean(imageError)}
+        >
           {updateAd.isPending ? "Kaydediliyor..." : "Değişiklikleri Kaydet"}
         </Button>
       </div>

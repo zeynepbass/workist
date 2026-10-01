@@ -1,38 +1,27 @@
-import { portfolioApi } from "../api/portfolio.api";
+import { toFormData } from "@/shared/api";
+import { toPage } from "@/shared/api/pagination";
 import portfolioAdapter from "../adapters/portfolio.adapter";
+import { portfolioApi } from "../api/portfolio.api";
 
-export async function getMyPortfolios() {
-  const response = await portfolioApi.getMyPortfolios();
-
-  return response.data.map(portfolioAdapter);
-}
-
-export async function createPortfolio(portfolio) {
-  const response = await portfolioApi.createPortfolio(portfolio);
-
-  return portfolioAdapter(response.data);
-}
-
-export async function deletePortfolio(id) {
-  const response = await portfolioApi.deletePortfolio(id);
-
-  return response.data;
+export async function listPortfolios({ owner = "me", status }, cursor) {
+  return toPage(await portfolioApi.list({ owner, status, cursor }), portfolioAdapter);
 }
 
 export async function getPortfolio(id) {
-  const response = await portfolioApi.getPortfolio(id);
-
-  return portfolioAdapter(response.data);
+  const { data } = await portfolioApi.get(id);
+  return portfolioAdapter(data.data);
 }
 
-export async function updatePortfolio(id, portfolio) {
-  const response = await portfolioApi.updatePortfolio(id, portfolio);
-
-  return portfolioAdapter(response.data);
+export async function createPortfolio({ fields, image }) {
+  const { data } = await portfolioApi.create(toFormData(fields, { image }));
+  return portfolioAdapter(data.data);
 }
 
-export async function updatePortfolioStatus(id, status) {
-  const response = await portfolioApi.updatePortfolioStatus(id, status);
+export async function updatePortfolio(id, { fields, image }) {
+  const { data } = await portfolioApi.update(id, toFormData(fields, { image }));
+  return portfolioAdapter(data.data);
+}
 
-  return portfolioAdapter(response.data);
+export async function deletePortfolio(id) {
+  await portfolioApi.remove(id);
 }

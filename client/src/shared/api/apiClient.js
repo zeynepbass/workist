@@ -45,7 +45,10 @@ apiClient.interceptors.response.use(
   async (error) => {
     const { config, response } = error;
     const canRetry =
-      response?.status === 401 && config && !config.retried && !SKIP_REFRESH_URLS.includes(config.url);
+      response?.status === 401 &&
+      config &&
+      !config.retried &&
+      !SKIP_REFRESH_URLS.includes(config.url);
 
     if (!canRetry) {
       throw error;

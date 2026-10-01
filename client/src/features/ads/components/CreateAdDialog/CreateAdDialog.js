@@ -42,7 +42,11 @@ export default function CreateAdDialog() {
 
   return (
     <>
-      <Button variant="primary" className="mb-4 w-full p-3 md:w-44 md:p-2" onClick={() => setOpen(true)}>
+      <Button
+        variant="primary"
+        className="mb-4 w-full p-3 md:w-44 md:p-2"
+        onClick={() => setOpen(true)}
+      >
         Yeni İş İlanı Ekle
       </Button>
 
@@ -51,7 +55,12 @@ export default function CreateAdDialog() {
           <div className="space-y-6">
             <CategoryPicker {...selection} onChange={setSelection} />
             <div className="flex justify-end">
-              <Button variant="primary" className="px-6 py-2" disabled={!selection.subcategory} onClick={() => setStep(2)}>
+              <Button
+                variant="primary"
+                className="px-6 py-2"
+                disabled={!selection.subcategory}
+                onClick={() => setStep(2)}
+              >
                 Devam Et
               </Button>
             </div>
@@ -73,7 +82,12 @@ export default function CreateAdDialog() {
               <Button variant="secondary" className="px-4 py-2" onClick={() => setStep(1)}>
                 Geri
               </Button>
-              <Button type="submit" variant="primary" className="px-6 py-2" disabled={createAd.isPending || Boolean(imageError)}>
+              <Button
+                type="submit"
+                variant="primary"
+                className="px-6 py-2"
+                disabled={createAd.isPending || Boolean(imageError)}
+              >
                 {createAd.isPending ? "Kaydediliyor..." : "Kaydet"}
               </Button>
             </div>

@@ -11,7 +11,10 @@ export function RatingStars({ rating }) {
   const filled = Math.round(average);
 
   return (
-    <span className="inline-flex items-center gap-1 text-sm" aria-label={`5 üzerinden ${average}, ${count} değerlendirme`}>
+    <span
+      className="inline-flex items-center gap-1 text-sm"
+      aria-label={`5 üzerinden ${average}, ${count} değerlendirme`}
+    >
       <span aria-hidden="true" className="text-orange-400">
         {"★".repeat(filled)}
         <span className="text-gray-300">{"★".repeat(STAR_COUNT - filled)}</span>

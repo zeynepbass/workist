@@ -19,7 +19,11 @@ export default function LoginForm() {
   } = useForm({ resolver: zodResolver(loginSchema), defaultValues: { email: "", password: "" } });
 
   return (
-    <form onSubmit={handleSubmit((values) => login.mutate(values))} className="space-y-5" noValidate>
+    <form
+      onSubmit={handleSubmit((values) => login.mutate(values))}
+      className="space-y-5"
+      noValidate
+    >
       <FormField label="E-posta" htmlFor="login-email" error={errors.email?.message}>
         <Input
           id="login-email"

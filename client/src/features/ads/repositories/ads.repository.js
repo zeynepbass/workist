@@ -4,7 +4,9 @@ import adAdapter from "../adapters/ad.adapter";
 import { adsApi } from "../api/ads.api";
 
 const compact = (params) =>
-  Object.fromEntries(Object.entries(params).filter(([, value]) => value !== undefined && value !== ""));
+  Object.fromEntries(
+    Object.entries(params).filter(([, value]) => value !== undefined && value !== ""),
+  );
 
 export async function listAds(filters, cursor) {
   return toPage(await adsApi.list(compact({ ...filters, cursor })), adAdapter);

@@ -47,9 +47,19 @@ export default function ContactSettings({ user }) {
       {editing && (
         <form onSubmit={submit} className="mt-3 space-y-3" noValidate>
           <FormField label="Cep Tel" htmlFor="contact-phone" error={errors.phone?.message}>
-            <Input id="contact-phone" type="tel" className="w-full rounded border p-2" {...register("phone")} />
+            <Input
+              id="contact-phone"
+              type="tel"
+              className="w-full rounded border p-2"
+              {...register("phone")}
+            />
           </FormField>
-          <Button type="submit" variant="primary" className="px-4 py-1" disabled={updateProfile.isPending}>
+          <Button
+            type="submit"
+            variant="primary"
+            className="px-4 py-1"
+            disabled={updateProfile.isPending}
+          >
             {updateProfile.isPending ? "Kaydediliyor..." : "Kaydet"}
           </Button>
         </form>

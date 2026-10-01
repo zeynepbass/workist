@@ -1,39 +1,22 @@
 import { Select } from "../../atoms";
-export function PostSort({ sortType, onChange }) {
-  const sortLabels = {
-    all: "Tüm İlanlar Göster",
-    oldToNew: "Eskiden Yeniye Göster",
-    newToOld: "Yeniden Eskiye Göster",
-  };
 
+const SORT_OPTIONS = [
+  { value: "newest", label: "Yeniden eskiye" },
+  { value: "oldest", label: "Eskiden yeniye" },
+];
+
+export function PostSort({ sortType, onChange }) {
   return (
-    <div className="max-w-md p-4">
+    <div className="max-w-xs p-4">
       <Select
-        label="          İlanları Sırala"
-        id="sort"
+        label="İlanları sırala"
+        id="post-sort"
         value={sortType}
         onChange={onChange}
-        options={[
-          {
-            value: "all",
-            label: "Tüm İlanları Göster",
-          },
-          {
-            value: "oldToNew",
-            label: "Eskiden Yeniye Göster",
-          },
-          {
-            value: "newToOld",
-            label: "Yeniden Eskiye Göster",
-          },
-        ]}
+        options={SORT_OPTIONS}
         placeholder={null}
-        className="p-4 border-gray-300 rounded-md text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        className="rounded-md border-gray-300 text-gray-600"
       />
-
-      <p className="mt-4 text-gray-600">
-        Seçilen sıralama: <span className="font-semibold">{sortLabels[sortType]}</span>
-      </p>
     </div>
   );
 }

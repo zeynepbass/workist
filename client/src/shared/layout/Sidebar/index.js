@@ -1,48 +1,52 @@
+import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faBook,
   faCode,
   faGlobe,
-  faShoppingCart,
-  faUsers,
-  faThumbtack,
   faHome,
-  faBook,
-  faHandshake,
+  faShoppingCart,
+  faThumbtack,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+
+const GENERAL_LINKS = [
+  { icon: faGlobe, label: "Genel", to: "/ilanlar" },
+  { icon: faCode, label: "Workist", to: "/workist" },
+  { icon: faShoppingCart, label: "Siparişlerim", to: "/siparisler" },
+];
+
+const FREELANCER_LINKS = [
+  { icon: faUsers, label: "Alıcı İstekleri", to: "/istekler" },
+  { icon: faThumbtack, label: "Satışlarım", to: "/satislar" },
+  { icon: faHome, label: "Portfolyom", to: "/portfolyom" },
+  { icon: faBook, label: "İlanlarım", to: "/ilanlarim" },
+];
+
+const linkClass = ({ isActive }) =>
+  `flex items-center gap-3 p-3 md:p-4 ${isActive ? "text-purple-800 font-semibold" : "text-gray-400 hover:text-purple-800"}`;
+
+function LinkGroup({ links }) {
+  return links.map((link) => (
+    <li key={link.to}>
+      <NavLink to={link.to} end className={linkClass}>
+        <FontAwesomeIcon icon={link.icon} aria-hidden="true" />
+        <span className="hidden sm:inline">{link.label}</span>
+      </NavLink>
+    </li>
+  ));
+}
+
 export default function Sidebar() {
-  const icons = [
-    { icon: faGlobe, label: "General", link: "/ilanlar" },
-    { icon: faCode, label: "Workist", link: "/workist" },
-    { icon: faShoppingCart, label: "Siparişlerim", link: "/siparisler" },
-    { icon: faUsers, label: "Sana uygun istekler", link: "/istekler" },
-    { icon: faThumbtack, label: "Satışlarım", link: "/satislar" },
-    { icon: faHome, label: "Portfolyom", link: "/portfolyom" },
-    { icon: faBook, label: "İlanlarım", link: "/ilanlarim" },
-    { icon: faHandshake, label: "Sana Uygun Alıcı İstekleri", link: "/istekler" },
-  ];
   return (
-    <ul className="flex flex-row overflow-x-auto whitespace-nowrap md:flex-col md:overflow-visible md:whitespace-normal md:items-end md:pr-3">
-      {icons.slice(0, 2).map((item) => (
-        <Link to={item.link} key={item.link}>
-          <li className="flex flex-row  items-center p-3 md:p-5 gap-2 cursor-pointer text-gray-400 hover:text-purple-800">
-            <FontAwesomeIcon icon={item.icon} />
-            <span className="pl-2 hidden sm:inline">{item.label}</span>
-          </li>
-        </Link>
-      ))}
-
-      <h5 className="hidden md:block text-gray-700 font-bold uppercase mt-2">Freelancer</h5>
-      <hr className="hidden md:block w-full" />
-
-      {icons.slice(3, 7).map((item) => (
-        <Link to={item.link} key={item.link}>
-          <li className="flex flex-row   items-center text-center p-3 md:p-5 gap-2 cursor-pointer text-gray-400 hover:text-purple-800">
-            <FontAwesomeIcon icon={item.icon} />
-            <span className="pl-2 hidden  sm:inline">{item.label}</span>
-          </li>
-        </Link>
-      ))}
-    </ul>
+    <nav aria-label="Ana menü">
+      <ul className="flex flex-row overflow-x-auto whitespace-nowrap md:flex-col md:items-end md:pr-3">
+        <LinkGroup links={GENERAL_LINKS} />
+        <li className="hidden w-full border-b pt-2 text-right font-bold uppercase text-gray-700 md:block">
+          Freelancer
+        </li>
+        <LinkGroup links={FREELANCER_LINKS} />
+      </ul>
+    </nav>
   );
 }

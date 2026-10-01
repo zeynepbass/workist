@@ -1,83 +1,68 @@
 import { useState } from "react";
-import toast from "react-hot-toast";
 
-import { Button } from "@/shared/components/atoms";
-import { useMessages } from "../hooks/useMessages";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
-import ConversationTable from "../components/ConversationTable";
+import { Button } from "@/shared/components/atoms";
+import { StatusMessage } from "@/shared/components/molecules";
 import ChatWidget from "../components/ChatWidget";
+import ConversationTable from "../components/ConversationTable";
+import { useConversations, useDeleteConversations } from "../hooks/useConversations";
 
 export default function Conversations() {
-  const [selectedPartnerId, setSelectedPartnerId] = useState(null);
-  const [showCheckboxes, setShowCheckboxes] = useState(false);
-  const [selectedForDelete, setSelectedForDelete] = useState([]);
+  const { userId } = useCurrentUser();
+  const { data: conversations = [], isLoading, isError } = useConversations();
+  const deleteConversations = useDeleteConversations();
+  const [selecting, setSelecting] = useState(false);
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [openPartner, setOpenPartner] = useState(null);
 
-  const { userId, firstName } = useCurrentUser();
-
-  const { conversations, users, deleteConversation, isConversationsLoading } = useMessages(
-    userId,
-    selectedPartnerId,
-  );
-
-  const handleDeleteSelected = async () => {
-    const results = await Promise.allSettled(
-      selectedForDelete.map((partnerId) => deleteConversation(partnerId)),
+  const toggle = (id) =>
+    setSelectedIds((current) =>
+      current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
     );
 
-    if (results.some((result) => result.status === "rejected")) {
-      toast.error("Bazı konuşmalar silinemedi.");
-    } else {
-      toast.success("Seçilen konuşmalar silindi.");
-    }
+  const deleteSelected = () =>
+    deleteConversations.mutate(selectedIds, {
+      onSettled: () => {
+        setSelectedIds([]);
+        setSelecting(false);
+      },
+    });
 
-    setSelectedForDelete([]);
-    setShowCheckboxes(false);
-  };
-
-  const selectedPartner = users.find((user) => user.id === selectedPartnerId);
+  if (isLoading) return <StatusMessage type="loading" message="Konuşmalar yükleniyor..." />;
+  if (isError) return <StatusMessage type="error" message="Konuşmalar yüklenemedi." />;
 
   return (
-    <div className="h-[100vh] p-4">
+    <div className="p-4">
       <div className="mb-4 flex justify-between">
-        <h1 className="text-lg font-semibold text-gray-400">Konuşmalar</h1>
-
-        <Button
-          className="cursor-pointer text-purple-600"
-          onClick={() => setShowCheckboxes((previous) => !previous)}
-        >
-          {showCheckboxes ? "İptal Et" : "Konuşmaları Temizle"}
+        <h1 className="text-lg font-semibold text-gray-500">Konuşmalar</h1>
+        <Button className="text-purple-600" onClick={() => setSelecting((current) => !current)}>
+          {selecting ? "İptal Et" : "Konuşmaları Temizle"}
         </Button>
       </div>
 
       <ConversationTable
         conversations={conversations}
-        users={users}
         currentUserId={userId}
-        currentFirstName={firstName}
-        isLoading={isConversationsLoading}
-        showCheckboxes={showCheckboxes}
-        selectedForDelete={selectedForDelete}
-        onSelectForDelete={setSelectedForDelete}
-        onOpenConversation={setSelectedPartnerId}
+        selectable={selecting}
+        selectedIds={selectedIds}
+        onToggle={toggle}
+        onOpen={setOpenPartner}
       />
 
-      {showCheckboxes && selectedForDelete.length > 0 && (
+      {selecting && selectedIds.length > 0 && (
         <div className="mt-4 text-right">
-          <Button onClick={handleDeleteSelected} variant="danger" className="px-4 py-2">
+          <Button
+            variant="danger"
+            className="px-4 py-2"
+            onClick={deleteSelected}
+            disabled={deleteConversations.isPending}
+          >
             Seçilenleri Sil
           </Button>
         </div>
       )}
 
-      {selectedPartnerId && (
-        <ChatWidget
-          open
-          onClose={() => setSelectedPartnerId(null)}
-          partnerName={selectedPartner?.firstName || "Kullanıcı"}
-          userId={userId}
-          partnerId={selectedPartnerId}
-        />
-      )}
+      {openPartner && <ChatWidget partner={openPartner} onClose={() => setOpenPartner(null)} />}
     </div>
   );
 }

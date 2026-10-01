@@ -3,7 +3,9 @@ import { z } from "zod";
 export const PASSWORD_MIN_LENGTH = 8;
 
 const email = z.email("Geçerli bir e-posta girin.").max(254);
-const password = z.string().min(PASSWORD_MIN_LENGTH, `Parola en az ${PASSWORD_MIN_LENGTH} karakter olmalı.`);
+const password = z
+  .string()
+  .min(PASSWORD_MIN_LENGTH, `Parola en az ${PASSWORD_MIN_LENGTH} karakter olmalı.`);
 const name = z.string().trim().min(1, "Bu alan zorunlu.").max(50, "En fazla 50 karakter.");
 
 export const loginSchema = z.object({

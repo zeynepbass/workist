@@ -16,7 +16,12 @@ export default function AdCard({ ad, onEdit, onDelete, isDeleting }) {
     <article className="relative flex w-full flex-col rounded-lg border bg-white p-4 shadow-md sm:w-[48%] md:w-[31%] lg:w-[23%]">
       {onEdit && onDelete && (
         <div className="absolute right-2 top-2 z-10 flex space-x-1 rounded-md bg-gray-800/90 p-1">
-          <Button ariaLabel={`${ad.title} ilanını düzenle`} onClick={() => onEdit(ad.id)} className={ACTION_CLASS} icon={<FontAwesomeIcon icon={faPen} size="sm" />} />
+          <Button
+            ariaLabel={`${ad.title} ilanını düzenle`}
+            onClick={() => onEdit(ad.id)}
+            className={ACTION_CLASS}
+            icon={<FontAwesomeIcon icon={faPen} size="sm" />}
+          />
           <Button
             ariaLabel={`${ad.title} ilanını sil`}
             disabled={isDeleting}
