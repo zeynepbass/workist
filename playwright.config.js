@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const CLIENT_PORT = 3100;
-const API_PORT = 4100;
+const CLIENT_PORT = Number(process.env.E2E_CLIENT_PORT ?? 3456);
+const API_PORT = Number(process.env.E2E_API_PORT ?? 4456);
 
 export default defineConfig({
   testDir: "./e2e",
@@ -21,7 +21,7 @@ export default defineConfig({
       command: "node e2e/support/start-server.mjs",
       url: `http://localhost:${API_PORT}/health`,
       env: { E2E_API_PORT: String(API_PORT), E2E_CLIENT_URL: `http://localhost:${CLIENT_PORT}` },
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: false,
       timeout: 120_000,
     },
     {
@@ -32,7 +32,7 @@ export default defineConfig({
         BROWSER: "none",
         API_PROXY_TARGET: `http://localhost:${API_PORT}`,
       },
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: false,
       timeout: 240_000,
     },
   ],

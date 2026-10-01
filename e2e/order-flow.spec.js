@@ -13,18 +13,18 @@ const people = {
 
 async function register(page, person) {
   await page.goto("/kayit-ol");
-  await page.getByLabel("Adı").fill(person.firstName);
-  await page.getByLabel("Soyadı").fill(person.lastName);
-  await page.getByLabel("E-posta").fill(person.email);
+  await page.getByLabel("Adı", { exact: true }).fill(person.firstName);
+  await page.getByLabel("Soyadı", { exact: true }).fill(person.lastName);
+  await page.getByLabel("E-posta", { exact: true }).fill(person.email);
   await page.getByLabel("Parola", { exact: true }).fill(PASSWORD);
-  await page.getByLabel("Parola Tekrar").fill(PASSWORD);
+  await page.getByLabel("Parola Tekrar", { exact: true }).fill(PASSWORD);
   await page.getByRole("button", { name: "Kayıt Ol" }).click();
   await expect(page.getByRole("heading", { name: "Giriş Yap" })).toBeVisible();
 }
 
 async function login(page, person) {
   await page.goto("/");
-  await page.getByLabel("E-posta").fill(person.email);
+  await page.getByLabel("E-posta", { exact: true }).fill(person.email);
   await page.getByLabel("Parola", { exact: true }).fill(PASSWORD);
   await page.getByRole("button", { name: "Giriş Yap" }).click();
   await expect(
@@ -39,13 +39,17 @@ async function createAd(page) {
   await dialog.getByRole("button", { name: /Yazılım & Teknoloji/ }).click();
   await dialog.getByRole("button", { name: "Web Uygulaması" }).click();
   await dialog.getByRole("button", { name: "Devam Et" }).click();
-  await dialog.getByLabel("Hizmet türü").selectOption("Admin Panel");
-  await dialog.getByLabel("Başlık").fill(`Ben, uçtan uca test paneli yaparım ${runId}`);
-  await dialog.getByLabel("Teslim süresi").fill("3 gün");
-  await dialog.getByLabel("Revizyon hakkı").fill("1");
-  await dialog.getByLabel("Temel fiyat (TL)").fill("300");
-  await dialog.getByLabel("Açıklama").fill("Uçtan uca test için oluşturulan ilan açıklaması.");
-  await dialog.getByLabel("İlan görseli").setInputFiles(IMAGE);
+  await dialog.getByLabel("Hizmet türü", { exact: true }).selectOption("Admin Panel");
+  await dialog
+    .getByLabel("Başlık", { exact: true })
+    .fill(`Ben, uçtan uca test paneli yaparım ${runId}`);
+  await dialog.getByLabel("Teslim süresi", { exact: true }).fill("3 gün");
+  await dialog.getByLabel("Revizyon hakkı", { exact: true }).fill("1");
+  await dialog.getByLabel("Temel fiyat (TL)", { exact: true }).fill("300");
+  await dialog
+    .getByLabel("Açıklama", { exact: true })
+    .fill("Uçtan uca test için oluşturulan ilan açıklaması.");
+  await dialog.getByLabel("İlan görseli", { exact: true }).setInputFiles(IMAGE);
   await dialog.getByRole("button", { name: "Kaydet" }).click();
   await expect(
     page.getByRole("heading", { name: new RegExp(`uçtan uca test paneli yaparım ${runId}`) }),
@@ -68,7 +72,9 @@ test("register, list an ad, chat, order, deliver and review", async ({ browser }
 
   await buyerPage.getByRole("button", { name: "Satıcıya Mesaj At" }).click();
   const chat = buyerPage.getByRole("dialog", { name: /ile sohbet/ });
-  await chat.getByLabel("Mesajınız").fill("Merhaba, panel için detay konuşabilir miyiz?");
+  await chat
+    .getByLabel("Mesajınız", { exact: true })
+    .fill("Merhaba, panel için detay konuşabilir miyiz?");
   await chat.getByRole("button", { name: "Gönder" }).click();
   await expect(chat.getByText("Merhaba, panel için detay konuşabilir miyiz?")).toBeVisible();
   await chat.getByRole("button", { name: "Sohbeti kapat" }).click();
@@ -76,11 +82,13 @@ test("register, list an ad, chat, order, deliver and review", async ({ browser }
   await sellerPage.goto("/sohbet");
   await sellerPage.getByRole("button", { name: new RegExp(people.buyer.firstName) }).click();
   await expect(sellerPage.getByText("Merhaba, panel için detay konuşabilir miyiz?")).toBeVisible();
-  await sellerPage.getByLabel("Mesajınız").fill("Tabii, sipariş talebi oluşturabilirsiniz.");
+  await sellerPage
+    .getByLabel("Mesajınız", { exact: true })
+    .fill("Tabii, sipariş talebi oluşturabilirsiniz.");
   await sellerPage.getByRole("button", { name: "Gönder" }).click();
 
   await buyerPage
-    .getByLabel("Ne istediğini anlat")
+    .getByLabel("Ne istediğini anlat", { exact: true })
     .fill("Rol tabanlı yetkilendirmesi olan bir yönetim paneli istiyorum.");
   await buyerPage.getByRole("button", { name: "Sipariş Talebi Gönder" }).click();
   await expect(buyerPage.getByText("Talep edildi")).toBeVisible();
@@ -89,8 +97,8 @@ test("register, list an ad, chat, order, deliver and review", async ({ browser }
   await sellerPage.goto("/istekler");
   await sellerPage.getByRole("link", { name: new RegExp(String(runId)) }).click();
   await sellerPage.getByRole("button", { name: "Teklif ver" }).click();
-  await sellerPage.getByLabel("Fiyat (TL)").fill("350");
-  await sellerPage.getByLabel("Teslim süresi (gün)").fill("2");
+  await sellerPage.getByLabel("Fiyat (TL)", { exact: true }).fill("350");
+  await sellerPage.getByLabel("Teslim süresi (gün)", { exact: true }).fill("2");
   await sellerPage.getByRole("button", { name: "Teklifi Gönder" }).click();
   await expect(sellerPage.getByText("Teklif verildi").first()).toBeVisible();
 
@@ -100,7 +108,9 @@ test("register, list an ad, chat, order, deliver and review", async ({ browser }
 
   await sellerPage.reload();
   await sellerPage.getByRole("button", { name: "Teslim et" }).click();
-  await sellerPage.getByLabel("Teslimat notu").fill("Panel hazır, kurulum adımları ektedir.");
+  await sellerPage
+    .getByLabel("Teslimat notu", { exact: true })
+    .fill("Panel hazır, kurulum adımları ektedir.");
   await sellerPage.getByRole("dialog").getByRole("button", { name: "Teslim Et" }).click();
   await expect(sellerPage.getByText("Teslim edildi").first()).toBeVisible();
 
@@ -109,7 +119,7 @@ test("register, list an ad, chat, order, deliver and review", async ({ browser }
   await buyerPage.getByRole("button", { name: "Siparişi onayla" }).click();
   await expect(buyerPage.getByText("Tamamlandı").first()).toBeVisible();
 
-  await buyerPage.getByLabel("Yorumun").fill("Harika bir iş çıkardı!");
+  await buyerPage.getByLabel("Yorumun", { exact: true }).fill("Harika bir iş çıkardı!");
   await buyerPage.getByRole("button", { name: "Değerlendir" }).click();
   await expect(buyerPage.getByText("Bu sipariş değerlendirildi. Teşekkürler!")).toBeVisible();
 
