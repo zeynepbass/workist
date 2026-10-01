@@ -27,7 +27,9 @@ async function login(page, person) {
   await page.getByLabel("E-posta").fill(person.email);
   await page.getByLabel("Parola", { exact: true }).fill(PASSWORD);
   await page.getByRole("button", { name: "Giriş Yap" }).click();
-  await expect(page.getByRole("heading", { name: new RegExp(`Merhaba ${person.firstName}`) })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: new RegExp(`Merhaba ${person.firstName}`) }),
+  ).toBeVisible();
 }
 
 async function createAd(page) {
@@ -45,7 +47,9 @@ async function createAd(page) {
   await dialog.getByLabel("Açıklama").fill("Uçtan uca test için oluşturulan ilan açıklaması.");
   await dialog.getByLabel("İlan görseli").setInputFiles(IMAGE);
   await dialog.getByRole("button", { name: "Kaydet" }).click();
-  await expect(page.getByRole("heading", { name: new RegExp(`uçtan uca test paneli yaparım ${runId}`) })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: new RegExp(`uçtan uca test paneli yaparım ${runId}`) }),
+  ).toBeVisible();
 }
 
 test("register, list an ad, chat, order, deliver and review", async ({ browser }) => {
@@ -75,7 +79,9 @@ test("register, list an ad, chat, order, deliver and review", async ({ browser }
   await sellerPage.getByLabel("Mesajınız").fill("Tabii, sipariş talebi oluşturabilirsiniz.");
   await sellerPage.getByRole("button", { name: "Gönder" }).click();
 
-  await buyerPage.getByLabel("Ne istediğini anlat").fill("Rol tabanlı yetkilendirmesi olan bir yönetim paneli istiyorum.");
+  await buyerPage
+    .getByLabel("Ne istediğini anlat")
+    .fill("Rol tabanlı yetkilendirmesi olan bir yönetim paneli istiyorum.");
   await buyerPage.getByRole("button", { name: "Sipariş Talebi Gönder" }).click();
   await expect(buyerPage.getByText("Talep edildi")).toBeVisible();
   const orderUrl = buyerPage.url();

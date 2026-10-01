@@ -79,7 +79,9 @@ async function createUser(profile) {
 }
 
 async function removeDemoData() {
-  const users = await User.find({ email: { $in: Object.values(DEMO_USERS).map((user) => user.email) } });
+  const users = await User.find({
+    email: { $in: Object.values(DEMO_USERS).map((user) => user.email) },
+  });
   const ids = users.map((user) => user._id);
 
   await Promise.all([
@@ -136,7 +138,10 @@ export async function seed() {
 
   const ads = [];
   for (const { asset, ...fields } of DEMO_ADS) {
-    const imageKey = await storeImage(await imageFile(asset), { folder: "ads", ownerId: seller._id });
+    const imageKey = await storeImage(await imageFile(asset), {
+      folder: "ads",
+      ownerId: seller._id,
+    });
     ads.push(await Ad.create({ ...fields, owner: seller._id, imageKey }));
   }
 
@@ -148,14 +153,25 @@ export async function seed() {
     status: "published",
     category: "software-technology",
     subcategory: "web-application",
-    imageKey: await storeImage(await imageFile("software.png"), { folder: "portfolios", ownerId: seller._id }),
+    imageKey: await storeImage(await imageFile("software.png"), {
+      folder: "portfolios",
+      ownerId: seller._id,
+    }),
   });
 
   await seedCompletedOrder({ seller, buyer, ad: ads[1] });
 
   await Message.create([
-    { sender: buyer._id, recipient: seller._id, text: "Merhaba, yönetim paneli için bilgi alabilir miyim?" },
-    { sender: seller._id, recipient: buyer._id, text: "Tabii, ihtiyaçlarınızı sipariş talebinde yazabilirsiniz." },
+    {
+      sender: buyer._id,
+      recipient: seller._id,
+      text: "Merhaba, yönetim paneli için bilgi alabilir miyim?",
+    },
+    {
+      sender: seller._id,
+      recipient: buyer._id,
+      text: "Tabii, ihtiyaçlarınızı sipariş talebinde yazabilirsiniz.",
+    },
   ]);
 
   return { seller, buyer };

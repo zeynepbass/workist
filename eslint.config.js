@@ -23,13 +23,16 @@ export default [
       "no-console": "error",
       "local/no-comments": "error",
       "no-unused-vars": ["error", { argsIgnorePattern: "^_", ignoreRestSiblings: true }],
-      "import/no-unresolved": ["error", { caseSensitiveStrict: true, ignore: ["^vitest/config$", "^file-type$"] }],
+      "import/no-unresolved": [
+        "error",
+        { caseSensitiveStrict: true, ignore: ["^vitest/config$", "^file-type$"] },
+      ],
       "import/no-named-as-default": "off",
       "import/no-named-as-default-member": "off",
     },
   },
   {
-    files: ["server/**/*.js", "tools/**/*.js", "*.js"],
+    files: ["server/**/*.js", "tools/**/*.js", "e2e/**/*.{js,mjs}", "*.js", "client/*.mjs"],
     languageOptions: { globals: globals.node },
     settings: { "import/resolver": { node: true } },
   },

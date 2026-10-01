@@ -1,8 +1,8 @@
+import { randomUUID } from "node:crypto";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
-import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { afterAll, afterEach, beforeAll } from "vitest";
 
@@ -16,19 +16,8 @@ process.env.STORAGE_DRIVER = "local";
 process.env.UPLOAD_DIR = uploadDir;
 process.env.LOG_LEVEL = "silent";
 
-let mongoServer;
-
-async function resolveTestDatabaseUri() {
-  if (process.env.MONGO_TEST_URI) {
-    return process.env.MONGO_TEST_URI;
-  }
-
-  mongoServer = await MongoMemoryServer.create();
-  return mongoServer.getUri();
-}
-
 beforeAll(async () => {
-  await mongoose.connect(await resolveTestDatabaseUri());
+  await mongoose.connect(process.env.MONGO_TEST_URI, { dbName: `workist-test-${randomUUID()}` });
   await Promise.all(Object.values(mongoose.models).map((model) => model.init()));
 });
 
@@ -40,6 +29,5 @@ afterEach(async () => {
 afterAll(async () => {
   await mongoose.connection.db.dropDatabase();
   await mongoose.disconnect();
-  await mongoServer?.stop();
   rmSync(uploadDir, { recursive: true, force: true });
 });
