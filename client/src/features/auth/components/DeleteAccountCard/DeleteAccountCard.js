@@ -12,7 +12,10 @@ export default function DeleteAccountCard() {
   const deleteAccount = useDeleteAccount();
 
   return (
-    <section className="flex items-center justify-between rounded-[10px] bg-white p-4 shadow" aria-label="Hesap yönetimi">
+    <section
+      className="flex items-center justify-between rounded-[10px] bg-white p-4 shadow"
+      aria-label="Hesap yönetimi"
+    >
       <h2 className="text-gray-600">
         Hesap <strong>Yönetimi</strong>
       </h2>
@@ -29,7 +32,8 @@ export default function DeleteAccountCard() {
           }}
         >
           <p className="text-sm text-gray-600">
-            Hesabınız, ilanlarınız, portfolyolarınız ve mesajlarınız kalıcı olarak silinir. Onaylamak için parolanızı girin.
+            Hesabınız, ilanlarınız, portfolyolarınız ve mesajlarınız kalıcı olarak silinir.
+            Onaylamak için parolanızı girin.
           </p>
           <FormField label="Parola" htmlFor="delete-account-password">
             <PasswordInput
@@ -39,7 +43,12 @@ export default function DeleteAccountCard() {
               onChange={(event) => setPassword(event.target.value)}
             />
           </FormField>
-          <Button type="submit" variant="danger" className="w-full py-2" disabled={!password || deleteAccount.isPending}>
+          <Button
+            type="submit"
+            variant="danger"
+            className="w-full py-2"
+            disabled={!password || deleteAccount.isPending}
+          >
             {deleteAccount.isPending ? "Siliniyor..." : "Hesabımı kalıcı olarak sil"}
           </Button>
         </form>

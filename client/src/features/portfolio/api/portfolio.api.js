@@ -1,27 +1,9 @@
 import apiClient from "@/shared/api";
 
 export const portfolioApi = {
-  getMyPortfolios() {
-    return apiClient.get("/portfolyo");
-  },
-
-  createPortfolio(portfolio) {
-    return apiClient.post("/portfolyo", portfolio);
-  },
-
-  deletePortfolio(id) {
-    return apiClient.delete(`/portfolyo/${id}`);
-  },
-
-  getPortfolio(id) {
-    return apiClient.get(`/portfolyo/${id}`);
-  },
-
-  updatePortfolio(id, portfolio) {
-    return apiClient.put(`/portfolyo/${id}`, portfolio);
-  },
-
-  updatePortfolioStatus(id, status) {
-    return apiClient.patch(`/portfolyo/${id}`, { status });
-  },
+  list: (params) => apiClient.get("/api/portfolios", { params }),
+  get: (id) => apiClient.get(`/api/portfolios/${id}`),
+  create: (formData) => apiClient.post("/api/portfolios", formData),
+  update: (id, formData) => apiClient.patch(`/api/portfolios/${id}`, formData),
+  remove: (id) => apiClient.delete(`/api/portfolios/${id}`),
 };

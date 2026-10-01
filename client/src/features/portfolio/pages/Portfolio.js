@@ -1,72 +1,38 @@
-import { useState, useMemo, lazy, Suspense } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { usePortfolio } from "../hooks/usePortfolio";
-import PortfolioList from "../components/PortfolioList";
+import { TopHeader } from "@/shared/components/molecules";
+import CreatePortfolioDialog from "../components/CreatePortfolioDialog";
 import PortfolioFilters from "../components/PortfolioFilters";
-import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
-import { StatusMessage, TopHeader } from "@/shared/components/molecules";
-
-const Modal = lazy(() =>
-  import("@/shared/components/organisms").then((module) => ({
-    default: module.Modal,
-  })),
-);
+import PortfolioList from "../components/PortfolioList";
+import {
+  useDeletePortfolio,
+  usePortfolioList,
+  useTogglePortfolioStatus,
+} from "../hooks/usePortfolios";
 
 export default function Portfolio() {
   const navigate = useNavigate();
-  const [statusFilter, setStatusFilter] = useState("published");
-
-  const { userId, firstName, user } = useCurrentUser();
-
-  const {
-    portfolios,
-    isPortfoliosLoading,
-    isPortfoliosError,
-    createPortfolio,
-    deletePortfolio,
-    isDeleting,
-    updatePortfolioStatus,
-  } = usePortfolio();
-
-  const filteredPortfolios = useMemo(
-    () =>
-      portfolios.filter(
-        (portfolio) => (portfolio.status === "published") === (statusFilter === "published"),
-      ),
-    [portfolios, statusFilter],
-  );
-
-  if (isPortfoliosLoading) {
-    return <StatusMessage type="loading" message="Portfolyolar yükleniyor..." />;
-  }
-
-  if (isPortfoliosError) {
-    return <StatusMessage type="error" message="Portfolyolar yüklenirken bir hata oluştu." />;
-  }
+  const [status, setStatus] = useState("");
+  const query = usePortfolioList({ owner: "me", status: status || undefined });
+  const deletePortfolio = useDeletePortfolio();
+  const toggleStatus = useTogglePortfolioStatus();
 
   return (
-    <div className="p-4 h-[100vh]">
+    <div className="p-4">
       <TopHeader
         title="Portfolyom"
         desc="Tüm portfolyonu buradan takip edebilir, yönetebilir ve yeni portfolyolar ekleyebilirsin."
       />
-
-      <Suspense fallback={<div>Yükleniyor...</div>}>
-        <Modal type="portfolio" onCreate={createPortfolio} />
-      </Suspense>
-
-      <PortfolioFilters value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} />
-
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <PortfolioFilters value={status} onChange={setStatus} />
+        <CreatePortfolioDialog />
+      </div>
       <PortfolioList
-        portfolios={filteredPortfolios}
-        firstName={firstName}
-        title={user?.title}
-        userId={userId}
-        onToggleStatus={updatePortfolioStatus}
+        query={query}
+        onToggleStatus={(variables) => toggleStatus.mutate(variables)}
         onEdit={(id) => navigate(`/portfolyom/${id}`)}
-        onDelete={deletePortfolio}
-        isDeleting={isDeleting}
+        onDelete={(id) => deletePortfolio.mutate(id)}
       />
     </div>
   );

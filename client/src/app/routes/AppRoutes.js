@@ -1,36 +1,87 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Suspense, lazy } from "react";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 
-import PrivateRoute from "./PrivateRoute";
 import Layout from "@/shared/layout";
+import { StatusMessage } from "@/shared/components/molecules";
+import ErrorBoundary from "../ErrorBoundary";
+import PrivateRoute from "./PrivateRoute";
+import PublicOnlyRoute from "./PublicOnlyRoute";
 
-import AdsPage from "@/features/ads/pages/AdsPage";
-import AdsDetail from "@/features/ads/pages/AdsDetail";
-import BrowseAds from "@/features/ads/pages/BrowseAds";
+const pages = {
+  Login: lazy(() => import("@/features/auth/pages/Login")),
+  Register: lazy(() => import("@/features/auth/pages/Register")),
+  AccountDeactivated: lazy(() => import("@/features/auth/pages/AccountDeactivated")),
+  MyProfile: lazy(() => import("@/features/auth/pages/MyProfile")),
+  MyAccount: lazy(() => import("@/features/auth/pages/MyAccount")),
+  BrowseAds: lazy(() => import("@/features/ads/pages/BrowseAds")),
+  AdDetail: lazy(() => import("@/features/ads/pages/AdDetail")),
+  MyAds: lazy(() => import("@/features/ads/pages/MyAds")),
+  EditAd: lazy(() => import("@/features/ads/pages/EditAd")),
+  Portfolio: lazy(() => import("@/features/portfolio/pages/Portfolio")),
+  PortfolioDetail: lazy(() => import("@/features/portfolio/pages/PortfolioDetail")),
+  Dashboard: lazy(() => import("@/features/orders/pages/Dashboard")),
+  Orders: lazy(() => import("@/features/orders/pages/Orders")),
+  Sales: lazy(() => import("@/features/orders/pages/Sales")),
+  OrderDetail: lazy(() => import("@/features/orders/pages/OrderDetail")),
+  BuyerRequests: lazy(() => import("@/features/orders/pages/BuyerRequests")),
+  Chat: lazy(() => import("@/features/messages/pages/Chat")),
+  Conversations: lazy(() => import("@/features/messages/pages/Conversations")),
+};
 
-import Portfolio from "@/features/portfolio/pages/Portfolio";
-import PortfolioDetail from "@/features/portfolio/pages/PortfolioDetail";
+const PRIVATE_ROUTES = [
+  ["/workist", pages.Dashboard],
+  ["/ilanlar", pages.BrowseAds],
+  ["/ilan/:id", pages.AdDetail],
+  ["/ilanlarim", pages.MyAds],
+  ["/ilanlarim/:id", pages.EditAd],
+  ["/portfolyom", pages.Portfolio],
+  ["/portfolyom/:id", pages.PortfolioDetail],
+  ["/siparisler", pages.Orders],
+  ["/siparisler/:id", pages.OrderDetail],
+  ["/satislar", pages.Sales],
+  ["/istekler", pages.BuyerRequests],
+  ["/sohbet", pages.Chat],
+  ["/konusmalar", pages.Conversations],
+  ["/profilim", pages.MyProfile],
+  ["/hesabim", pages.MyAccount],
+];
 
-import Dashboard from "@/features/orders/pages/Dashboard";
-import Sales from "@/features/orders/pages/Sales";
-import Orders from "@/features/orders/pages/Orders";
-import OrderDetail from "@/features/orders/pages/OrderDetail";
-import BuyerRequests from "@/features/orders/pages/BuyerRequests";
+function Page({ component: Component }) {
+  const location = useLocation();
 
-import Chat from "@/features/messages/pages/Chat";
-import Conversations from "@/features/messages/pages/Conversations";
+  return (
+    <ErrorBoundary key={location.pathname}>
+      <Suspense fallback={<StatusMessage type="loading" message="Sayfa yükleniyor..." />}>
+        <Component />
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
 
-import MyProfile from "@/features/auth/pages/MyProfile";
-import MyAccount from "@/features/auth/pages/MyAccount";
-import AccountDeactivated from "@/features/auth/pages/AccountDeactivated";
-import Login from "@/features/auth/pages/Login";
-import Register from "@/features/auth/pages/Register";
+function NotFound() {
+  return <img src="/assets/404.jpg" className="h-full w-full" alt="Sayfa bulunamadı" />;
+}
 
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/kayit-ol" element={<Register />} />
-      <Route path="/hesap-donduruldu" element={<AccountDeactivated />} />
+      <Route
+        path="/"
+        element={
+          <PublicOnlyRoute>
+            <Page component={pages.Login} />
+          </PublicOnlyRoute>
+        }
+      />
+      <Route
+        path="/kayit-ol"
+        element={
+          <PublicOnlyRoute>
+            <Page component={pages.Register} />
+          </PublicOnlyRoute>
+        }
+      />
+      <Route path="/hesap-donduruldu" element={<Page component={pages.AccountDeactivated} />} />
 
       <Route
         element={
@@ -39,28 +90,14 @@ export default function AppRoutes() {
           </PrivateRoute>
         }
       >
-        <Route path="/workist" element={<Dashboard />} />
-        <Route path="/ilanlar" element={<BrowseAds />} />
-        <Route path="/ilanlar/:category" element={<BrowseAds />} />
-        <Route path="/ilanlarim" element={<AdsPage />} />
-        <Route path="/ilanlarim/:id" element={<AdsDetail />} />
-        <Route path="/portfolyom" element={<Portfolio />} />
-        <Route path="/portfolyom/:id" element={<PortfolioDetail />} />
-        <Route path="/satislar" element={<Sales />} />
-        <Route path="/siparisler" element={<Orders />} />
-        <Route path="/siparisler/:id" element={<OrderDetail />} />
-        <Route path="/istekler" element={<BuyerRequests />} />
-        <Route path="/konusmalar" element={<Conversations />} />
+        {PRIVATE_ROUTES.map(([path, component]) => (
+          <Route key={path} path={path} element={<Page component={component} />} />
+        ))}
         <Route path="/yapilacaklar" element={<Navigate to="/konusmalar" replace />} />
-        <Route path="/sohbet" element={<Chat />} />
-        <Route path="/profilim" element={<MyProfile />} />
-        <Route path="/hesabim" element={<MyAccount />} />
+        <Route path="/ilanlar/:category" element={<Navigate to="/ilanlar" replace />} />
       </Route>
 
-      <Route
-        path="*"
-        element={<img src="/assets/404.jpg" width="100%" height="100%" alt="Sayfa bulunamadı" />}
-      />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

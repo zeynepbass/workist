@@ -1,62 +1,34 @@
-import { useState } from "react";
+import { useRef } from "react";
 
-import { useMessages } from "../../hooks/useMessages";
-import { useChatSocket } from "../../hooks/useChatSocket";
-import ChatMessageList from "../ChatMessageList";
-import ChatInput from "../ChatInput";
+import { useEscapeKey } from "@/shared/hooks/useEscapeKey";
+import { useFocusTrap } from "@/shared/hooks/useFocusTrap";
+import ChatPanel from "../ChatPanel";
 
-export default function ChatWidget({ partnerName, open, userId, partnerId, onClose }) {
-  const [newMessage, setNewMessage] = useState("");
+export default function ChatWidget({ partner, onClose }) {
+  const containerRef = useRef(null);
 
-  const { messages, addMessageToCache, isMessagesLoading } = useMessages(userId, partnerId);
-
-  const { sendMessage } = useChatSocket({
-    userId,
-    partnerId,
-    enabled: open,
-    onMessage: addMessageToCache,
-  });
-
-  const handleSend = (e) => {
-    e.preventDefault();
-
-    const text = newMessage.trim();
-
-    if (!text || !userId || !partnerId) {
-      return;
-    }
-
-    sendMessage(text);
-    setNewMessage("");
-  };
-
-  if (!open) {
-    return null;
-  }
+  useFocusTrap(containerRef, true);
+  useEscapeKey(onClose);
 
   return (
-    <div className="fixed bottom-5 right-10 z-50 flex h-[30vh] w-[400px] flex-col rounded-t-xl bg-gray-100 font-sans shadow-lg">
+    <div
+      ref={containerRef}
+      role="dialog"
+      aria-label={`${partner?.fullName ?? "Kullanıcı"} ile sohbet`}
+      className="fixed bottom-5 right-4 z-50 flex h-[50vh] w-[min(400px,calc(100vw-2rem))] flex-col rounded-t-xl bg-gray-100 shadow-lg"
+    >
       <div className="flex items-center justify-between border-b bg-white p-4">
-        <p className="font-bold">{partnerName}</p>
-
+        <p className="font-bold">{partner?.fullName}</p>
         <button
           type="button"
           aria-label="Sohbeti kapat"
-          onClick={() => onClose(false)}
+          onClick={onClose}
           className="text-xl font-bold text-gray-400 hover:text-red-500"
         >
           ×
         </button>
       </div>
-
-      <ChatMessageList messages={messages} currentUserId={userId} isLoading={isMessagesLoading} />
-
-      <ChatInput
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-        onSubmit={handleSend}
-        disabled={!partnerId}
-      />
+      <ChatPanel partnerId={partner?.id} />
     </div>
   );
 }

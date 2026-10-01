@@ -1,26 +1,31 @@
+import { toPage } from "@/shared/api/pagination";
+import { conversationAdapter, messageAdapter } from "../adapters/message.adapter";
 import { messageApi } from "../api/message.api";
-import messageAdapter, { chatUserAdapter } from "../adapters/message.adapter";
 
-export async function getMessages(userId, partnerId) {
-  const response = await messageApi.getMessages(userId, partnerId);
-
-  return response.data.map(messageAdapter);
+export async function getConversations() {
+  const { data } = await messageApi.conversations();
+  return data.data.map(conversationAdapter);
 }
 
-export async function getUsers() {
-  const response = await messageApi.getUsers();
-
-  return response.data.map(chatUserAdapter);
+export async function getMessages(partnerId, cursor) {
+  return toPage(await messageApi.messages(partnerId, cursor), messageAdapter);
 }
 
-export async function getConversations(userId) {
-  const response = await messageApi.getConversations(userId);
-
-  return response.data.map(messageAdapter);
+export async function deleteConversation(partnerId) {
+  await messageApi.deleteConversation(partnerId);
 }
 
-export async function deleteConversation(userId, partnerId) {
-  const response = await messageApi.deleteConversation(userId, partnerId);
+export function sendViaSocket(socket, { recipientId, text }) {
+  return new Promise((resolve, reject) => {
+    if (!socket?.connected) {
+      reject(new Error("Bağlantı kurulamadı, lütfen tekrar deneyin."));
+      return;
+    }
 
-  return response.data;
+    socket.timeout(10_000).emit("message:send", { recipientId, text }, (timeoutError, reply) => {
+      if (timeoutError) return reject(new Error("Mesaj gönderilemedi."));
+      if (!reply?.ok) return reject(new Error(reply?.error?.message ?? "Mesaj gönderilemedi."));
+      return resolve(messageAdapter(reply.data));
+    });
+  });
 }

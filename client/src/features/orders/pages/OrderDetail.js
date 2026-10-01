@@ -1,47 +1,50 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
+import ChatWidget from "@/features/messages/components/ChatWidget";
 import { Button } from "@/shared/components/atoms";
-import { BackButton } from "@/shared/components/molecules";
-import { sampleOrderDetail } from "@/shared/mocks/orderDetail";
-import OrderHeader from "../components/OrderHeader";
+import { BackButton, StatusMessage } from "@/shared/components/molecules";
+import DeliveryList from "../components/DeliveryList";
+import OrderActions from "../components/OrderActions";
 import OrderSummary from "../components/OrderSummary";
-import OrderReview from "../components/OrderReview";
-import OrderProcess from "../components/OrderProcess";
+import OrderTimeline from "../components/OrderTimeline";
+import ReviewForm from "../components/ReviewForm";
+import { useOrder } from "../hooks/useOrders";
 
 export default function OrderDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [chatOpen, setChatOpen] = useState(false);
+  const { data: order, isLoading, isError } = useOrder(id);
 
-  const order = { ...sampleOrderDetail, id };
+  if (isLoading) return <StatusMessage type="loading" message="Sipariş yükleniyor..." />;
+  if (isError || !order) return <StatusMessage type="error" message="Sipariş bulunamadı." />;
+
+  const counterpart = order.viewerRole === "buyer" ? order.seller : order.buyer;
+  const canReview = order.viewerRole === "buyer" && order.status === "completed" && !order.reviewed;
 
   return (
-    <div className="p-6">
+    <div className="space-y-6 p-6">
       <BackButton onClick={() => navigate(-1)} />
-
-      <h1 className="text-xl font-semibold pb-4 text-gray-600">
-        Sipariş<strong> Özeti</strong>
-      </h1>
-
-      <div className="bg-white rounded-lg mb-6">
-        <OrderHeader order={order} />
-        <OrderSummary order={order} />
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h1 className="text-xl font-semibold text-gray-600">
+          Sipariş <strong>Detayı</strong>
+        </h1>
+        <Button className="font-medium text-purple-600" onClick={() => setChatOpen(true)}>
+          {order.viewerRole === "buyer" ? "Satıcıya" : "Alıcıya"} Mesaj Gönder
+        </Button>
       </div>
 
-      <h2 className="text-sm font-semibold mt-5 mb-2 text-gray-400">
-        Alıcının<strong> Değerlendirmesi</strong>
-      </h2>
+      <OrderSummary order={order} />
+      <OrderActions order={order} />
+      <DeliveryList orderId={order.id} deliveries={order.deliveries} />
+      {canReview && <ReviewForm orderId={order.id} />}
+      {order.reviewed && (
+        <StatusMessage type="info" message="Bu sipariş değerlendirildi. Teşekkürler!" />
+      )}
+      <OrderTimeline events={order.events} participants={[order.buyer, order.seller]} />
 
-      <OrderReview review={order.review} />
-
-      <div className="flex justify-between items-center pt-6">
-        <h2 className="text-lg font-semibold text-gray-400">
-          Sipariş <strong>Süreci</strong>
-        </h2>
-
-        <Button className="text-sm text-purple-600 font-medium">Alıcıya Mesaj Gönder</Button>
-      </div>
-
-      <OrderProcess steps={order.timeline} />
+      {chatOpen && <ChatWidget partner={counterpart} onClose={() => setChatOpen(false)} />}
     </div>
   );
 }

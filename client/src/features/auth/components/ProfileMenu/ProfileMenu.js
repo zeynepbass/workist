@@ -47,19 +47,34 @@ export default function ProfileMenu() {
       {open && (
         <ul role="menu" className="absolute right-0 z-20 w-60 rounded-md bg-white py-1 shadow-lg">
           <li role="none">
-            <Link role="menuitem" to="/profilim" className={ITEM_CLASS} onClick={() => setOpen(false)}>
+            <Link
+              role="menuitem"
+              to="/profilim"
+              className={ITEM_CLASS}
+              onClick={() => setOpen(false)}
+            >
               <FontAwesomeIcon icon={faUser} className="mr-3 text-purple-600" />
               Profilim
             </Link>
           </li>
           <li role="none">
-            <Link role="menuitem" to="/hesabim" className={ITEM_CLASS} onClick={() => setOpen(false)}>
+            <Link
+              role="menuitem"
+              to="/hesabim"
+              className={ITEM_CLASS}
+              onClick={() => setOpen(false)}
+            >
               <FontAwesomeIcon icon={faCog} className="mr-3 text-purple-600" />
               Hesabım
             </Link>
           </li>
           <li role="none">
-            <button role="menuitem" type="button" className={ITEM_CLASS} onClick={() => logout.mutate()}>
+            <button
+              role="menuitem"
+              type="button"
+              className={ITEM_CLASS}
+              onClick={() => logout.mutate()}
+            >
               <FontAwesomeIcon icon={faSignOutAlt} className="mr-3 text-purple-600" />
               Çıkış Yap
             </button>

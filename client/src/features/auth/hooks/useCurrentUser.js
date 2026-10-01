@@ -7,7 +7,11 @@ import * as authRepository from "../repositories/auth.repository";
 export function useCurrentUser() {
   const isAuthenticated = useSessionStore((state) => state.status === SESSION_STATUS.authenticated);
 
-  const { data: user = null, isLoading, isError } = useQuery({
+  const {
+    data: user = null,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: queryKeys.me,
     queryFn: authRepository.getCurrentUser,
     enabled: isAuthenticated,

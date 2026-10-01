@@ -1,26 +1,18 @@
-import { useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
-import isTokenExpired from "@/shared/utils/isTokenExpired";
-
-function clearSession() {
-  localStorage.removeItem("login");
-  localStorage.removeItem("token");
-}
+import { StatusMessage } from "@/shared/components/molecules";
+import { SESSION_STATUS, useSessionStore } from "@/shared/session/sessionStore";
 
 export default function PrivateRoute({ children }) {
-  const hasSession = Boolean(localStorage.getItem("login"));
-  const token = localStorage.getItem("token");
+  const status = useSessionStore((state) => state.status);
+  const location = useLocation();
 
-  useEffect(() => {
-    if (token && isTokenExpired(token)) {
-      clearSession();
-      window.location.href = "/";
-    }
-  }, [token]);
+  if (status === SESSION_STATUS.loading) {
+    return <StatusMessage type="loading" message="Oturum kontrol ediliyor..." />;
+  }
 
-  if (!hasSession) {
-    return <Navigate to="/" replace />;
+  if (status === SESSION_STATUS.anonymous) {
+    return <Navigate to="/" replace state={{ from: location }} />;
   }
 
   return children;

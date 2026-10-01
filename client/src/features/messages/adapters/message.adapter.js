@@ -1,18 +1,19 @@
-export default function messageAdapter(message) {
+import { publicUserAdapter } from "@/features/auth/adapters/user.adapter";
+
+export function messageAdapter(message) {
   return {
-    id: message._id,
+    id: message.id,
     senderId: message.senderId,
     recipientId: message.recipientId,
     text: message.text,
     sentAt: message.sentAt,
+    pending: Boolean(message.pending),
   };
 }
 
-export function chatUserAdapter(user) {
+export function conversationAdapter(conversation) {
   return {
-    id: user._id,
-    firstName: user.firstName || "",
-    lastName: user.lastName || "",
-    avatar: user.avatar || "",
+    partner: publicUserAdapter(conversation.partner),
+    lastMessage: messageAdapter(conversation.lastMessage),
   };
 }

@@ -22,7 +22,11 @@ export default function AdFormFields({ form, idPrefix }) {
 
   return (
     <div className="space-y-5">
-      <FormField label="Hizmet türü" htmlFor={`${idPrefix}-serviceType`} error={errors.serviceType?.message}>
+      <FormField
+        label="Hizmet türü"
+        htmlFor={`${idPrefix}-serviceType`}
+        error={errors.serviceType?.message}
+      >
         <Select
           id={`${idPrefix}-serviceType`}
           options={SERVICE_TYPE_OPTIONS}
@@ -33,7 +37,12 @@ export default function AdFormFields({ form, idPrefix }) {
       </FormField>
 
       {TEXT_FIELDS.map((field) => (
-        <FormField key={field.name} label={field.label} htmlFor={`${idPrefix}-${field.name}`} error={errors[field.name]?.message}>
+        <FormField
+          key={field.name}
+          label={field.label}
+          htmlFor={`${idPrefix}-${field.name}`}
+          error={errors[field.name]?.message}
+        >
           <Input
             id={`${idPrefix}-${field.name}`}
             type={field.type}
@@ -65,7 +74,11 @@ export default function AdFormFields({ form, idPrefix }) {
         />
       </FormField>
 
-      <FormField label="Açıklama" htmlFor={`${idPrefix}-description`} error={errors.description?.message}>
+      <FormField
+        label="Açıklama"
+        htmlFor={`${idPrefix}-description`}
+        error={errors.description?.message}
+      >
         <Textarea
           id={`${idPrefix}-description`}
           rows={5}

@@ -1,19 +1,8 @@
 import apiClient from "@/shared/api";
 
 export const messageApi = {
-  getMessages(userId, partnerId) {
-    return apiClient.get(`/mesajlar/${userId}/${partnerId}`);
-  },
-
-  getUsers() {
-    return apiClient.get("/users");
-  },
-
-  getConversations(userId) {
-    return apiClient.get(`/konusmalar/${userId}`);
-  },
-
-  deleteConversation(userId, partnerId) {
-    return apiClient.delete(`/${userId}/${partnerId}`);
-  },
+  conversations: () => apiClient.get("/api/conversations"),
+  messages: (partnerId, cursor) =>
+    apiClient.get(`/api/conversations/${partnerId}/messages`, { params: { cursor } }),
+  deleteConversation: (partnerId) => apiClient.delete(`/api/conversations/${partnerId}`),
 };

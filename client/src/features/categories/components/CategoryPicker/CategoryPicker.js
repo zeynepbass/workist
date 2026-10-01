@@ -34,7 +34,13 @@ export default function CategoryPicker({ category, subcategory, onChange }) {
               onSelect={() => onChange({ category: item.slug, subcategory: "" })}
             >
               {CATEGORY_ICONS[item.slug] && (
-                <img src={CATEGORY_ICONS[item.slug]} alt="" width="50" height="50" className="mx-auto" />
+                <img
+                  src={CATEGORY_ICONS[item.slug]}
+                  alt=""
+                  width="50"
+                  height="50"
+                  className="mx-auto"
+                />
               )}
               <span className="mt-2 block font-medium text-gray-500">{item.label}</span>
             </Choice>

@@ -25,7 +25,8 @@ export function useCategories() {
   const getLabel = useCallback((slug) => labelsBySlug.get(slug) ?? slug, [labelsBySlug]);
 
   const subcategoriesOf = useCallback(
-    (categorySlug) => categories.find((category) => category.slug === categorySlug)?.subcategories ?? [],
+    (categorySlug) =>
+      categories.find((category) => category.slug === categorySlug)?.subcategories ?? [],
     [categories],
   );
 

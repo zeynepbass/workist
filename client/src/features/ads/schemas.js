@@ -22,11 +22,21 @@ export const SERVICE_TYPE_OPTIONS = [
 
 export const adFormSchema = z.object({
   serviceType: z.string().min(1, "Hizmet türü seçin."),
-  title: z.string().trim().min(5, "Başlık en az 5 karakter olmalı.").max(120, "En fazla 120 karakter."),
+  title: z
+    .string()
+    .trim()
+    .min(5, "Başlık en az 5 karakter olmalı.")
+    .max(120, "En fazla 120 karakter."),
   description: z.string().trim().min(10, "Açıklama en az 10 karakter olmalı.").max(5000),
   deliveryTime: z.string().trim().min(1, "Teslim süresini girin.").max(40),
-  revisionCount: z.coerce.number({ error: "Sayı girin." }).int().min(0, "En az 0.").max(20, "En fazla 20."),
-  basePrice: z.coerce.number({ error: "Sayı girin." }).min(AD_MIN_PRICE, `Fiyat en az ${AD_MIN_PRICE} TL olmalı.`),
+  revisionCount: z.coerce
+    .number({ error: "Sayı girin." })
+    .int()
+    .min(0, "En az 0.")
+    .max(20, "En fazla 20."),
+  basePrice: z.coerce
+    .number({ error: "Sayı girin." })
+    .min(AD_MIN_PRICE, `Fiyat en az ${AD_MIN_PRICE} TL olmalı.`),
   addons: z.object({ logo: z.boolean(), sourceCode: z.boolean(), backgroundMusic: z.boolean() }),
   extras: z.object({ fastDelivery: z.boolean(), fullHd: z.boolean() }),
 });

@@ -1,57 +1,59 @@
-import { useCallback } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMemo } from "react";
+import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
+import { queryKeys } from "@/shared/api";
+import { nextPageParam } from "@/shared/api/pagination";
+import { useSocket } from "@/shared/socket/SocketProvider";
+import { addMessage, removeMessage } from "../cache";
 import * as messageRepository from "../repositories/message.repository";
 
-export function useMessages(userId, partnerId) {
-  const queryClient = useQueryClient();
-
-  const messagesQuery = useQuery({
-    queryKey: ["messages", userId, partnerId],
-    queryFn: () => messageRepository.getMessages(userId, partnerId),
-    enabled: Boolean(userId && partnerId),
+export function useMessages(partnerId) {
+  const query = useInfiniteQuery({
+    queryKey: queryKeys.conversations.messages(partnerId),
+    queryFn: ({ pageParam }) => messageRepository.getMessages(partnerId, pageParam),
+    initialPageParam: undefined,
+    getNextPageParam: nextPageParam,
+    enabled: Boolean(partnerId),
   });
 
-  const usersQuery = useQuery({
-    queryKey: ["users"],
-    queryFn: () => messageRepository.getUsers(),
-  });
-
-  const conversationsQuery = useQuery({
-    queryKey: ["conversations", userId],
-    queryFn: () => messageRepository.getConversations(userId),
-    enabled: Boolean(userId),
-  });
-
-  const addMessageToCache = useCallback(
-    (message) => {
-      queryClient.setQueryData(["messages", userId, partnerId], (previous = []) => [
-        ...previous,
-        message,
-      ]);
-    },
-    [queryClient, userId, partnerId],
+  const messages = useMemo(
+    () => [...(query.data?.pages ?? [])].reverse().flatMap((page) => page.items),
+    [query.data],
   );
 
-  const deleteConversation = async (targetId) => {
-    const response = await messageRepository.deleteConversation(userId, targetId);
+  return { ...query, messages };
+}
 
-    queryClient.setQueryData(["messages", userId, targetId], []);
-    await queryClient.invalidateQueries({ queryKey: ["conversations", userId] });
+let temporaryId = 0;
 
-    return response;
-  };
+export function useSendMessage(partnerId, userId) {
+  const socket = useSocket();
+  const queryClient = useQueryClient();
 
-  return {
-    messages: messagesQuery.data ?? [],
-    users: usersQuery.data ?? [],
-    conversations: conversationsQuery.data ?? [],
-
-    isMessagesLoading: messagesQuery.isLoading,
-    isUsersLoading: usersQuery.isLoading,
-    isConversationsLoading: conversationsQuery.isLoading,
-
-    addMessageToCache,
-    deleteConversation,
-  };
+  return useMutation({
+    mutationFn: (text) => messageRepository.sendViaSocket(socket, { recipientId: partnerId, text }),
+    onMutate: (text) => {
+      temporaryId += 1;
+      const pendingId = `pending-${temporaryId}`;
+      addMessage(queryClient, partnerId, {
+        id: pendingId,
+        senderId: userId,
+        recipientId: partnerId,
+        text,
+        sentAt: new Date().toISOString(),
+        pending: true,
+      });
+      return { pendingId };
+    },
+    onSuccess: (message, text, context) => {
+      removeMessage(queryClient, partnerId, context.pendingId);
+      addMessage(queryClient, partnerId, message);
+      queryClient.invalidateQueries({ queryKey: queryKeys.conversations.all, exact: true });
+    },
+    onError: (error, text, context) => {
+      removeMessage(queryClient, partnerId, context?.pendingId);
+      toast.error(error.message);
+    },
+  });
 }

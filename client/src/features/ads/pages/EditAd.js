@@ -15,7 +15,8 @@ export default function EditAd() {
 
   if (isLoading) return <StatusMessage type="loading" message="İlan bilgileri yükleniyor..." />;
   if (isError || !ad) return <StatusMessage type="error" message="İlan bulunamadı." />;
-  if (userId && ad.ownerId !== userId) return <StatusMessage type="error" message="Bu ilanı düzenleme yetkin yok." />;
+  if (userId && ad.ownerId !== userId)
+    return <StatusMessage type="error" message="Bu ilanı düzenleme yetkin yok." />;
 
   return (
     <div className="mx-auto w-full max-w-4xl space-y-6 px-4 pb-16 pt-6">

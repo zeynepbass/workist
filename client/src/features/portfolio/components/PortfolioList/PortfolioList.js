@@ -1,38 +1,33 @@
+import { LoadMore, StatusMessage } from "@/shared/components/molecules";
 import PortfolioCard from "../PortfolioCard";
 
-export default function PortfolioList({
-  portfolios,
-  firstName,
-  title,
-  userId,
-  onToggleStatus,
-  onEdit,
-  onDelete,
-  isDeleting,
-}) {
-  if (!portfolios || portfolios.length === 0) {
-    return (
-      <p className="w-full text-center p-6 text-gray-500 italic">
-        Gösterilecek portfolyo bulunamadı.
-      </p>
-    );
-  }
+export default function PortfolioList({ query, onToggleStatus, onEdit, onDelete }) {
+  const { portfolios, isLoading, isError, hasNextPage, isFetchingNextPage, fetchNextPage } = query;
+
+  if (isLoading) return <StatusMessage type="loading" message="Portfolyolar yükleniyor..." />;
+  if (isError)
+    return <StatusMessage type="error" message="Portfolyolar yüklenirken bir hata oluştu." />;
+  if (portfolios.length === 0)
+    return <StatusMessage type="empty" message="Gösterilecek portfolyo bulunamadı." />;
 
   return (
-    <div className="p-4 flex flex-wrap gap-1 justify-start overflow-auto">
-      {portfolios.map((portfolio) => (
-        <PortfolioCard
-          key={portfolio.id}
-          portfolio={portfolio}
-          firstName={firstName}
-          title={title}
-          userId={userId}
-          onToggleStatus={onToggleStatus}
-          onEdit={onEdit}
-          onDelete={onDelete}
-          isDeleting={isDeleting}
-        />
-      ))}
-    </div>
+    <>
+      <div className="flex flex-wrap justify-start gap-4 p-4">
+        {portfolios.map((portfolio) => (
+          <PortfolioCard
+            key={portfolio.id}
+            portfolio={portfolio}
+            onToggleStatus={onToggleStatus}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        ))}
+      </div>
+      <LoadMore
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+        onLoadMore={fetchNextPage}
+      />
+    </>
   );
 }
