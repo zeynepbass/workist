@@ -20,7 +20,7 @@
     "socket.io-client": "^4.8.1",
     "web-vitals": "^2.1.4",
     "zod": "^4.6.5",
-    "zustand": "^5.0.6"
+    "zustand": "^5.0.15"
   },
   "scripts": {
     "start": "craco start",
