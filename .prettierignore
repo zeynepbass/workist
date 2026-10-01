@@ -3,3 +3,5 @@ build
 coverage
 package-lock.json
 client/public
+test-results
+playwright-report
