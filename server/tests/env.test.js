@@ -52,3 +52,12 @@ describe("storage configuration", () => {
     expect(parseEnv({ ...validEnv, NODE_ENV: "production" }).COOKIE_SECURE).toBe(true);
   });
 });
+
+describe("blank values", () => {
+  it("treats empty strings as missing so the example file works as is", () => {
+    const env = parseEnv({ ...validEnv, S3_ENDPOINT: "", COOKIE_DOMAIN: "", PORT: "" });
+
+    expect(env.S3_ENDPOINT).toBeUndefined();
+    expect(env.PORT).toBe(4000);
+  });
+});

@@ -65,8 +65,11 @@ export class EnvValidationError extends Error {
   }
 }
 
+const withoutBlankValues = (source) =>
+  Object.fromEntries(Object.entries(source).filter(([, value]) => value !== ""));
+
 export function parseEnv(source) {
-  const result = envSchema.safeParse(source);
+  const result = envSchema.safeParse(withoutBlankValues(source));
 
   if (!result.success) {
     throw new EnvValidationError(result.error.issues);
